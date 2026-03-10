@@ -9,7 +9,7 @@ const BASE_URL =
 export const metadata: Metadata = {
   title: "Terms of Service | The AI Music Generator",
   description:
-    "Terms of Service for The AI Music Generator (themusicgenerator.com). User accounts, subscriptions, refunds, and legal terms.",
+    "Terms of Service for The AI Music Generator: user accounts, subscriptions, refunds and legal terms. Read before using our AI music tools.",
   alternates: { canonical: `${BASE_URL}/terms` },
 };
 

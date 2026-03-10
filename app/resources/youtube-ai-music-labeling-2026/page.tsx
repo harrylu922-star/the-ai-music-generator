@@ -11,9 +11,9 @@ import {
 const PAGE_URL = "/resources/youtube-ai-music-labeling-2026";
 
 export const metadata: Metadata = {
-  title: "YouTube AI Music Labeling 2026: Rules & Workflow for Creators",
+  title: "YouTube AI Music Labeling 2026: Rules & Workflow",
   description:
-    "YouTube requires clear disclosure for AI-generated music in 2026. Official rules, required disclosures, compliant workflows, and templates—stay compliant.",
+    "YouTube AI music disclosure rules for 2026: required labels, metadata & descriptions. Compliant workflows and templates for creators. Stay compliant with synthetic content policy.",
   keywords: [
     "YouTube AI labeling",
     "AI music disclosure 2026",
@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     "YouTube Studio altered content",
   ],
   openGraph: {
-    title: "YouTube AI Music Labeling 2026: Rules & Workflow for Creators",
+    title: "YouTube AI Music Labeling 2026: Rules & Workflow",
     description:
-      "YouTube requires clear disclosure for AI-generated music in 2026. Official rules, disclosures, compliant workflows, and templates for creators.",
+      "YouTube AI music disclosure 2026: required labels, metadata & workflows. Compliant templates for creators.",
     url: PAGE_URL,
     type: "article",
   },

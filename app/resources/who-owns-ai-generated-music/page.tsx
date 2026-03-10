@@ -7,9 +7,9 @@ import { getWhoOwnsFaqLd, WHO_OWNS_FAQ } from "./who-owns-faq-ld";
 const PAGE_URL = "/resources/who-owns-ai-generated-music";
 
 export const metadata: Metadata = {
-  title: "Who Owns AI Generated Music? Copyright in 2026",
+  title: "Who Owns AI Generated Music? Copyright Guide 2026",
   description:
-    "Who owns AI-generated music in 2026? Human + AI hybrid works can be protected; pure AI often isn't. Prove ownership, document workflow, and protect your rights.",
+    "Who owns AI-generated music in 2026? Human+AI hybrid works can be protected; pure AI often isn't. How to prove ownership, document workflow & protect your rights.",
   keywords: [
     "who owns AI generated music",
     "AI music copyright",
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     "AI music rights",
   ],
   openGraph: {
-    title: "Who Owns AI Generated Music? Copyright in 2026",
+    title: "Who Owns AI Generated Music? Copyright Guide 2026",
     description:
-      "Human + AI hybrid works can be protected; pure AI often isn't. Prove ownership, document workflow, and protect your rights when using AI music.",
+      "Human+AI works can be protected; pure AI often isn't. Prove ownership, document workflow & protect rights.",
     url: PAGE_URL,
     type: "article",
   },

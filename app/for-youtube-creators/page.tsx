@@ -6,9 +6,9 @@ import { YoutubeCreatorsLock } from "./YoutubeCreatorsLock";
 import { getYoutubeCreatorsFaqJsonLd, YOUTUBE_CREATORS_FAQ } from "./youtube-faq-ld";
 
 export const metadata: Metadata = {
-  title: "AI Music for YouTube Creators | Royalty-Free Music for Videos",
+  title: "AI Music for YouTube | Royalty-Free Music for Videos",
   description:
-    "Create royalty-free AI music for YouTube videos, vlogs, Shorts, and intros. No copyright strikes. Generate custom background music in seconds.",
+    "Create royalty-free AI music for YouTube videos, vlogs & Shorts in seconds. No copyright strikes. Custom background music from text—compliant disclosure guides included.",
 };
 
 export default function ForYoutubeCreatorsPage() {

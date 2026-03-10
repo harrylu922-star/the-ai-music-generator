@@ -1,8 +1,8 @@
 /**
- * 图片优化脚本：缩小体积、生成合适尺寸，便于 Lighthouse 测速通过
- * - 图标：tamg-icon2.png 等缩为 72x72（显示 36px）并输出 WebP
- * - 首页/封面图：最大宽 1920px，质量 85，可选输出 WebP
- *
+ * 图片优化脚本：移动端性能（LCP/带宽）
+ * - 图标：72px WebP+PNG
+ * - home/*.jpg → WebP 最大宽 960px（移动端友好），质量 78
+ * - covers/*.jpg → WebP 最大宽 640px（网格小图），质量 78
  * 运行：node scripts/optimize-images.js
  */
 
@@ -11,9 +11,8 @@ const fs = require("fs");
 const sharp = require("sharp");
 
 const PUBLIC = path.join(__dirname, "..", "public", "images");
-const MAX_WIDTH = 1920;
-const JPEG_QUALITY = 85;
-const WEBP_QUALITY = 82;
+const WEBP_QUALITY = 78;
+const WEBP_QUALITY_ICON = 82;
 
 async function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -27,46 +26,41 @@ async function optimizeIcon(name, size = 72) {
   }
   const outBase = path.join(PUBLIC, `${name}-${size}`);
   const s = sharp(inputPath).resize(size, size);
-  await s.clone().webp({ quality: WEBP_QUALITY }).toFile(`${outBase}.webp`);
+  await s.clone().webp({ quality: WEBP_QUALITY_ICON }).toFile(`${outBase}.webp`);
   await s.clone().png({ compressionLevel: 6 }).toFile(`${outBase}.png`);
-  console.log(`[optimize-images] Icon: ${name}.png -> ${name}-${size}.webp + ${name}-${size}.png`);
+  console.log(`[optimize-images] Icon: ${name}.png -> ${name}-${size}.webp + .png`);
 }
 
-async function optimizeJpeg(dir, maxWidth = MAX_WIDTH) {
+/** 将目录下所有 jpg 转为 WebP，限制最大宽，供移动端与桌面共用单文件 */
+async function convertDirToWebP(dir, maxWidth) {
   const dirPath = path.join(PUBLIC, dir);
   if (!fs.existsSync(dirPath)) return;
   const files = fs.readdirSync(dirPath).filter((f) => /\.(jpg|jpeg)$/i.test(f));
   for (const file of files) {
     const inputPath = path.join(dirPath, file);
-    const meta = await sharp(inputPath).metadata();
-    const w = meta.width || 0;
-    if (w <= maxWidth && w > 0) {
-      console.log(`[optimize-images] Skip (already narrow): ${dir}/${file}`);
-      continue;
-    }
     const base = path.basename(file, path.extname(file));
-    const outPath = path.join(dirPath, `${base}.jpg`);
+    const outPath = path.join(dirPath, `${base}.webp`);
     await sharp(inputPath)
       .resize(maxWidth, null, { withoutEnlargement: true })
-      .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
+      .webp({ quality: WEBP_QUALITY })
       .toFile(outPath);
-    console.log(`[optimize-images] Resized: ${dir}/${file} -> max ${maxWidth}px`);
+    const stat = fs.statSync(outPath);
+    console.log(`[optimize-images] ${dir}/${base}.webp (max ${maxWidth}px, ${(stat.size / 1024).toFixed(0)} KiB)`);
   }
 }
 
 async function main() {
-  console.log("[optimize-images] Start…\n");
-
+  console.log("[optimize-images] Start (mobile-first WebP)…\n");
   await ensureDir(PUBLIC);
 
-  // 1. 图标：36px 显示用 72px 图即可，大幅减小体积
   await optimizeIcon("tamg-icon2", 72);
   await optimizeIcon("tamg-icon", 72);
   await optimizeIcon("tamg-logo", 72);
 
-  // 2. 首页与封面图：限制最大宽度
-  await optimizeJpeg("home");
-  await optimizeJpeg("covers");
+  // 首页大图：最大 960px，单文件即可显著减小体积
+  await convertDirToWebP("home", 960);
+  // 封面小图：最大 640px（网格 50vw/25vw）
+  await convertDirToWebP("covers", 640);
 
   console.log("\n[optimize-images] Done.");
 }

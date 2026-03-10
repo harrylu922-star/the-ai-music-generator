@@ -5,8 +5,8 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Coming Soon",
-  description: "We're building something great. This feature will be available soon.",
+  title: "Coming Soon | The AI Music Generator",
+  description: "New feature coming soon. The AI Music Generator is building more tools for creators—check back for updates.",
   robots: { index: false, follow: true },
 };
 

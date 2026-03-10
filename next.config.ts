@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // 减少移动端渲染阻塞：关键 CSS 内联，避免首屏等待外部 CSS 请求（生产环境生效）
+  experimental: {
+    inlineCss: true,
+  },
 };
 
 export default nextConfig;

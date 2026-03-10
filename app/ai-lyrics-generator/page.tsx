@@ -12,12 +12,12 @@ const PAGE_URL = "/ai-lyrics-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-lyrics-generator.jpg";
 
 export const metadata: Metadata = {
-  title: "AI Lyrics Generator for Free | Write Song Lyrics with AI",
-  description: "Create original song lyrics instantly with our free AI lyrics generator. Perfect for songwriters, rappers, and content creators. Choose mood, structure, and style.",
+  title: "Free AI Lyrics Generator | Write Song Lyrics in Seconds",
+  description: "Create original song lyrics in seconds with our free AI lyrics generator. Perfect for songwriters, rappers & creators. Pick mood, structure & style—then turn lyrics into music.",
   keywords: ["AI lyrics generator", "free AI song lyrics", "write song lyrics with AI", "AI songwriting", "lyrics generator for rappers"],
   openGraph: {
-    title: "AI Lyrics Generator for Free | Write Song Lyrics with AI",
-    description: "Create original song lyrics instantly with our free AI lyrics generator. Perfect for songwriters, rappers, and content creators.",
+    title: "Free AI Lyrics Generator | Write Song Lyrics in Seconds",
+    description: "Create original lyrics in seconds. For songwriters, rappers & creators. Pick mood & style—then turn lyrics into music.",
     url: PAGE_URL,
     siteName: "The AI Music Generator",
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Lyrics Generator - Write song lyrics with AI" }],
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Lyrics Generator for Free | Write Song Lyrics with AI",
-    description: "Create original song lyrics instantly. Perfect for songwriters, rappers, and content creators.",
+    title: "Free AI Lyrics Generator | Write Song Lyrics in Seconds",
+    description: "Create original lyrics in seconds. For songwriters, rappers & creators. Turn lyrics into music.",
     images: [OG_IMAGE],
   },
   alternates: { canonical: PAGE_URL },
@@ -99,7 +99,7 @@ export default function AiLyricsGeneratorPage() {
             <div className="mx-auto max-w-3xl px-4 py-12 text-slate-300">
               <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
                 <div className="relative mb-6 aspect-[2/1] max-w-2xl overflow-hidden rounded-xl">
-                  <Image src="/images/home/hero-card-ai-lyrics-generator.jpg" alt="AI Lyrics Generator - Write song lyrics with AI" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
+                  <Image src="/images/home/hero-card-ai-lyrics-generator.webp" alt="AI Lyrics Generator - Write song lyrics with AI" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
                 </div>
                 <h2 className="mb-4 text-2xl font-semibold text-slate-100">How the AI Lyrics Generator Works</h2>
                 <p className="mb-4 leading-relaxed">
@@ -142,7 +142,7 @@ export default function AiLyricsGeneratorPage() {
 
               <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
                 <div className="relative mb-6 aspect-video max-w-xl overflow-hidden rounded-xl">
-                  <Image src="/images/home/explore-idea-starters.jpg" alt="AI lyrics ideas and inspiration" fill className="object-cover" sizes="(max-width: 768px) 100vw, 576px" unoptimized />
+                  <Image src="/images/home/explore-idea-starters.webp" alt="AI lyrics ideas and inspiration" fill className="object-cover" sizes="(max-width: 768px) 100vw, 576px" loading="lazy" unoptimized />
                 </div>
                 <h2 className="mb-4 text-2xl font-semibold text-slate-100">Showcase: Example Lyrics from the AI Lyrics Generator</h2>
                 <p className="mb-4 leading-relaxed">

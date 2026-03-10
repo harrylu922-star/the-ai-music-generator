@@ -4,8 +4,8 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Resources | The AI Music Generator",
-  description: "Guides, tips, and resources for creating music with AI.",
+  title: "AI Music Guides & Resources | Licensing, YouTube & More",
+  description: "Guides on AI music licensing, YouTube disclosure, monetization & ownership. Tips and workflows for creators using The AI Music Generator. Free resources.",
 };
 
 export default function ResourcesPage() {

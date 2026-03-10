@@ -5,9 +5,9 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { getRapFaqJsonLd, RAP_FAQ } from "./rap-faq-ld";
 
 export const metadata: Metadata = {
-  title: "Free Rap Generator | AI Rap Lyrics & Beat Generator Online",
+  title: "Free AI Rap Lyrics & Beat Generator | Write Rap Online",
   description:
-    "Free rap generator: write rap and hip hop lyrics with AI, then generate a rap beat or full song. AI rap lyrics generator and rap beat generator in one. No signup.",
+    "Free rap generator: write rap and hip hop lyrics with AI, then generate a beat or full song. Lyrics + beat in one tool. No signup—create rap music in seconds.",
 };
 
 export default function AiRapLyricsGeneratorPage() {

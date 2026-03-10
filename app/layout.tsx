@@ -18,18 +18,18 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theaimusicgenerato
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "The AI Music Generator | Create Royalty-Free Music with AI",
+    default: "Free AI Music Generator | Royalty-Free Songs in Seconds",
     template: "%s | The AI Music Generator",
   },
   description:
-    "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators.",
+    "Create royalty-free music from text in seconds. Free AI music generator and lyrics tool for creators, filmmakers & YouTubers. No copyright strikes—try now.",
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "The AI Music Generator",
-    title: "The AI Music Generator | Create Royalty-Free Music with AI",
+    title: "Free AI Music Generator | Royalty-Free Songs in Seconds",
     description:
-      "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators.",
+      "Create royalty-free music from text in seconds. Free AI music & lyrics tools for creators. No copyright strikes—try now.",
     images: [
       {
         url: "/images/home/hero-card-ai-music-generator.jpg",
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The AI Music Generator | Create Royalty-Free Music with AI",
+    title: "Free AI Music Generator | Royalty-Free Songs in Seconds",
     description:
-      "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators.",
+      "Create royalty-free music from text in seconds. Free AI music & lyrics for creators. No copyright strikes—try now.",
     images: ["/images/home/hero-card-ai-music-generator.jpg"],
   },
   robots: {

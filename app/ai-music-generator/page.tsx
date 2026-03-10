@@ -12,12 +12,12 @@ const PAGE_URL = "/ai-music-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
 export const metadata: Metadata = {
-  title: "AI Music Generator for Free | Create Royalty-Free Music Instantly",
-  description: "Generate unique, royalty-free music from text with our free AI music generator. Describe genre, mood, and style—get full tracks in seconds. For creators, filmmakers, and musicians.",
+  title: "Free AI Music Generator | Royalty-Free Music from Text",
+  description: "Generate unique, royalty-free music from text in seconds. Free AI music generator for creators, filmmakers & YouTubers. Describe genre, mood & style—get full tracks. Try free.",
   keywords: ["AI music generator", "free AI song generator", "text to music", "royalty-free music", "AI music creator", "generate music from text"],
   openGraph: {
-    title: "AI Music Generator for Free | Create Royalty-Free Music Instantly",
-    description: "Generate unique, royalty-free music from text with our free AI music generator. Describe genre, mood, and style—get full tracks in seconds.",
+    title: "Free AI Music Generator | Royalty-Free Music from Text",
+    description: "Generate royalty-free music from text in seconds. For creators, filmmakers & YouTubers. Full tracks—try free.",
     url: PAGE_URL,
     siteName: "The AI Music Generator",
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Music Generator - Create royalty-free music from text" }],
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Music Generator for Free | Create Royalty-Free Music Instantly",
-    description: "Generate unique, royalty-free music from text. Full tracks in seconds. For creators, filmmakers, and musicians.",
+    title: "Free AI Music Generator | Royalty-Free Music from Text",
+    description: "Royalty-free music from text in seconds. For creators & YouTubers. Full tracks—try free.",
     images: [OG_IMAGE],
   },
   alternates: { canonical: PAGE_URL },
@@ -91,7 +91,7 @@ export default function AiMusicGeneratorPage() {
               <div className="space-y-6">
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
-                    <Image src="/images/home/how-1-describe.jpg" alt="Describe your music idea" fill className="object-cover" sizes="96px" unoptimized />
+                    <Image src="/images/home/how-1-describe.webp" alt="Describe your music idea" fill className="object-cover" sizes="96px" loading="lazy" unoptimized />
                     <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">1</span>
                   </div>
                   <div className="min-w-0 flex-1">
@@ -101,7 +101,7 @@ export default function AiMusicGeneratorPage() {
                 </div>
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
-                    <Image src="/images/home/how-2-ai-compose.jpg" alt="AI composes your track" fill className="object-cover" sizes="96px" unoptimized />
+                    <Image src="/images/home/how-2-ai-compose.webp" alt="AI composes your track" fill className="object-cover" sizes="96px" loading="lazy" unoptimized />
                     <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">2</span>
                   </div>
                   <div className="min-w-0 flex-1">
@@ -111,7 +111,7 @@ export default function AiMusicGeneratorPage() {
                 </div>
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
-                    <Image src="/images/home/how-3-export.jpg" alt="Download and use your music" fill className="object-cover" sizes="96px" unoptimized />
+                    <Image src="/images/home/how-3-export.webp" alt="Download and use your music" fill className="object-cover" sizes="96px" loading="lazy" unoptimized />
                     <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">3</span>
                   </div>
                   <div className="min-w-0 flex-1">
@@ -127,7 +127,7 @@ export default function AiMusicGeneratorPage() {
 
             <section className="mb-12 rounded-2xl bg-slate-800/30 p-6 md:p-8">
               <div className="relative mb-6 aspect-[2/1] max-w-2xl overflow-hidden rounded-xl">
-                <Image src="/images/home/hero-card-ai-music-generator.jpg" alt="AI Music Generator - Create royalty-free music from text" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
+                <Image src="/images/home/hero-card-ai-music-generator.webp" alt="AI Music Generator - Create royalty-free music from text" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
               </div>
               <h2 className="mb-6 text-2xl font-semibold text-slate-100">Explore our AI Music Generator</h2>
               <p className="mb-6 leading-relaxed text-slate-400">Crafting meaningful music for you, not just industrial noise.</p>

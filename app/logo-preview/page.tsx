@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Logo Preview",
-  description: "TAMG logo on site background",
+  title: "Logo Preview | TAMG",
+  description: "The AI Music Generator logo preview on site background.",
   robots: "noindex, nofollow",
 };
 

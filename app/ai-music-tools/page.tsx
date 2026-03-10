@@ -4,8 +4,8 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "AI Music Tools | Instrumentals, Loops & More | The AI Music Generator",
-  description: "Explore AI music tools: text-to-music, lyrics generator, instrumentals, and loops. One platform for creators.",
+  title: "AI Music Tools | Instrumentals, Loops & Text-to-Music",
+  description: "One platform for AI music: full tracks, lyrics, instrumentals & loops. Free text-to-music and lyrics generator for creators. Start creating royalty-free music now.",
 };
 
 const TOOLS = [

@@ -12,7 +12,7 @@ const PAGE_URL = "/resources/ai-music-licensing-2026";
 export const metadata: Metadata = {
   title: "AI Music Licensing 2026: Practical Guide for Creators",
   description:
-    "License AI-generated music safely in 2026: ownership, license types, platform rules, and a step-by-step workflow. Avoid claims and demonetization.",
+    "License AI-generated music safely in 2026: ownership, license types & platform rules. Step-by-step workflow to avoid claims and demonetization. Free guide.",
   keywords: [
     "AI music licensing",
     "AI music copyright 2026",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Music Licensing 2026: Practical Guide for Creators",
     description:
-      "License AI-generated music safely in 2026: ownership, license types, platform rules, and step-by-step workflow. Avoid claims and demonetization.",
+      "License AI music safely in 2026: ownership, license types & workflow. Avoid claims and demonetization.",
     url: PAGE_URL,
     type: "article",
   },

@@ -5,8 +5,8 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { PricingPlansSection } from "./PricingPlansSection";
 
 export const metadata: Metadata = {
-  title: "Pricing | Flexible Plans for All Creators | The AI Music Generator",
-  description: "Free trial and affordable subscription plans for AI music generation. Create royalty-free music with text prompts and your own lyrics.",
+  title: "Pricing | Free Trial & Plans for AI Music Generation",
+  description: "Free trial and flexible plans for AI music generation. Create royalty-free music from text and your own lyrics. Affordable credits and commercial rights.",
 };
 
 const CREDIT_PACKS = [

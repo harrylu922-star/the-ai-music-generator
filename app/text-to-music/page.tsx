@@ -12,12 +12,12 @@ const PAGE_URL = "/text-to-music";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
 export const metadata: Metadata = {
-  title: "Text to Music | Turn Words into Songs with AI",
-  description: "Convert text descriptions into full music tracks with our free AI. Describe genre, mood, instruments, and atmosphere—get original songs in seconds. No music theory required.",
+  title: "Text to Music | Free AI—Turn Words into Songs in Seconds",
+  description: "Convert text into full music tracks with free AI. Describe genre, mood & instruments—get original, royalty-free songs in seconds. No music theory needed. Try now.",
   keywords: ["text to music", "AI text to music", "turn text into music", "free AI music generator", "describe music get song"],
   openGraph: {
-    title: "Text to Music | Turn Words into Songs with AI",
-    description: "Convert text descriptions into full music tracks with our free AI. Describe genre, mood, instruments—get original songs in seconds.",
+    title: "Text to Music | Free AI—Turn Words into Songs in Seconds",
+    description: "Convert text into full music with free AI. Describe genre, mood & instruments—original songs in seconds. No music theory needed.",
     url: PAGE_URL,
     siteName: "The AI Music Generator",
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Text to Music - Turn words into songs with AI" }],
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Text to Music | Turn Words into Songs with AI",
-    description: "Convert text descriptions into full music tracks. Original songs in seconds. No music theory required.",
+    title: "Text to Music | Free AI—Words to Songs in Seconds",
+    description: "Convert text into full music with free AI. Original songs in seconds. No music theory needed. Try now.",
     images: [OG_IMAGE],
   },
   alternates: { canonical: PAGE_URL },
@@ -85,7 +85,7 @@ export default function TextToMusicPage() {
           <div className="mx-auto max-w-3xl px-4 py-12 text-slate-300">
             <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
               <div className="relative mb-6 aspect-[2/1] max-w-2xl overflow-hidden rounded-xl">
-                <Image src="/images/home/hero-card-ai-music-generator.jpg" alt="Text to Music - Turn words into songs with AI" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
+                <Image src="/images/home/hero-card-ai-music-generator.webp" alt="Text to Music - Turn words into songs with AI" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
               </div>
               <h2 className="mb-4 text-2xl font-semibold text-slate-100">How Text to Music Works</h2>
               <p className="mb-4 leading-relaxed">
@@ -128,7 +128,7 @@ export default function TextToMusicPage() {
 
             <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
               <div className="relative mb-6 aspect-video max-w-xl overflow-hidden rounded-xl">
-                <Image src="/images/home/explore-idea-starters.jpg" alt="Get inspired - text to music idea starters" fill className="object-cover" sizes="(max-width: 768px) 100vw, 576px" unoptimized />
+                <Image src="/images/home/explore-idea-starters.webp" alt="Get inspired - text to music idea starters" fill className="object-cover" sizes="(max-width: 768px) 100vw, 576px" loading="lazy" unoptimized />
               </div>
               <h2 className="mb-4 text-2xl font-semibold text-slate-100">Showcase: Example Outputs from Text to Music</h2>
               <p className="mb-4 leading-relaxed">

@@ -11,9 +11,9 @@ import {
 const PAGE_URL = "/resources/monetize-ai-music-2026";
 
 export const metadata: Metadata = {
-  title: "Monetize AI Music 2026: Licensing, Platforms & Workflow",
+  title: "Monetize AI Music 2026: Licensing & Platform Workflow",
   description:
-    "Monetize AI music in 2026 with proper commercial rights and platform compliance. Steps, templates, and workflows for YouTubers, podcasters, and creators.",
+    "Monetize AI music in 2026: commercial rights, platform rules & workflows. Steps and templates for YouTubers, podcasters & creators. Avoid claims and stay compliant.",
   keywords: [
     "monetize AI music 2026",
     "AI music commercial rights",
@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     "AI music revenue",
   ],
   openGraph: {
-    title: "Monetize AI Music 2026: Licensing, Platforms & Workflow",
+    title: "Monetize AI Music 2026: Licensing & Platform Workflow",
     description:
-      "Monetize AI music in 2026 with commercial rights and platform compliance. Steps, templates, and workflows for YouTubers, podcasters, and creators.",
+      "Monetize AI music 2026: commercial rights, platform rules & workflows. For YouTubers, podcasters & creators.",
     url: PAGE_URL,
     type: "article",
   },

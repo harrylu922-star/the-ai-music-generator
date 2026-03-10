@@ -9,7 +9,7 @@ const BASE_URL =
 export const metadata: Metadata = {
   title: "Privacy Policy | The AI Music Generator",
   description:
-    "Privacy Policy for The AI Music Generator (themusicgenerator.com). How we collect, use and protect your information.",
+    "Privacy Policy for The AI Music Generator: how we collect, use and protect your information. Data and cookie practices for our AI music services.",
   alternates: { canonical: `${BASE_URL}/privacy` },
 };
 

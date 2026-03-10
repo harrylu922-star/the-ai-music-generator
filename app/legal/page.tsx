@@ -7,9 +7,9 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://themusicgenerator.com";
 
 export const metadata: Metadata = {
-  title: "Legal | Privacy, Terms & License | The AI Music Generator",
+  title: "Legal | Privacy, Terms & Content License",
   description:
-    "Privacy Policy, Terms of Service, and Content License for The AI Music Generator (themusicgenerator.com).",
+    "Privacy Policy, Terms of Service and Content License for The AI Music Generator. User rights, data use and royalty-free music license terms.",
   alternates: { canonical: `${BASE_URL}/legal` },
 };
 
