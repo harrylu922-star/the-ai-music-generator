@@ -1,0 +1,1 @@
+# 将外部生成的展示用 MP3 放在此目录，路径对应 app/page.tsx 中 sampleTracks[].audioSrc（如 /audio/sample-cinematic.mp3）

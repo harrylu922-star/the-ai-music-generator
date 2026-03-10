@@ -1,0 +1,31 @@
+import type { Metadata } from "next";
+import { SiteHeader } from "../../components/SiteHeader";
+import { SiteFooter } from "../../components/SiteFooter";
+import { TermsContent } from "../legal/sections/TermsContent";
+
+const BASE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://themusicgenerator.com";
+
+export const metadata: Metadata = {
+  title: "Terms of Service | The AI Music Generator",
+  description:
+    "Terms of Service for The AI Music Generator (themusicgenerator.com). User accounts, subscriptions, refunds, and legal terms.",
+  alternates: { canonical: `${BASE_URL}/terms` },
+};
+
+export default function TermsPage() {
+  return (
+    <main className="min-h-screen bg-slate-950 text-slate-50">
+      <SiteHeader />
+      <div className="mx-auto max-w-3xl px-4 py-16">
+        <h1 className="text-3xl font-semibold text-slate-100 mb-8">
+          Terms of Service
+        </h1>
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+          <TermsContent />
+        </div>
+      </div>
+      <SiteFooter />
+    </main>
+  );
+}
