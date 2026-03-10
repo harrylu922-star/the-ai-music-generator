@@ -35,7 +35,7 @@ export default function ForYoutubeCreatorsPage() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/ai-music-generator"
-                className="inline-flex items-center justify-center rounded-full bg-violet-500 px-6 py-3 text-base font-semibold text-white shadow-[0_0_28px_rgba(139,92,246,0.5)] hover:bg-violet-400 transition"
+                className="inline-flex items-center justify-center rounded-full bg-violet-600 px-6 py-3 text-base font-semibold text-white shadow-[0_0_28px_rgba(124,58,237,0.5)] hover:bg-violet-500 transition"
               >
                 Create Music for My Videos
               </Link>
@@ -85,7 +85,7 @@ export default function ForYoutubeCreatorsPage() {
                 <article key={card.title} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
                   <h3 className="font-semibold text-slate-100 mb-2">{card.title}</h3>
                   <p className="text-sm text-slate-400 mb-3">{card.copy}</p>
-                  <Link href={card.href} className="text-sm font-medium text-violet-300 hover:text-violet-200">
+                  <Link href={card.href} className="text-sm font-medium text-violet-200 underline underline-offset-2 hover:text-violet-100">
                     Create music →
                   </Link>
                 </article>
@@ -148,13 +148,13 @@ export default function ForYoutubeCreatorsPage() {
               <li className="flex gap-3 rounded-2xl border border-slate-800 bg-slate-900/40 p-4">
                 <span className="text-violet-400 shrink-0" aria-hidden>✓</span>
                 <div>
-                  <strong className="text-slate-100">Lyrics and full songs too.</strong> Need a theme song or vocal track? Use our <Link href="/ai-lyrics-generator" className="text-violet-300 hover:underline">AI lyrics generator</Link> and then turn it into music with the same tool.
+                  <strong className="text-slate-100">Lyrics and full songs too.</strong> Need a theme song or vocal track? Use our <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI lyrics generator</Link> and then turn it into music with the same tool.
                 </div>
               </li>
               <li className="flex gap-3 rounded-2xl border border-slate-800 bg-slate-900/40 p-4">
                 <span className="text-violet-400 shrink-0" aria-hidden>✓</span>
                 <div>
-                  <strong className="text-slate-100">Compliant disclosure.</strong> YouTube requires labeling for AI-generated music in 2026. Our <Link href="/resources/youtube-ai-music-labeling-2026" className="text-violet-300 hover:underline">YouTube AI Music Labeling 2026</Link> guide covers requirements, templates, and workflow.
+                  <strong className="text-slate-100">Compliant disclosure.</strong> YouTube requires labeling for AI-generated music in 2026. Our <Link href="/resources/youtube-ai-music-labeling-2026" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">YouTube AI Music Labeling 2026</Link> guide covers requirements, templates, and workflow.
                 </div>
               </li>
             </ul>
@@ -196,7 +196,7 @@ export default function ForYoutubeCreatorsPage() {
             </p>
             <p className="text-slate-400 text-sm mb-4">
               For a full monetization workflow (licensing, platforms, revenue), see our{" "}
-              <Link href="/resources/monetize-ai-music-2026" className="text-violet-300 hover:underline">
+              <Link href="/resources/monetize-ai-music-2026" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">
                 Monetize AI Music 2026
               </Link>{" "}
               guide.
@@ -204,7 +204,7 @@ export default function ForYoutubeCreatorsPage() {
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/ai-music-generator"
-                className="inline-flex items-center justify-center rounded-full bg-violet-500 px-6 py-3 text-base font-semibold text-white shadow-[0_0_28px_rgba(139,92,246,0.5)] hover:bg-violet-400 transition"
+                className="inline-flex items-center justify-center rounded-full bg-violet-600 px-6 py-3 text-base font-semibold text-white shadow-[0_0_28px_rgba(124,58,237,0.5)] hover:bg-violet-500 transition"
               >
                 Create Music for My Videos
               </Link>

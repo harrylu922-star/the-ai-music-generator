@@ -238,7 +238,7 @@ export function PricingPlansSection() {
               )}
             >
               {plan.badge && (
-                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-violet-500 px-3 py-0.5 text-xs font-medium text-white">
+                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-violet-600 px-3 py-0.5 text-xs font-medium text-white">
                   {plan.badge}
                 </span>
               )}
@@ -247,14 +247,14 @@ export function PricingPlansSection() {
                 <span className="text-2xl font-bold text-slate-50">{plan.price}</span>
                 {plan.subPrice && <span className="text-sm text-slate-400">{plan.subPrice}</span>}
               </div>
-              <p className="mt-1 text-sm text-slate-300">{plan.credits}</p>
+              <p className="mt-1 text-sm text-slate-200">{plan.credits}</p>
               {plan.creditsNote && <p className="text-xs text-slate-500">{plan.creditsNote}</p>}
               <Link
                 href={plan.ctaHref}
                 className={cn(
                   "mt-6 block w-full rounded-full py-2.5 text-center text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 active:scale-[0.98]",
                   plan.highlight
-                    ? "bg-violet-500 text-white hover:bg-violet-400 focus-visible:bg-violet-600 active:bg-violet-700"
+                    ? "bg-violet-600 text-white hover:bg-violet-500 focus-visible:bg-violet-700 active:bg-violet-800"
                     : "border border-slate-600 text-slate-200 hover:border-violet-500/50 hover:text-violet-200 focus-visible:border-violet-500 focus-visible:bg-slate-800 active:bg-slate-700"
                 )}
               >
@@ -262,7 +262,7 @@ export function PricingPlansSection() {
               </Link>
               <ul className="mt-6 space-y-2 flex-1">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                  <li key={f} className="flex items-start gap-2 text-sm text-slate-200">
                     <span className="mt-0.5 text-violet-400" aria-hidden>✓</span>
                     <span>{f}</span>
                   </li>

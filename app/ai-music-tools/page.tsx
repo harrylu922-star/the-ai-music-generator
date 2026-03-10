@@ -28,7 +28,7 @@ export default function AiMusicToolsPage() {
                 href={href}
                 className="block rounded-2xl border border-slate-800 bg-slate-900/60 p-4 hover:border-violet-500/40 hover:bg-slate-900/80 transition"
               >
-                <span className="font-medium text-violet-300">{label}</span>
+                <span className="font-medium text-violet-200">{label}</span>
                 <p className="mt-1 text-sm text-slate-400">{desc}</p>
               </Link>
             </li>

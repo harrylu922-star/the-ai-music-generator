@@ -14,17 +14,19 @@ function Placeholder({ className }: { className?: string }) {
   );
 }
 
-/** 功能卡配图：加载失败时显示占位 */
+/** 功能卡配图：加载失败时显示占位；priority 用于首屏 LCP 图 */
 export function HomeFeatureImage({
   src,
   alt,
   className,
   sizes = "(max-width: 768px) 100vw, 33vw",
+  priority = false,
 }: {
   src: string;
   alt: string;
   className?: string;
   sizes?: string;
+  priority?: boolean;
 }) {
   const [error, setError] = useState(false);
 
@@ -40,6 +42,7 @@ export function HomeFeatureImage({
         fill
         className="object-cover"
         sizes={sizes}
+        priority={priority}
         onError={() => setError(true)}
         unoptimized
       />

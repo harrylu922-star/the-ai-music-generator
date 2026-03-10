@@ -58,7 +58,7 @@ export default function Home() {
               <span className="block sm:whitespace-nowrap">The AI Music Generator</span>
               <span className="block">for Modern Creators</span>
             </h1>
-            <p className="text-balance text-lg leading-relaxed text-slate-300">
+            <p className="text-balance text-lg leading-relaxed text-slate-200">
               Turn plain text ideas into ready-to-use songs and instrumentals in seconds with an AI music generator built for real projects.
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function Home() {
                 placeholder="Describe the track you want to create with our AI music generator…"
                 className="flex-1 rounded-xl border border-slate-800 bg-slate-900/80 px-3 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus-visible:ring-1 focus-visible:ring-violet-400/60"
               />
-              <Link href="/ai-music-generator" className="inline-flex w-full items-center justify-center rounded-full bg-violet-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_28px_rgba(139,92,246,0.5)] transition hover:bg-violet-400 sm:w-auto">
+              <Link href="/ai-music-generator" className="inline-flex w-full items-center justify-center rounded-full bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_28px_rgba(124,58,237,0.5)] transition hover:bg-violet-500 sm:w-auto">
                 Generate with AI
               </Link>
             </div>
@@ -103,10 +103,10 @@ export default function Home() {
               { title: "AI music tools for every workflow", copy: "Explore focused AI music tools for instrumentals, loops, and more — all powered by our core AI music generator engine.", href: "/ai-music-tools", label: "Explore AI music tools →" },
             ].map((card, i) => (
               <article key={card.title} className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
-                <HomeFeatureImage src={FEATURE_CARD_IMAGES[i].src} alt={FEATURE_CARD_IMAGES[i].alt} className="mb-4" />
+                <HomeFeatureImage src={FEATURE_CARD_IMAGES[i].src} alt={FEATURE_CARD_IMAGES[i].alt} className="mb-4" priority={i === 0} />
                 <h3 className="mb-2 text-base font-semibold text-slate-50">{card.title}</h3>
-                <p className="mb-4 text-sm leading-relaxed text-slate-300">{card.copy}</p>
-                <Link href={card.href} className="mt-auto text-sm font-semibold text-violet-300 hover:text-violet-200">{card.label}</Link>
+                <p className="mb-4 text-sm leading-relaxed text-slate-200">{card.copy}</p>
+                <Link href={card.href} className="mt-auto text-sm font-semibold text-violet-200 underline underline-offset-2 hover:text-violet-100">{card.label}</Link>
               </article>
             ))}
           </div>
@@ -136,8 +136,8 @@ export default function Home() {
               <article key={card.title} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
                 <HomeFeatureImage src={EXPLORE_IMAGES[i].src} alt={EXPLORE_IMAGES[i].alt} className="mb-4" />
                 <h3 className="mb-2 text-base font-semibold text-slate-50">{card.title}</h3>
-                <p className="mb-3 text-sm text-slate-300">{card.copy}</p>
-                <Link href={card.href} className="text-sm text-violet-300 hover:underline">{card.label}</Link>
+                <p className="mb-3 text-sm text-slate-200">{card.copy}</p>
+                <Link href={card.href} className="text-sm text-violet-200 underline underline-offset-2 hover:text-violet-100">{card.label}</Link>
               </article>
             ))}
           </div>
@@ -150,10 +150,10 @@ export default function Home() {
           <h2 className="mb-6 text-3xl font-semibold text-slate-100">The spark for your sound</h2>
           <div className="grid md:grid-cols-2 gap-8 items-start">
             <div className="space-y-3 text-left">
-              <p className="text-base leading-relaxed text-slate-300">
+              <p className="text-base leading-relaxed text-slate-200">
                 Whether you are a producer, content creator, or founder, our AI music generator gives you the first spark — a finished track, an idea for a hook, or an instrumental you can build on.
               </p>
-              <p className="text-base leading-relaxed text-slate-300">
+              <p className="text-base leading-relaxed text-slate-200">
                 Start with a text prompt, a mood, or an existing idea, and let the AI music generator handle the heavy lifting so you can stay focused on the story you want to tell.
               </p>
             </div>
@@ -179,12 +179,12 @@ export default function Home() {
                   <Image src={item.img} alt={item.alt} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" unoptimized />
                 </div>
                 <h3 className="mb-1 text-base font-semibold text-slate-50">{item.step}</h3>
-                <p className="text-sm text-slate-300">{item.text}</p>
+                <p className="text-sm text-slate-200">{item.text}</p>
               </div>
             ))}
           </div>
           <p className="mt-6 text-sm text-slate-400">
-            Ready to try it? <Link href="/ai-music-generator" className="text-violet-300 hover:underline">Open the AI music generator</Link>.
+            Ready to try it? <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">Open the AI music generator</Link>.
           </p>
         </div>
       </section>
@@ -199,27 +199,27 @@ export default function Home() {
           <div className="grid gap-6 sm:grid-cols-2 text-left">
             <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <h3 className="mb-1 text-base font-semibold text-slate-50">YouTube & talking-head videos</h3>
-              <p className="text-sm text-slate-300">Record your video, drop a line like &quot;warm, friendly background music for a productivity vlog&quot; into the <Link href="/ai-music-generator" className="text-violet-300 hover:underline">AI music generator</Link>, and get a track that sits behind your voice.</p>
+              <p className="text-sm text-slate-200">Record your video, drop a line like &quot;warm, friendly background music for a productivity vlog&quot; into the <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI music generator</Link>, and get a track that sits behind your voice.</p>
             </article>
             <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <h3 className="mb-1 text-base font-semibold text-slate-50">Short-form social clips</h3>
-              <p className="text-sm text-slate-300">When you need five versions of a 10-second sound for Reels or Shorts, paste the same prompt into our AI music generator, tweak the energy level, and test which one keeps viewers watching longer.</p>
+              <p className="text-sm text-slate-200">When you need five versions of a 10-second sound for Reels or Shorts, paste the same prompt into our AI music generator, tweak the energy level, and test which one keeps viewers watching longer.</p>
             </article>
             <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <h3 className="mb-1 text-base font-semibold text-slate-50">Indie game levels</h3>
-              <p className="text-sm text-slate-300">Describe the feeling — &quot;slow build, a bit tense&quot; — and let the AI music generator create an <Link href="/ai-music-tools#instrumentals" className="text-violet-300 hover:underline">instrumental bed</Link>. Regenerate until the music feels right.</p>
+              <p className="text-sm text-slate-200">Describe the feeling — &quot;slow build, a bit tense&quot; — and let the AI music generator create an <Link href="/ai-music-tools#instrumentals" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">instrumental bed</Link>. Regenerate until the music feels right.</p>
             </article>
             <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <h3 className="mb-1 text-base font-semibold text-slate-50">Podcasts and narration</h3>
-              <p className="text-sm text-slate-300">Hosts type in the topic and mood; the AI music generator builds a unique intro and a softer mid-roll version. Consistent but not repetitive.</p>
+              <p className="text-sm text-slate-200">Hosts type in the topic and mood; the AI music generator builds a unique intro and a softer mid-roll version. Consistent but not repetitive.</p>
             </article>
             <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <h3 className="mb-1 text-base font-semibold text-slate-50">Startup launch pages</h3>
-              <p className="text-sm text-slate-300">Founders drop a one-sentence product description into the AI music generator to get a launch song that matches their brand.</p>
+              <p className="text-sm text-slate-200">Founders drop a one-sentence product description into the AI music generator to get a launch song that matches their brand.</p>
             </article>
             <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <h3 className="mb-1 text-base font-semibold text-slate-50">Songwriters testing ideas</h3>
-              <p className="text-sm text-slate-300">Songwriters paste a <Link href="/ai-lyrics-generator" className="text-violet-300 hover:underline">rough lyric</Link>, choose &quot;simple piano&quot; in the generator, and listen to how the melody might feel before booking studio time.</p>
+              <p className="text-sm text-slate-200">Songwriters paste a <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">rough lyric</Link>, choose &quot;simple piano&quot; in the generator, and listen to how the melody might feel before booking studio time.</p>
             </article>
           </div>
         </div>
@@ -228,12 +228,12 @@ export default function Home() {
       {/* 8) WHO USES — centered */}
       <section className="border-b border-slate-900 bg-slate-950">
         <div className="mx-auto max-w-4xl px-4 py-14 text-center">
-          <h2 className="mb-4 text-3xl font-semibold text-slate-100">Who our <Link href="/ai-music-generator" className="text-violet-300 hover:underline">AI song maker</Link> is built for</h2>
-          <p className="mb-6 text-base text-slate-300">Our AI song maker sits on top of the same AI music generator engine, but it adapts to very different workflows.</p>
+          <h2 className="mb-4 text-3xl font-semibold text-slate-100">Who our <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI song maker</Link> is built for</h2>
+          <p className="mb-6 text-base text-slate-200">Our AI song maker sits on top of the same AI music generator engine, but it adapts to very different workflows.</p>
           <div className="relative aspect-[2.2/1] mb-8 max-w-3xl mx-auto rounded-xl overflow-hidden bg-slate-800/50">
             <Image src="/images/home/who-uses-community.jpg" alt="Creative community in shared workspace" fill className="object-cover" sizes="(max-width: 768px) 100vw, 896px" unoptimized />
           </div>
-          <ul className="list-disc space-y-1 pl-5 text-left text-base text-slate-300 max-w-xl mx-auto">
+          <ul className="list-disc space-y-1 pl-5 text-left text-base text-slate-200 max-w-xl mx-auto">
             <li>YouTube creators who want background music that fits their voice and pacing.</li>
             <li>Short-form editors who need fresh, punchy clips every day without chasing rights.</li>
             <li>Indie game developers looking for instrumentals that evolve with each level.</li>
@@ -241,7 +241,7 @@ export default function Home() {
             <li>Startup teams launching new products and wanting a sound that matches their brand.</li>
             <li>Songwriters and producers using the AI song maker as a fast sketchpad for ideas.</li>
           </ul>
-          <p className="mt-6 text-sm text-slate-400">See more in our <Link href="#use-cases" className="text-violet-300 hover:underline">AI music generator use cases</Link>.</p>
+          <p className="mt-6 text-sm text-slate-400">See more in our <Link href="#use-cases" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI music generator use cases</Link>.</p>
         </div>
       </section>
 
@@ -251,10 +251,10 @@ export default function Home() {
           <h2 className="mb-4 text-3xl font-semibold text-slate-100">How copyright works with our AI music generator</h2>
           <p className="mb-6 text-base text-slate-400 max-w-2xl mx-auto">Clear licensing so you can use your tracks everywhere.</p>
           <div className="grid md:grid-cols-2 gap-8 items-center text-left">
-            <div className="space-y-3 text-base text-slate-300 order-2 md:order-1">
+            <div className="space-y-3 text-base text-slate-200 order-2 md:order-1">
               <p>Tracks you create with our AI music generator come with a clear license for online use in videos, streams, podcasts, and more.</p>
               <p>We design our AI music generator to avoid copying existing songs, but we cannot provide legal advice. For high-stakes campaigns, we recommend consulting your own counsel.</p>
-              <p><Link href="/license" className="text-violet-300 hover:underline">Read full licensing details</Link>.</p>
+              <p><Link href="/license" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">Read full licensing details</Link>.</p>
             </div>
             <div className="order-1 md:order-2 relative aspect-video w-full max-w-xl mx-auto rounded-xl overflow-hidden bg-slate-800/50">
               <Image src="/images/home/copyright-license.jpg" alt="Professional reviewing license document" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" unoptimized />
@@ -270,23 +270,23 @@ export default function Home() {
           <div className="space-y-3 text-left">
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <summary className="cursor-pointer text-base font-semibold text-slate-50">What can I create with your AI music generator?</summary>
-              <p className="mt-2 text-sm text-slate-300">You can generate full songs, short hooks, lyrics, or pure instrumentals — all from text prompts.</p>
+              <p className="mt-2 text-sm text-slate-200">You can generate full songs, short hooks, lyrics, or pure instrumentals — all from text prompts.</p>
             </details>
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <summary className="cursor-pointer text-base font-semibold text-slate-50">Do I own the music I create?</summary>
-              <p className="mt-2 text-sm text-slate-300">You get a broad license. For details, see our <Link href="#copyright" className="text-violet-300 hover:underline">copyright and licensing section</Link>.</p>
+              <p className="mt-2 text-sm text-slate-200">You get a broad license. For details, see our <Link href="#copyright" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">copyright and licensing section</Link>.</p>
             </details>
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <summary className="cursor-pointer text-base font-semibold text-slate-50">Can I use AI-generated music on YouTube or TikTok?</summary>
-              <p className="mt-2 text-sm text-slate-300">Yes. We recommend testing on non-critical videos first and reviewing our licensing terms.</p>
+              <p className="mt-2 text-sm text-slate-200">Yes. We recommend testing on non-critical videos first and reviewing our licensing terms.</p>
             </details>
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <summary className="cursor-pointer text-base font-semibold text-slate-50">Do I need music production experience?</summary>
-              <p className="mt-2 text-sm text-slate-300">Not at all. If you can describe how you want your song to feel, the AI music generator can turn that into audio.</p>
+              <p className="mt-2 text-sm text-slate-200">Not at all. If you can describe how you want your song to feel, the AI music generator can turn that into audio.</p>
             </details>
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
               <summary className="cursor-pointer text-base font-semibold text-slate-50">Can I start with lyrics first?</summary>
-              <p className="mt-2 text-sm text-slate-300">Yes. You can use our <Link href="/ai-lyrics-generator" className="text-violet-300 hover:underline">AI lyrics generator</Link> and then turn them into songs with the same <Link href="/ai-music-generator" className="text-violet-300 hover:underline">AI music generator</Link> workflow.</p>
+              <p className="mt-2 text-sm text-slate-200">Yes. You can use our <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI lyrics generator</Link> and then turn them into songs with the same <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI music generator</Link> workflow.</p>
             </details>
           </div>
         </div>
@@ -299,9 +299,9 @@ export default function Home() {
             <HomeCtaImage src="/images/home/cta-ready-to-create.jpg" alt="Creator ready to make music">
               <div className="absolute inset-0 z-10 bg-slate-950/60 flex flex-col items-center justify-center gap-3 sm:gap-4 p-4 sm:p-6">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-50 px-1">Ready to create your own unique music?</h2>
-                <p className="text-sm sm:text-base text-slate-300 max-w-xl px-1">Join thousands of creators who use our AI music generator.</p>
+                <p className="text-sm sm:text-base text-slate-200 max-w-xl px-1">Join thousands of creators who use our AI music generator.</p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-3 mt-1 w-full max-w-xs sm:max-w-none sm:w-auto">
-                  <Link href="/ai-music-generator" className="inline-flex items-center justify-center rounded-full bg-violet-500 px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white shadow-[0_0_28px_rgba(139,92,246,0.5)] transition hover:bg-violet-400">Create Music Now</Link>
+                  <Link href="/ai-music-generator" className="inline-flex items-center justify-center rounded-full bg-violet-600 px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold text-white shadow-[0_0_28px_rgba(124,58,237,0.5)] transition hover:bg-violet-500">Create Music Now</Link>
                   <Link href="/pricing" className="inline-flex items-center justify-center rounded-full border border-slate-600 px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium text-slate-200 hover:border-violet-500/50 hover:text-violet-200">View Pricing</Link>
                 </div>
               </div>

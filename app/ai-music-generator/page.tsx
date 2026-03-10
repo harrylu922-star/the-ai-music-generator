@@ -54,7 +54,7 @@ export default function AiMusicGeneratorPage() {
                         <Link
                           href={href}
                           className={`block rounded-xl px-3 py-2 text-sm transition truncate max-w-full ${
-                            isActive ? "bg-violet-500/20 text-violet-300 font-medium" : "text-slate-400 hover:bg-slate-700/50 hover:text-slate-200"
+                            isActive ? "bg-violet-500/20 text-violet-200 font-medium" : "text-slate-400 hover:bg-slate-700/50 hover:text-slate-200"
                           }`}
                         >
                           {label}
@@ -82,7 +82,7 @@ export default function AiMusicGeneratorPage() {
 
         {/* SEO content: 同色系区块、圆角、无硬线 */}
         <div className="bg-slate-950/80 rounded-t-3xl overflow-hidden">
-          <div className="mx-auto max-w-3xl px-4 py-12 text-slate-300">
+          <div className="mx-auto max-w-3xl px-4 py-12 text-slate-200">
             <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
               <h2 className="mb-6 text-2xl font-semibold text-slate-100">How AI Music Generator Works</h2>
               <p className="mb-6 leading-relaxed">
@@ -92,7 +92,7 @@ export default function AiMusicGeneratorPage() {
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
                     <Image src="/images/home/how-1-describe.jpg" alt="Describe your music idea" fill className="object-cover" sizes="96px" unoptimized />
-                    <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-500/90 text-xs font-semibold text-white">1</span>
+                    <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">1</span>
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-slate-100 mb-1">Describe your idea</h3>
@@ -102,7 +102,7 @@ export default function AiMusicGeneratorPage() {
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
                     <Image src="/images/home/how-2-ai-compose.jpg" alt="AI composes your track" fill className="object-cover" sizes="96px" unoptimized />
-                    <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-500/90 text-xs font-semibold text-white">2</span>
+                    <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">2</span>
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-slate-100 mb-1">AI generates music</h3>
@@ -112,7 +112,7 @@ export default function AiMusicGeneratorPage() {
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
                     <Image src="/images/home/how-3-export.jpg" alt="Download and use your music" fill className="object-cover" sizes="96px" unoptimized />
-                    <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-500/90 text-xs font-semibold text-white">3</span>
+                    <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">3</span>
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-semibold text-slate-100 mb-1">Download & use</h3>
@@ -120,14 +120,14 @@ export default function AiMusicGeneratorPage() {
                   </div>
                 </div>
               </div>
-              <Link href="/ai-music-generator" className="mt-6 inline-flex rounded-full bg-violet-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-violet-400 transition">
+              <Link href="/ai-music-generator" className="mt-6 inline-flex rounded-full bg-violet-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-violet-500 transition">
                 Create Music Now
               </Link>
             </section>
 
             <section className="mb-12 rounded-2xl bg-slate-800/30 p-6 md:p-8">
               <div className="relative mb-6 aspect-[2/1] max-w-2xl overflow-hidden rounded-xl">
-                <Image src="/images/home/hero-card-ai-music-generator.jpg" alt="AI Music Generator - Create royalty-free music from text" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" unoptimized />
+                <Image src="/images/home/hero-card-ai-music-generator.jpg" alt="AI Music Generator - Create royalty-free music from text" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
               </div>
               <h2 className="mb-6 text-2xl font-semibold text-slate-100">Explore our AI Music Generator</h2>
               <p className="mb-6 leading-relaxed text-slate-400">Crafting meaningful music for you, not just industrial noise.</p>
@@ -135,22 +135,22 @@ export default function AiMusicGeneratorPage() {
                 <div className="rounded-2xl bg-slate-900/50 p-4">
                   <h3 className="font-semibold text-slate-100 mb-2">Create Unique AI Music From Text</h3>
                   <p className="text-sm leading-relaxed">We support simple descriptions to generate the songs you want; we also support complex song descriptions + your own exclusive lyrics to generate the AI music you want.</p>
-                  <Link href="/ai-music-generator" className="mt-2 inline-block text-sm font-medium text-violet-400 hover:text-violet-300">Try AI Music Generator Now →</Link>
+                  <Link href="/ai-music-generator" className="mt-2 inline-block text-sm font-medium text-violet-200 underline underline-offset-2 hover:text-violet-100">Try AI Music Generator Now →</Link>
                 </div>
                 <div className="rounded-2xl bg-slate-900/50 p-4">
                   <h3 className="font-semibold text-slate-100 mb-2">Music in Seconds</h3>
                   <p className="text-sm leading-relaxed">Traditional music creation can be tedious and time-consuming. Our AI music generator lets you hear your AI-created songs in seconds.</p>
-                  <Link href="/ai-music-generator" className="mt-2 inline-block text-sm font-medium text-violet-400 hover:text-violet-300">Try AI Music Generator Now →</Link>
+                  <Link href="/ai-music-generator" className="mt-2 inline-block text-sm font-medium text-violet-200 underline underline-offset-2 hover:text-violet-100">Try AI Music Generator Now →</Link>
                 </div>
                 <div className="rounded-2xl bg-slate-900/50 p-4">
                   <h3 className="font-semibold text-slate-100 mb-2">Create Music With Your Lyrics</h3>
-                  <p className="text-sm leading-relaxed">We support male and female voices, and the vocals are smooth and natural. Create songs with your own lyrics using our <Link href="/ai-lyrics-generator" className="text-violet-400 hover:underline">AI lyrics generator</Link> first, then turn them into full tracks here.</p>
-                  <Link href="/ai-music-generator/own-lyrics" className="mt-2 inline-block text-sm font-medium text-violet-400 hover:text-violet-300">Own Lyrics →</Link>
+                  <p className="text-sm leading-relaxed">We support male and female voices, and the vocals are smooth and natural. Create songs with your own lyrics using our <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI lyrics generator</Link> first, then turn them into full tracks here.</p>
+                  <Link href="/ai-music-generator/own-lyrics" className="mt-2 inline-block text-sm font-medium text-violet-200 underline underline-offset-2 hover:text-violet-100">Own Lyrics →</Link>
                 </div>
                 <div className="rounded-2xl bg-slate-900/50 p-4">
                   <h3 className="font-semibold text-slate-100 mb-2">Royalty-Free Music</h3>
                   <p className="text-sm leading-relaxed">No need to pay huge royalties. With our AI music generator, the copyright of each song you generate can belong to you under our terms.</p>
-                  <Link href="/ai-music-generator" className="mt-2 inline-block text-sm font-medium text-violet-400 hover:text-violet-300">Try AI Music Generator Now →</Link>
+                  <Link href="/ai-music-generator" className="mt-2 inline-block text-sm font-medium text-violet-200 underline underline-offset-2 hover:text-violet-100">Try AI Music Generator Now →</Link>
                 </div>
               </div>
             </section>
@@ -160,23 +160,23 @@ export default function AiMusicGeneratorPage() {
               <div className="space-y-4">
                 <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
                   <h3 className="mb-2 text-base font-semibold text-slate-100">Is there a free AI song generator?</h3>
-                  <p className="text-sm leading-relaxed text-slate-300">Yes, you can try our AI Music Generator for free. We offer a free tier so you can experiment with generating songs based on your prompts and explore different styles. It&apos;s a great way to test the quality and features before deciding on a paid plan for more extensive use.</p>
+                  <p className="text-sm leading-relaxed text-slate-200">Yes, you can try our AI Music Generator for free. We offer a free tier so you can experiment with generating songs based on your prompts and explore different styles. It&apos;s a great way to test the quality and features before deciding on a paid plan for more extensive use.</p>
                 </div>
                 <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
                   <h3 className="mb-2 text-base font-semibold text-slate-100">Can I use the generated music commercially?</h3>
-                  <p className="text-sm leading-relaxed text-slate-300">Music generated on our platform can be royalty-free and used for both personal and commercial purposes when you have the appropriate license or membership. Check our pricing and terms for commercial use.</p>
+                  <p className="text-sm leading-relaxed text-slate-200">Music generated on our platform can be royalty-free and used for both personal and commercial purposes when you have the appropriate license or membership. Check our pricing and terms for commercial use.</p>
                 </div>
                 <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
                   <h3 className="mb-2 text-base font-semibold text-slate-100">Which AI generates song from text?</h3>
-                  <p className="text-sm leading-relaxed text-slate-300">Our AI Music Generator is designed to generate music based on text prompts. You describe genre, mood, tempo, and voice in words; the AI interprets your description and produces a complete song structure. Our <Link href="/ai-lyrics-generator" className="text-violet-400 hover:underline">AI Lyrics Generator</Link> creates lyrics from text, while the Music Generator turns textual ideas about sound into full tracks.</p>
+                  <p className="text-sm leading-relaxed text-slate-200">Our AI Music Generator is designed to generate music based on text prompts. You describe genre, mood, tempo, and voice in words; the AI interprets your description and produces a complete song structure. Our <Link href="/ai-lyrics-generator" className="text-violet-400 hover:underline">AI Lyrics Generator</Link> creates lyrics from text, while the Music Generator turns textual ideas about sound into full tracks.</p>
                 </div>
                 <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
                   <h3 className="mb-2 text-base font-semibold text-slate-100">How long does it take to generate music?</h3>
-                  <p className="text-sm leading-relaxed text-slate-300">Most songs are generated within 1–5 minutes, depending on the complexity and length requested. You can start with short clips to iterate quickly.</p>
+                  <p className="text-sm leading-relaxed text-slate-200">Most songs are generated within 1–5 minutes, depending on the complexity and length requested. You can start with short clips to iterate quickly.</p>
                 </div>
                 <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
                   <h3 className="mb-2 text-base font-semibold text-slate-100">How to generate a song with AI?</h3>
-                  <p className="text-sm leading-relaxed text-slate-300">Generating a song with AI is simple. Enter text prompts that describe the content, genre, mood, tempo, and voice of the music. The AI Music Generator processes your input and creates a unique song based on your specifications. You can also add your own lyrics via the Own Lyrics flow for full vocal tracks.</p>
+                  <p className="text-sm leading-relaxed text-slate-200">Generating a song with AI is simple. Enter text prompts that describe the content, genre, mood, tempo, and voice of the music. The AI Music Generator processes your input and creates a unique song based on your specifications. You can also add your own lyrics via the Own Lyrics flow for full vocal tracks.</p>
                 </div>
               </div>
             </section>
@@ -184,7 +184,7 @@ export default function AiMusicGeneratorPage() {
             <section className="rounded-2xl bg-slate-800/30 p-8 text-center">
               <h2 className="mb-2 text-xl font-semibold text-slate-100">Ready to Create Your Own Unique Music?</h2>
               <p className="mb-4 text-sm text-slate-400">Join thousands of creators who use our AI to generate music for their projects.</p>
-              <Link href="/ai-music-generator" className="inline-flex rounded-full bg-violet-500 px-6 py-3 text-base font-semibold text-white hover:bg-violet-400 transition">
+              <Link href="/ai-music-generator" className="inline-flex rounded-full bg-violet-600 px-6 py-3 text-base font-semibold text-white hover:bg-violet-500 transition">
                 Create Music Now
               </Link>
             </section>

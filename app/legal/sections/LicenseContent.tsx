@@ -7,7 +7,7 @@ export function LicenseContent() {
         Last revised: March 10, 2025
       </p>
       <p>
-        This Content License describes the rights you have in music, lyrics, and other content you generate using The AI Music Generator (“themusicgenerator.com”, “we”, “us”, “our”) (the “Services”). For the avoidance of doubt, this License is part of and subject to our <Link href="/terms" className="text-violet-300 hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-violet-300 hover:underline">Privacy Policy</Link>.
+        This Content License describes the rights you have in music, lyrics, and other content you generate using The AI Music Generator (“themusicgenerator.com”, “we”, “us”, “our”) (the “Services”). For the avoidance of doubt, this License is part of and subject to our <Link href="/terms" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">Terms of Service</Link> and <Link href="/privacy" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">Privacy Policy</Link>.
       </p>
 
       <h3 className="text-slate-200 font-semibold pt-2">1. OWNERSHIP OF GENERATED CONTENT</h3>

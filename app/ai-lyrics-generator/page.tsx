@@ -70,7 +70,7 @@ export default function AiLyricsGeneratorPage() {
                           <Link
                             href={href}
                             className={`block rounded-xl px-3 py-2 text-sm transition truncate max-w-full ${
-                              isActive ? "bg-violet-500/20 text-violet-300 font-medium" : "text-slate-400 hover:bg-slate-700/50 hover:text-slate-200"
+                              isActive ? "bg-violet-500/20 text-violet-200 font-medium" : "text-slate-400 hover:bg-slate-700/50 hover:text-slate-200"
                             }`}
                           >
                             {label}
@@ -99,7 +99,7 @@ export default function AiLyricsGeneratorPage() {
             <div className="mx-auto max-w-3xl px-4 py-12 text-slate-300">
               <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
                 <div className="relative mb-6 aspect-[2/1] max-w-2xl overflow-hidden rounded-xl">
-                  <Image src="/images/home/hero-card-ai-lyrics-generator.jpg" alt="AI Lyrics Generator - Write song lyrics with AI" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" unoptimized />
+                  <Image src="/images/home/hero-card-ai-lyrics-generator.jpg" alt="AI Lyrics Generator - Write song lyrics with AI" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
                 </div>
                 <h2 className="mb-4 text-2xl font-semibold text-slate-100">How the AI Lyrics Generator Works</h2>
                 <p className="mb-4 leading-relaxed">

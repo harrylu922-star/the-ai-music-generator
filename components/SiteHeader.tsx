@@ -4,6 +4,24 @@ import Link from "next/link";
 import { useState } from "react";
 import { LANDING_PAGES } from "./LandingNav";
 
+function HeaderLogo() {
+  const [src, setSrc] = useState("/images/tamg-icon2-72.webp");
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt="The AI Music Generator"
+      width={36}
+      height={36}
+      className="h-9 w-9 flex-shrink-0 object-contain object-left block"
+      style={{ background: "transparent" }}
+      loading="eager"
+      fetchPriority="high"
+      onError={() => setSrc("/images/tamg-icon2-72.png")}
+    />
+  );
+}
+
 export type SiteHeaderProps = {
   hideLandingLinks?: boolean;
   /** 移动端汉堡菜单展示与左侧栏一致的 Tools 列表（用于 ai-music-generator 等工具页） */
@@ -20,27 +38,19 @@ export function SiteHeader({ hideLandingLinks, mobileNavKind = "default", curren
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 sm:gap-4 px-3 sm:px-4 py-4 min-w-0">
         <Link href="/" className="flex shrink-0 items-center gap-2 min-w-0 bg-transparent" aria-label="The AI Music Generator 首页">
           {/* 透明 ICON，无白底：使用原生 img 并强制透明，直接嵌入页面 */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/tamg-icon2.png"
-            alt="The AI Music Generator"
-            width={36}
-            height={36}
-            className="h-9 w-9 w-auto object-contain object-left flex-shrink-0 block"
-            style={{ background: 'transparent' }}
-            loading="eager"
-          />
+          {/* 使用 72px WebP 小图，避免加载 6.9MB 原图；LCP/首屏优先加载；无 WebP 时回退到 PNG */}
+          <HeaderLogo />
           {/* 桌面端：保留文字品牌名（TAMG 强调） */}
           <span className="hidden sm:inline text-base font-semibold tracking-tight text-slate-100">
             <span className="text-violet-400">T</span>he<span className="text-violet-400">A</span>I<span className="text-violet-400">M</span>usic<span className="text-violet-400">G</span>enerator
           </span>
         </Link>
         <nav className="hidden sm:flex flex-1 items-center justify-evenly gap-2 text-sm text-slate-300 max-w-3xl mx-auto">
-          <Link href={hideLandingLinks ? "#" : "/ai-music-generator"} className={hideLandingLinks ? "invisible pointer-events-none" : "hover:text-violet-300"} aria-hidden={hideLandingLinks}>AI Music Generator</Link>
-          <Link href={hideLandingLinks ? "#" : "/ai-lyrics-generator"} className={hideLandingLinks ? "invisible pointer-events-none" : "hover:text-violet-300"} aria-hidden={hideLandingLinks}>AI Lyrics</Link>
-          <Link href={hideLandingLinks ? "#" : "/ai-music-tools"} className={hideLandingLinks ? "invisible pointer-events-none" : "hover:text-violet-300"} aria-hidden={hideLandingLinks}>AI Music Tools</Link>
-          <Link href="/pricing" className="hover:text-violet-300">Pricing</Link>
-          <Link href="/resources" className="hover:text-violet-300">Resources</Link>
+          <Link href={hideLandingLinks ? "#" : "/ai-music-generator"} className={hideLandingLinks ? "invisible pointer-events-none" : "underline underline-offset-2 hover:text-violet-200"} aria-hidden={hideLandingLinks}>AI Music Generator</Link>
+          <Link href={hideLandingLinks ? "#" : "/ai-lyrics-generator"} className={hideLandingLinks ? "invisible pointer-events-none" : "underline underline-offset-2 hover:text-violet-200"} aria-hidden={hideLandingLinks}>AI Lyrics</Link>
+          <Link href={hideLandingLinks ? "#" : "/ai-music-tools"} className={hideLandingLinks ? "invisible pointer-events-none" : "underline underline-offset-2 hover:text-violet-200"} aria-hidden={hideLandingLinks}>AI Music Tools</Link>
+          <Link href="/pricing" className="underline underline-offset-2 hover:text-violet-200">Pricing</Link>
+          <Link href="/resources" className="underline underline-offset-2 hover:text-violet-200">Resources</Link>
         </nav>
         {/* 移动端：导航缩略图（汉堡菜单） */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3 min-w-0">
@@ -77,7 +87,7 @@ export function SiteHeader({ hideLandingLinks, mobileNavKind = "default", curren
                       {available ? (
                         <Link
                           href={href}
-                          className={`block rounded-lg px-3 py-2 hover:bg-slate-800/80 ${isActive ? "bg-violet-500/20 text-violet-300 font-medium" : "hover:text-violet-300"}`}
+                          className={`block rounded-lg px-3 py-2 hover:bg-slate-800/80 ${isActive ? "bg-violet-500/20 text-violet-200 font-medium" : "hover:text-violet-200"}`}
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           {label}
@@ -91,21 +101,21 @@ export function SiteHeader({ hideLandingLinks, mobileNavKind = "default", curren
                   );
                 })}
                 <div className="mt-3 pt-3 border-t border-slate-800">
-                  <Link href="/pricing" className="block rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-300" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
-                  <Link href="/resources" className="block rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-300" onClick={() => setMobileMenuOpen(false)}>Resources</Link>
+                  <Link href="/pricing" className="block rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-200" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
+                  <Link href="/resources" className="block rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-200" onClick={() => setMobileMenuOpen(false)}>Resources</Link>
                 </div>
               </>
             ) : (
               <>
                 {!hideLandingLinks && (
                   <>
-                    <Link href="/ai-music-generator" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-300" onClick={() => setMobileMenuOpen(false)}>AI Music Generator</Link>
-                    <Link href="/ai-lyrics-generator" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-300" onClick={() => setMobileMenuOpen(false)}>AI Lyrics</Link>
-                    <Link href="/ai-music-tools" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-300" onClick={() => setMobileMenuOpen(false)}>AI Music Tools</Link>
+                    <Link href="/ai-music-generator" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-200" onClick={() => setMobileMenuOpen(false)}>AI Music Generator</Link>
+                    <Link href="/ai-lyrics-generator" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-200" onClick={() => setMobileMenuOpen(false)}>AI Lyrics</Link>
+                    <Link href="/ai-music-tools" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-200" onClick={() => setMobileMenuOpen(false)}>AI Music Tools</Link>
                   </>
                 )}
-                <Link href="/pricing" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-300" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
-                <Link href="/resources" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-300" onClick={() => setMobileMenuOpen(false)}>Resources</Link>
+                <Link href="/pricing" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-200" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
+                <Link href="/resources" className="rounded-lg px-3 py-2 hover:bg-slate-800/80 hover:text-violet-200" onClick={() => setMobileMenuOpen(false)}>Resources</Link>
               </>
             )}
           </nav>

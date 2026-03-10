@@ -75,13 +75,13 @@ export default function PricingPage() {
                 }`}
               >
                 {pack.popular && (
-                  <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-violet-500 px-3 py-0.5 text-xs font-medium text-white">
+                  <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-violet-600 px-3 py-0.5 text-xs font-medium text-white">
                     Popular
                   </span>
                 )}
                 <h3 className="text-base font-semibold text-slate-100">{pack.name}</h3>
                 <p className="mt-2 text-2xl font-bold text-slate-50">{pack.price}</p>
-                <p className="mt-1 text-sm text-slate-300">{pack.credits}</p>
+                <p className="mt-1 text-sm text-slate-200">{pack.credits}</p>
                 <p className="mt-1 text-xs text-slate-500">Never expires</p>
                 <Link
                   href={pack.href}
@@ -106,7 +106,7 @@ export default function PricingPage() {
             {FAQ.map((item) => (
               <div key={item.q} className="rounded-2xl border border-slate-800 bg-slate-900/40 p-4 md:p-5">
                 <dt className="text-base font-semibold text-slate-100 mb-2">{item.q}</dt>
-                <dd className="text-sm leading-relaxed text-slate-300">{item.a}</dd>
+                <dd className="text-sm leading-relaxed text-slate-200">{item.a}</dd>
               </div>
             ))}
           </dl>
@@ -122,7 +122,7 @@ export default function PricingPage() {
           </p>
           <Link
             href="/ai-music-generator"
-            className="inline-flex rounded-full bg-violet-500 px-6 py-3 text-base font-semibold text-white hover:bg-violet-400 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 focus-visible:bg-violet-600 active:bg-violet-700 active:scale-[0.98]"
+            className="inline-flex rounded-full bg-violet-600 px-6 py-3 text-base font-semibold text-white hover:bg-violet-500 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 focus-visible:bg-violet-700 active:bg-violet-800 active:scale-[0.98]"
           >
             Create Your Music Now
           </Link>

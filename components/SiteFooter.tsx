@@ -8,27 +8,27 @@ export function SiteFooter() {
           <div>
             <h3 className="text-sm font-semibold text-slate-100 mb-3">Features</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link href="/ai-music-generator" className="hover:text-violet-300">AI Music Generator</Link></li>
-              <li><Link href="/ai-lyrics-generator" className="hover:text-violet-300">AI Lyrics Generator</Link></li>
-              <li><Link href="/ai-rap-lyrics-generator" className="hover:text-violet-300">Rap Lyrics Generator</Link></li>
-              <li><Link href="/ai-music-tools" className="hover:text-violet-300">AI Music Tools</Link></li>
-              <li><Link href="/for-youtube-creators" className="hover:text-violet-300">For YouTube Creators</Link></li>
-              <li><Link href="/pricing" className="hover:text-violet-300">Pricing</Link></li>
+              <li><Link href="/ai-music-generator" className="underline underline-offset-2 hover:text-violet-200">AI Music Generator</Link></li>
+              <li><Link href="/ai-lyrics-generator" className="underline underline-offset-2 hover:text-violet-200">AI Lyrics Generator</Link></li>
+              <li><Link href="/ai-rap-lyrics-generator" className="underline underline-offset-2 hover:text-violet-200">Rap Lyrics Generator</Link></li>
+              <li><Link href="/ai-music-tools" className="underline underline-offset-2 hover:text-violet-200">AI Music Tools</Link></li>
+              <li><Link href="/for-youtube-creators" className="underline underline-offset-2 hover:text-violet-200">For YouTube Creators</Link></li>
+              <li><Link href="/pricing" className="underline underline-offset-2 hover:text-violet-200">Pricing</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-slate-100 mb-3">Legal</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link href="/privacy" className="hover:text-violet-300">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-violet-300">Terms of Service</Link></li>
-              <li><Link href="/license" className="hover:text-violet-300">Content License</Link></li>
+              <li><Link href="/privacy" className="underline underline-offset-2 hover:text-violet-200">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="underline underline-offset-2 hover:text-violet-200">Terms of Service</Link></li>
+              <li><Link href="/license" className="underline underline-offset-2 hover:text-violet-200">Content License</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-slate-100 mb-3">About Us</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link href="/coming-soon" className="hover:text-violet-300">Affiliate Marketing</Link></li>
-              <li><Link href="/coming-soon" className="hover:text-violet-300">Contact Us</Link></li>
+              <li><Link href="/coming-soon" className="underline underline-offset-2 hover:text-violet-200">Affiliate Marketing</Link></li>
+              <li><Link href="/coming-soon" className="underline underline-offset-2 hover:text-violet-200">Contact Us</Link></li>
             </ul>
           </div>
           <div>

@@ -58,7 +58,7 @@ export function LyricsFooter() {
               <ul className="space-y-2 text-sm text-slate-400">
                 {links.map(({ label, href }) => (
                   <li key={label}>
-                    <Link href={href} className="hover:text-violet-300">
+                    <Link href={href} className="underline underline-offset-2 hover:text-violet-200">
                       {label}
                     </Link>
                   </li>
