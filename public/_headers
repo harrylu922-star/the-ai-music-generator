@@ -1,3 +1,7 @@
-# Static asset caching (OpenNext / Cloudflare)
+# Static asset caching (OpenNext / Cloudflare) — PageSpeed: efficient cache lifetimes
 /_next/static/*
+  Cache-Control: public,max-age=31536000,immutable
+/images/*
+  Cache-Control: public,max-age=31536000,immutable
+/audio/*
   Cache-Control: public,max-age=31536000,immutable
