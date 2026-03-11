@@ -14,19 +14,22 @@ function Placeholder({ className }: { className?: string }) {
   );
 }
 
-/** 功能卡配图：加载失败时显示占位；priority 用于首屏 LCP 图 */
+/** 功能卡配图：加载失败时显示占位；priority 用于首屏 LCP；src640 时用原生 img+srcSet 以改善移动端 LCP */
 export function HomeFeatureImage({
   src,
   alt,
   className,
   sizes = "(max-width: 768px) 100vw, 33vw",
   priority = false,
+  src640,
 }: {
   src: string;
   alt: string;
   className?: string;
   sizes?: string;
   priority?: boolean;
+  /** 可选 640w 图，用于 srcset 减少移动端下载（PageSpeed “Improve image delivery”） */
+  src640?: string;
 }) {
   const [error, setError] = useState(false);
 
@@ -34,8 +37,27 @@ export function HomeFeatureImage({
     return <Placeholder className={className} />;
   }
 
+  const containerClass = `relative aspect-video overflow-hidden rounded-xl bg-slate-800/50 ${className ?? ""}`;
+
+  if (src640) {
+    return (
+      <div className={containerClass}>
+        <img
+          src={src}
+          srcSet={`${src640} 640w, ${src} 960w`}
+          sizes={sizes}
+          alt={alt}
+          className="absolute inset-0 h-full w-full object-cover"
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          onError={() => setError(true)}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className={`relative aspect-video overflow-hidden rounded-xl bg-slate-800/50 ${className ?? ""}`}>
+    <div className={containerClass}>
       <Image
         src={src}
         alt={alt}

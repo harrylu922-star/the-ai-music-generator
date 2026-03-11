@@ -1,8 +1,9 @@
 /**
  * 图片优化脚本：移动端性能（LCP/带宽）
  * - 图标：72px WebP+PNG
- * - home/*.jpg → WebP 最大宽 960px（移动端友好），质量 78
- * - covers/*.jpg → WebP 最大宽 640px（网格小图），质量 78
+ * - home/*.jpg → WebP 最大宽 960px，质量 78；hero-card 额外生成 640w 供 srcset
+ * - covers/*.jpg → WebP 最大宽 640px，质量 78
+ * - 构建时校验 hero-card*.webp 单文件 ≤100 KiB，避免误部署大图
  * 运行：node scripts/optimize-images.js
  */
 
@@ -13,6 +14,7 @@ const sharp = require("sharp");
 const PUBLIC = path.join(__dirname, "..", "public", "images");
 const WEBP_QUALITY = 78;
 const WEBP_QUALITY_ICON = 82;
+const MAX_HERO_WEBP_KIB = 100;
 
 async function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -31,7 +33,7 @@ async function optimizeIcon(name, size = 72) {
   console.log(`[optimize-images] Icon: ${name}.png -> ${name}-${size}.webp + .png`);
 }
 
-/** 将目录下所有 jpg 转为 WebP，限制最大宽，供移动端与桌面共用单文件 */
+/** 将目录下所有 jpg 转为 WebP，限制最大宽 */
 async function convertDirToWebP(dir, maxWidth) {
   const dirPath = path.join(PUBLIC, dir);
   if (!fs.existsSync(dirPath)) return;
@@ -49,6 +51,39 @@ async function convertDirToWebP(dir, maxWidth) {
   }
 }
 
+/** 为首页 hero 卡生成 640w 版本，供 srcset 移动端小图 */
+const HERO_BASES = ["hero-card-ai-music-generator", "hero-card-ai-lyrics-generator", "hero-card-ai-music-tools"];
+async function generateHero640Variants() {
+  const dirPath = path.join(PUBLIC, "home");
+  if (!fs.existsSync(dirPath)) return;
+  for (const base of HERO_BASES) {
+    const jpgPath = path.join(dirPath, `${base}.jpg`);
+    if (!fs.existsSync(jpgPath)) continue;
+    const outPath = path.join(dirPath, `${base}-640.webp`);
+    await sharp(jpgPath)
+      .resize(640, null, { withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toFile(outPath);
+    const stat = fs.statSync(outPath);
+    console.log(`[optimize-images] home/${base}-640.webp (640w, ${(stat.size / 1024).toFixed(0)} KiB)`);
+  }
+}
+
+/** 校验 hero-card*.webp 不超过 MAX_HERO_WEBP_KIB，防止误部署旧大图 */
+function assertHeroCardSizes() {
+  const dirPath = path.join(PUBLIC, "home");
+  for (const base of HERO_BASES) {
+    const webpPath = path.join(dirPath, `${base}.webp`);
+    if (!fs.existsSync(webpPath)) continue;
+    const stat = fs.statSync(webpPath);
+    const kib = stat.size / 1024;
+    if (kib > MAX_HERO_WEBP_KIB) {
+      console.error(`[optimize-images] ERROR: ${base}.webp is ${kib.toFixed(0)} KiB (max ${MAX_HERO_WEBP_KIB} KiB). Deploy would serve a large file and hurt LCP.`);
+      process.exit(1);
+    }
+  }
+}
+
 async function main() {
   console.log("[optimize-images] Start (mobile-first WebP)…\n");
   await ensureDir(PUBLIC);
@@ -57,9 +92,10 @@ async function main() {
   await optimizeIcon("tamg-icon", 72);
   await optimizeIcon("tamg-logo", 72);
 
-  // 首页大图：最大 960px，单文件即可显著减小体积
   await convertDirToWebP("home", 960);
-  // 封面小图：最大 640px（网格 50vw/25vw）
+  await generateHero640Variants();
+  assertHeroCardSizes();
+
   await convertDirToWebP("covers", 640);
 
   console.log("\n[optimize-images] Done.");

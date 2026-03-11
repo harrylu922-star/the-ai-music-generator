@@ -25,11 +25,11 @@ const sampleTracks = [
   { category: "Loop · Ambient", title: "Game menu ambient", description: "Calm, peaceful loop for game menus or app backgrounds.", audioSrc: "/audio/sample-ambient.mp3", coverSrc: "/images/covers/sample-ambient.webp" },
 ];
 
-// 功能卡与 CTA 配图（置于 public/images/home/）
+// 功能卡与 CTA 配图（置于 public/images/home/）；src640 由 optimize-images 生成，用于 srcset 改善 LCP
 const FEATURE_CARD_IMAGES = [
-  { src: "/images/home/hero-card-ai-music-generator.webp", alt: "Producer in home studio with laptop and speakers" },
-  { src: "/images/home/hero-card-ai-lyrics-generator.webp", alt: "Songwriter writing lyrics at desk with notebook and laptop" },
-  { src: "/images/home/hero-card-ai-music-tools.webp", alt: "Content creator with microphone and laptop" },
+  { src: "/images/home/hero-card-ai-music-generator.webp", src640: "/images/home/hero-card-ai-music-generator-640.webp", alt: "Producer in home studio with laptop and speakers" },
+  { src: "/images/home/hero-card-ai-lyrics-generator.webp", src640: "/images/home/hero-card-ai-lyrics-generator-640.webp", alt: "Songwriter writing lyrics at desk with notebook and laptop" },
+  { src: "/images/home/hero-card-ai-music-tools.webp", src640: "/images/home/hero-card-ai-music-tools-640.webp", alt: "Content creator with microphone and laptop" },
 ] as const;
 
 const EXPLORE_IMAGES = [
@@ -103,7 +103,7 @@ export default function Home() {
               { title: "AI music tools for every workflow", copy: "Explore focused AI music tools for instrumentals, loops, and more — all powered by our core AI music generator engine.", href: "/ai-music-tools", label: "Explore AI music tools →" },
             ].map((card, i) => (
               <article key={card.title} className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
-                <HomeFeatureImage src={FEATURE_CARD_IMAGES[i].src} alt={FEATURE_CARD_IMAGES[i].alt} className="mb-4" sizes="(max-width: 768px) 100vw, 33vw" priority={i <= 1} />
+                <HomeFeatureImage src={FEATURE_CARD_IMAGES[i].src} src640={FEATURE_CARD_IMAGES[i].src640} alt={FEATURE_CARD_IMAGES[i].alt} className="mb-4" sizes="(max-width: 768px) 100vw, 33vw" priority={i <= 1} />
                 <h3 className="mb-2 text-base font-semibold text-slate-50">{card.title}</h3>
                 <p className="mb-4 text-sm leading-relaxed text-slate-200">{card.copy}</p>
                 <Link href={card.href} className="mt-auto text-sm font-semibold text-violet-200 underline underline-offset-2 hover:text-violet-100">{card.label}</Link>
