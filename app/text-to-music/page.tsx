@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { ResponsiveHeroImage } from "../../components/ResponsiveHeroImage";
 import { Suspense } from "react";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
@@ -85,7 +86,13 @@ export default function TextToMusicPage() {
           <div className="mx-auto max-w-3xl px-4 py-12 text-slate-300">
             <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
               <div className="relative mb-6 aspect-[2/1] max-w-2xl overflow-hidden rounded-xl">
-                <Image src="/images/home/hero-card-ai-music-generator.webp" alt="Text to Music - Turn words into songs with AI" fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" priority unoptimized />
+                <ResponsiveHeroImage
+                  src="/images/home/hero-card-ai-music-generator.webp"
+                  src640="/images/home/hero-card-ai-music-generator-640.webp"
+                  alt="Text to Music - Turn words into songs with AI"
+                  sizes="(max-width: 768px) 100vw, 672px"
+                  priority
+                />
               </div>
               <h2 className="mb-4 text-2xl font-semibold text-slate-100">How Text to Music Works</h2>
               <p className="mb-4 leading-relaxed">

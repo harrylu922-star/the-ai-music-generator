@@ -2,7 +2,7 @@
  * 图片优化脚本：移动端性能（LCP/带宽）
  * - 图标：72px WebP+PNG
  * - home/*.jpg → WebP 最大宽 960px，质量 78；hero-card 额外生成 640w 供 srcset
- * - covers/*.jpg → WebP 最大宽 640px，质量 78
+ * - covers/*.jpg → WebP 最大宽 640px，质量 78；并为 sample-* 封面生成 400w 供 srcset
  * - 构建时校验 hero-card*.webp 单文件 ≤100 KiB，避免误部署大图
  * 运行：node scripts/optimize-images.js
  */
@@ -84,6 +84,24 @@ function assertHeroCardSizes() {
   }
 }
 
+/** 为 sample 封面生成 400w 版本，供首页 HomeSampleTracks srcset 减少移动端下载（PageSpeed Improve image delivery） */
+const COVER_BASES = ["sample-cinematic", "sample-lofi", "sample-loop", "sample-social", "sample-documentary", "sample-vlog", "sample-rnb", "sample-ambient"];
+async function generateCover400Variants() {
+  const dirPath = path.join(PUBLIC, "covers");
+  if (!fs.existsSync(dirPath)) return;
+  for (const base of COVER_BASES) {
+    const webpPath = path.join(dirPath, `${base}.webp`);
+    if (!fs.existsSync(webpPath)) continue;
+    const outPath = path.join(dirPath, `${base}-400.webp`);
+    await sharp(webpPath)
+      .resize(400, null, { withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toFile(outPath);
+    const stat = fs.statSync(outPath);
+    console.log(`[optimize-images] covers/${base}-400.webp (400w, ${(stat.size / 1024).toFixed(0)} KiB)`);
+  }
+}
+
 async function main() {
   console.log("[optimize-images] Start (mobile-first WebP)…\n");
   await ensureDir(PUBLIC);
@@ -97,6 +115,7 @@ async function main() {
   assertHeroCardSizes();
 
   await convertDirToWebP("covers", 640);
+  await generateCover400Variants();
 
   console.log("\n[optimize-images] Done.");
 }

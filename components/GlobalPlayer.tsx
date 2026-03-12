@@ -89,9 +89,13 @@ export function GlobalPlayer() {
                 type="button"
                 className="relative h-2 flex-1 overflow-hidden rounded-full bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"
                 onClick={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const x = e.clientX - rect.left;
-                  seek(rect.width > 0 ? x / rect.width : 0);
+                  const target = e.currentTarget;
+                  const clientX = e.clientX;
+                  requestAnimationFrame(() => {
+                    const rect = target.getBoundingClientRect();
+                    const x = clientX - rect.left;
+                    seek(rect.width > 0 ? x / rect.width : 0);
+                  });
                 }}
                 aria-label="Seek"
               >

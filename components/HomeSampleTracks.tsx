@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useGlobalPlayer, type GlobalTrack } from "../contexts/GlobalPlayerContext";
 
 export interface SampleTrackItem {
@@ -48,13 +47,14 @@ export function HomeSampleTracks({ tracks }: { tracks: SampleTrackItem[] }) {
           >
             <div className="relative aspect-square flex-shrink-0 group">
               {t.coverSrc ? (
-                <Image
+                <img
                   src={t.coverSrc}
-                  alt=""
-                  fill
-                  className="object-cover rounded-none"
+                  srcSet={`${t.coverSrc.replace(".webp", "-400.webp")} 400w, ${t.coverSrc} 640w`}
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  unoptimized
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover rounded-none"
+                  loading="lazy"
+                  decoding="async"
                 />
               ) : (
                 <ImagePlaceholder className="absolute inset-0 rounded-none" />
