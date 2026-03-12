@@ -9,7 +9,7 @@ import { SiteFooter } from "../components/SiteFooter";
 import { HomeSampleTracks } from "../components/HomeSampleTracks";
 
 export const metadata: Metadata = {
-  title: "Free AI Music Generator for Creators | Royalty-Free in Seconds",
+  title: { absolute: "Free AI Music Generator for Creators | Royalty-Free in Seconds" },
   description:
     "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators, filmmakers & YouTubers. Royalty-free, no copyright strikes—start creating.",
 };

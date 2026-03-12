@@ -13,7 +13,7 @@ const PAGE_URL = "/ai-music-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
 export const metadata: Metadata = {
-  title: "Free AI Music Generator | Royalty-Free Music from Text",
+  title: { absolute: "Free AI Music Generator | Royalty-Free Music from Text" },
   description: "Generate unique, royalty-free music from text in seconds. Free AI music generator for creators, filmmakers & YouTubers. Describe genre, mood & style—get full tracks. Try free.",
   keywords: ["AI music generator", "free AI song generator", "text to music", "royalty-free music", "AI music creator", "generate music from text"],
   openGraph: {

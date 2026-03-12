@@ -13,7 +13,7 @@ const PAGE_URL = "/ai-lyrics-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-lyrics-generator.jpg";
 
 export const metadata: Metadata = {
-  title: "Free AI Lyrics Generator | Write Song Lyrics in Seconds",
+  title: { absolute: "Free AI Lyrics Generator | Write Song Lyrics in Seconds" },
   description: "Create original song lyrics in seconds with our free AI lyrics generator. Perfect for songwriters, rappers & creators. Pick mood, structure & style—then turn lyrics into music.",
   keywords: ["AI lyrics generator", "free AI song lyrics", "write song lyrics with AI", "AI songwriting", "lyrics generator for rappers"],
   openGraph: {

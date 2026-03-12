@@ -5,7 +5,7 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { getRapFaqJsonLd, RAP_FAQ } from "./rap-faq-ld";
 
 export const metadata: Metadata = {
-  title: "Free AI Rap Lyrics & Beat Generator | Write Rap Online",
+  title: { absolute: "Free AI Rap Lyrics & Beat Generator | Write Rap Online" },
   description:
     "Free rap generator: write rap and hip hop lyrics with AI, then generate a beat or full song. Lyrics + beat in one tool. No signup—create rap music in seconds.",
 };

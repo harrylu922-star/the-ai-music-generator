@@ -10,9 +10,11 @@ export function SiteFooter() {
             <ul className="space-y-2 text-sm text-slate-400">
               <li><Link href="/ai-music-generator" className="underline underline-offset-2 hover:text-violet-200">AI Music Generator</Link></li>
               <li><Link href="/ai-lyrics-generator" className="underline underline-offset-2 hover:text-violet-200">AI Lyrics Generator</Link></li>
-              <li><Link href="/ai-rap-lyrics-generator" className="underline underline-offset-2 hover:text-violet-200">Rap Lyrics Generator</Link></li>
               <li><Link href="/ai-music-tools" className="underline underline-offset-2 hover:text-violet-200">AI Music Tools</Link></li>
+              <li><Link href="/text-to-music" className="underline underline-offset-2 hover:text-violet-200">Text to Music</Link></li>
               <li><Link href="/for-youtube-creators" className="underline underline-offset-2 hover:text-violet-200">For YouTube Creators</Link></li>
+              <li><Link href="/ai-rap-lyrics-generator" className="underline underline-offset-2 hover:text-violet-200">Rap Lyrics Generator</Link></li>
+              <li><Link href="/free-ai-lofi-generator" className="underline underline-offset-2 hover:text-violet-200">AI Lofi Generator</Link></li>
               <li><Link href="/pricing" className="underline underline-offset-2 hover:text-violet-200">Pricing</Link></li>
             </ul>
           </div>

@@ -13,7 +13,7 @@ const PAGE_URL = "/text-to-music";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
 export const metadata: Metadata = {
-  title: "Text to Music | Free AI—Turn Words into Songs in Seconds",
+  title: { absolute: "Text to Music | Free AI—Turn Words into Songs in Seconds" },
   description: "Convert text into full music tracks with free AI. Describe genre, mood & instruments—get original, royalty-free songs in seconds. No music theory needed. Try now.",
   keywords: ["text to music", "AI text to music", "turn text into music", "free AI music generator", "describe music get song"],
   openGraph: {
