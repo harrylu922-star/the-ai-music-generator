@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/Link";
 import Image from "next/image";
 import { Suspense } from "react";
 import { SiteHeader } from "../../components/SiteHeader";
@@ -92,7 +92,7 @@ export default function AiMusicGeneratorPage() {
               <div className="space-y-6">
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
-                    <Image src="/images/home/how-1-describe.webp" alt="Describe your music idea" fill className="object-cover" sizes="96px" loading="lazy" unoptimized />
+                    <img src="/images/home/how-1-describe-192.webp" srcSet="/images/home/how-1-describe-192.webp 192w" sizes="96px" alt="Describe your music idea" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                     <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">1</span>
                   </div>
                   <div className="min-w-0 flex-1">
@@ -102,7 +102,7 @@ export default function AiMusicGeneratorPage() {
                 </div>
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
-                    <Image src="/images/home/how-2-ai-compose.webp" alt="AI composes your track" fill className="object-cover" sizes="96px" loading="lazy" unoptimized />
+                    <img src="/images/home/how-2-ai-compose-192.webp" srcSet="/images/home/how-2-ai-compose-192.webp 192w" sizes="96px" alt="AI composes your track" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                     <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">2</span>
                   </div>
                   <div className="min-w-0 flex-1">
@@ -112,7 +112,7 @@ export default function AiMusicGeneratorPage() {
                 </div>
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
-                    <Image src="/images/home/how-3-export.webp" alt="Download and use your music" fill className="object-cover" sizes="96px" loading="lazy" unoptimized />
+                    <img src="/images/home/how-3-export-192.webp" srcSet="/images/home/how-3-export-192.webp 192w" sizes="96px" alt="Download and use your music" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                     <span className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">3</span>
                   </div>
                   <div className="min-w-0 flex-1">

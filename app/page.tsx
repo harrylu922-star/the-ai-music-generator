@@ -1,7 +1,6 @@
 // app/page.tsx — Home: 10 sections, purple theme, centered, image placeholders
 import type { Metadata } from "next";
-import Link from "next/link";
-import Image from "next/image";
+import Link from "@/components/Link";
 import { getHomeFaqJsonLd } from "./home-faq-ld";
 import { HomeFeatureImage, HomeCtaImage } from "../components/HomeFeatureImage";
 import { SiteHeader } from "../components/SiteHeader";
@@ -33,9 +32,9 @@ const FEATURE_CARD_IMAGES = [
 ] as const;
 
 const EXPLORE_IMAGES = [
-  { src: "/images/home/explore-instrumental.webp", alt: "Musician with guitar or keyboard in minimal home studio" },
-  { src: "/images/home/explore-loops.webp", alt: "Person editing video on laptop with headphones" },
-  { src: "/images/home/explore-idea-starters.webp", alt: "Creative person with headphones listening to music" },
+  { src: "/images/home/explore-instrumental.webp", src640: "/images/home/explore-instrumental-640.webp", alt: "Musician with guitar or keyboard in minimal home studio" },
+  { src: "/images/home/explore-loops.webp", src640: "/images/home/explore-loops-640.webp", alt: "Person editing video on laptop with headphones" },
+  { src: "/images/home/explore-idea-starters.webp", src640: "/images/home/explore-idea-starters-640.webp", alt: "Creative person with headphones listening to music" },
 ] as const;
 
 export default function Home() {
@@ -134,7 +133,7 @@ export default function Home() {
               { title: "Idea starters", copy: "Random prompts and idea starters when you just want to hear something new from the AI music generator.", href: "/ai-music-generator", label: "Open AI music generator" },
             ].map((card, i) => (
               <article key={card.title} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                <HomeFeatureImage src={EXPLORE_IMAGES[i].src} alt={EXPLORE_IMAGES[i].alt} className="mb-4" sizes="(max-width: 768px) 100vw, 33vw" />
+                <HomeFeatureImage src={EXPLORE_IMAGES[i].src} src640={EXPLORE_IMAGES[i].src640} alt={EXPLORE_IMAGES[i].alt} className="mb-4" sizes="(max-width: 768px) 100vw, 33vw" />
                 <h3 className="mb-2 text-base font-semibold text-slate-50">{card.title}</h3>
                 <p className="mb-3 text-sm text-slate-200">{card.copy}</p>
                 <Link href={card.href} className="text-sm text-violet-200 underline underline-offset-2 hover:text-violet-100">{card.label}</Link>
@@ -158,7 +157,7 @@ export default function Home() {
               </p>
             </div>
             <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-slate-800/50">
-              <Image src="/images/home/spark-creators.webp" alt="Diverse creators in a creative space" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" unoptimized />
+              <img src="/images/home/spark-creators.webp" srcSet="/images/home/spark-creators-640.webp 640w, /images/home/spark-creators.webp 960w" sizes="(max-width: 768px) 100vw, 50vw" alt="Diverse creators in a creative space" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
             </div>
           </div>
         </div>
@@ -176,7 +175,7 @@ export default function Home() {
             ].map((item) => (
               <div key={item.step} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
                 <div className="relative aspect-video mb-4 rounded-xl overflow-hidden bg-slate-800/50">
-                  <Image src={item.img} alt={item.alt} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy" unoptimized />
+                  <img src={item.img} srcSet={`${item.img.replace(".webp", "-640.webp")} 640w, ${item.img} 960w`} sizes="(max-width: 768px) 100vw, 33vw" alt={item.alt} className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
                 <h3 className="mb-1 text-base font-semibold text-slate-50">{item.step}</h3>
                 <p className="text-sm text-slate-200">{item.text}</p>
@@ -194,7 +193,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-4 py-14 text-center">
           <h2 className="mb-10 text-3xl font-semibold text-slate-100">How creators use our AI music generator</h2>
           <div className="mb-8 max-w-3xl mx-auto relative aspect-[2/1] rounded-xl overflow-hidden bg-slate-800/50">
-            <Image src="/images/home/use-cases-creators.webp" alt="Content studio with creators and equipment" fill className="object-cover" sizes="(max-width: 768px) 100vw, 896px" loading="lazy" unoptimized />
+            <img src="/images/home/use-cases-creators.webp" srcSet="/images/home/use-cases-creators-640.webp 640w, /images/home/use-cases-creators.webp 960w" sizes="(max-width: 768px) 100vw, 896px" alt="Content studio with creators and equipment" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
           </div>
           <div className="grid gap-6 sm:grid-cols-2 text-left">
             <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
@@ -231,7 +230,7 @@ export default function Home() {
           <h2 className="mb-4 text-3xl font-semibold text-slate-100">Who our <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI song maker</Link> is built for</h2>
           <p className="mb-6 text-base text-slate-200">Our AI song maker sits on top of the same AI music generator engine, but it adapts to very different workflows.</p>
           <div className="relative aspect-[2.2/1] mb-8 max-w-3xl mx-auto rounded-xl overflow-hidden bg-slate-800/50">
-            <Image src="/images/home/who-uses-community.webp" alt="Creative community in shared workspace" fill className="object-cover" sizes="(max-width: 768px) 100vw, 896px" loading="lazy" unoptimized />
+            <img src="/images/home/who-uses-community.webp" srcSet="/images/home/who-uses-community-640.webp 640w, /images/home/who-uses-community.webp 960w" sizes="(max-width: 768px) 100vw, 896px" alt="Creative community in shared workspace" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
           </div>
           <ul className="list-disc space-y-1 pl-5 text-left text-base text-slate-200 max-w-xl mx-auto">
             <li>YouTube creators who want background music that fits their voice and pacing.</li>
@@ -257,7 +256,7 @@ export default function Home() {
               <p><Link href="/license" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">Read full licensing details</Link>.</p>
             </div>
             <div className="order-1 md:order-2 relative aspect-video w-full max-w-xl mx-auto rounded-xl overflow-hidden bg-slate-800/50">
-              <Image src="/images/home/copyright-license.webp" alt="Professional reviewing license document" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" unoptimized />
+              <img src="/images/home/copyright-license.webp" srcSet="/images/home/copyright-license-640.webp 640w, /images/home/copyright-license.webp 960w" sizes="(max-width: 768px) 100vw, 50vw" alt="Professional reviewing license document" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
             </div>
           </div>
         </div>
@@ -296,7 +295,7 @@ export default function Home() {
       <section className="border-b border-slate-900 bg-slate-950 overflow-hidden">
         <div className="mx-auto max-w-6xl px-3 sm:px-4 py-10 sm:py-14 text-center">
           <div className="relative rounded-2xl sm:rounded-3xl border border-slate-800 bg-slate-900/80 overflow-hidden aspect-[4/3] sm:aspect-[3/1] min-h-[260px] sm:min-h-[280px] w-full max-w-full">
-            <HomeCtaImage src="/images/home/cta-ready-to-create.webp" alt="Creator ready to make music">
+            <HomeCtaImage src="/images/home/cta-ready-to-create.webp" src640="/images/home/cta-ready-to-create-640.webp" alt="Creator ready to make music">
               <div className="absolute inset-0 z-10 bg-slate-950/60 flex flex-col items-center justify-center gap-3 sm:gap-4 p-4 sm:p-6">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-50 px-1">Ready to create your own unique music?</h2>
                 <p className="text-sm sm:text-base text-slate-200 max-w-xl px-1">Join thousands of creators who use our AI music generator.</p>

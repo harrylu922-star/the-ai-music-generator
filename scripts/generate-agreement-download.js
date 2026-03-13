@@ -1,0 +1,188 @@
+/**
+ * 生成与 /license 页面展示一致的 agreement 文档，顶部填写用户名，供下载/打印。
+ * 用法: node scripts/generate-agreement-download.js [email]
+ * 默认: yafarovagaliya@gmail.com
+ * 输出: output/content-license-agreement-[email].html
+ */
+
+const fs = require("fs");
+const path = require("path");
+
+const email = process.argv[2] || "yafarovagaliya@gmail.com";
+const safeName = email.replace(/[^a-zA-Z0-9.-]/g, "_");
+const outDir = path.join(process.cwd(), "output");
+const outFile = path.join(outDir, `content-license-agreement-${safeName}.html`);
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// 与 /license 页面一致的样式（Tailwind 对应色值）
+const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content License | Royalty-Free &amp; Commercial Use</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; min-height: 100vh; background: #020617; color: #f8fafc; -webkit-font-smoothing: antialiased; }
+    .main { max-width: 48rem; margin: 0 auto; padding: 4rem 1rem; }
+    .h1 { font-size: 1.875rem; font-weight: 600; color: #f1f5f9; margin-bottom: 2rem; }
+    .user-line { font-size: 1rem; color: #cbd5e1; margin-bottom: 2rem; }
+    .user-line strong { color: #e2e8f0; }
+    .card { border-radius: 1rem; border: 1px solid #1e293b; background: rgba(15, 23, 42, 0.4); padding: 1.5rem; }
+    .content { color: #94a3b8; font-size: 0.875rem; line-height: 1.625; }
+    .content .revised { color: #cbd5e1; }
+    .content p { margin: 0 0 1rem; }
+    .content p:last-child { margin-bottom: 0; }
+    .content h3 { color: #e2e8f0; font-weight: 600; padding-top: 0.5rem; margin: 1.5rem 0 0.5rem; font-size: 1rem; }
+    .content h3:first-of-type { margin-top: 0; }
+    .content strong { color: #cbd5e1; }
+    .content ul { list-style-type: disc; padding-left: 1.5rem; margin: 0.5rem 0 1rem; }
+    .content li { margin: 0.25rem 0; }
+    .content a { color: #c4b5fd; text-decoration: underline; text-underline-offset: 2px; }
+    .content a:hover { color: #e9d5ff; }
+    header { border-bottom: 1px solid rgba(30, 41, 59, 0.8); background: rgba(2, 6, 23, 0.9); }
+    .header-inner { max-width: 72rem; margin: 0 auto; padding: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .header-inner a { color: #cbd5e1; text-decoration: underline; }
+    .header-inner a:hover { color: #e2e8f0; }
+    footer { border-top: 1px solid #1e293b; background: #020617; margin-top: auto; }
+    .footer-inner { max-width: 72rem; margin: 0 auto; padding: 3rem 1rem; }
+    .footer-inner .grid { display: grid; gap: 2rem; grid-template-columns: repeat(4, 1fr); margin-bottom: 2.5rem; }
+    .footer-inner h3 { font-size: 0.875rem; font-weight: 600; color: #f1f5f9; margin: 0 0 0.75rem; }
+    .footer-inner ul { list-style: none; padding: 0; margin: 0; font-size: 0.875rem; color: #94a3b8; }
+    .footer-inner li { margin: 0.5rem 0; }
+    .footer-inner li a { color: #94a3b8; text-decoration: underline; text-underline-offset: 2px; }
+    .footer-inner li a:hover { color: #c4b5fd; }
+    .footer-bottom { padding-top: 1.5rem; border-top: 1px solid #1e293b; font-size: 0.875rem; color: #94a3b8; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+    .footer-bottom .brand { color: #f1f5f9; font-weight: 500; }
+    .footer-bottom .brand span.v { color: #a78bfa; }
+    @media (max-width: 768px) { .footer-inner .grid { grid-template-columns: 1fr 1fr; } }
+    @media print { header, footer { border-color: #334155; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <span class="text-base font-semibold text-slate-100" style="color:#f1f5f9;font-weight:600;">The AI Music Generator</span>
+      <nav style="margin-left:1rem;">
+        <a href="https://themusicgenerator.com/">Home</a>
+        <a href="https://themusicgenerator.com/legal" style="margin-left:0.75rem;">Legal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1 class="h1">Content License</h1>
+    <p class="user-line"><strong>User:</strong> ${escapeHtml(email)}</p>
+
+    <div class="card">
+      <div class="content">
+        <p class="revised">Last revised: March 10, 2025</p>
+        <p>
+          This Content License describes the rights you have in music, lyrics, and other content you generate using The AI Music Generator (“themusicgenerator.com”, “we”, “us”, “our”) (the “Services”). For the avoidance of doubt, this License is part of and subject to our <a href="https://themusicgenerator.com/terms">Terms of Service</a> and <a href="https://themusicgenerator.com/privacy">Privacy Policy</a>.
+        </p>
+
+        <h3>1. OWNERSHIP OF GENERATED CONTENT</h3>
+        <p>
+          You retain ownership of the content you create using our Services (“Your Output”). We do not claim any ownership rights in your prompts, inputs, or in the music, lyrics, or other outputs generated for you based on your use of the Services. To the extent we acquire any rights in Your Output, we assign to you all right, title and interest in and to such content.
+        </p>
+
+        <h3>2. ROYALTY-FREE USE</h3>
+        <p>
+          Subject to your compliance with our Terms of Service, you may use Your Output on a <strong>royalty-free</strong> basis. You are not required to pay us or any third party ongoing royalties or license fees for the use of music or other content you generate through the Services, within the scope of the rights granted herein.
+        </p>
+
+        <h3>3. COMMERCIAL AND PERSONAL USE</h3>
+        <p>
+          You may use Your Output for both <strong>personal and commercial</strong> purposes, including but not limited to:
+        </p>
+        <ul>
+          <li>Videos (e.g. YouTube, social media, films, advertisements)</li>
+          <li>Podcasts and streaming content</li>
+          <li>Games, apps, and software</li>
+          <li>Music releases, albums, and singles</li>
+          <li>Background music, intros, outros, and jingles</li>
+          <li>Any other use that does not violate our Terms of Service or applicable law</li>
+        </ul>
+        <p>
+          You do not need additional permission from us for these uses, provided you comply with these terms and our Terms of Service.
+        </p>
+
+        <h3>4. LICENSE YOU GRANT TO US</h3>
+        <p>
+          In order to operate and improve the Services, you grant us a royalty-free, worldwide license to use, host, store, reproduce, display, and process Your Output and the inputs you provide, solely as necessary to provide, improve, and promote the Services. This includes making content available to third-party service providers who assist us in operating the Services. We do not use Your Output for our own commercial purposes (e.g. selling or licensing your music to others) except as needed to run the Services or as you explicitly allow (e.g. if you choose to make content public on our platform).
+        </p>
+
+        <h3>5. SIMILAR OUTPUT BY OTHERS</h3>
+        <p>
+          Because our Services use generative AI, other users may generate output that is similar or identical to Your Output if they use similar prompts or inputs. We do not guarantee uniqueness. You should consider whether you need additional protections (e.g. trademark, additional licensing) for your particular use case.
+        </p>
+
+        <h3>6. NO WARRANTY AS TO RIGHTS OF THIRD PARTIES</h3>
+        <p>
+          We do not warrant that Your Output will not infringe any third party’s intellectual property or other rights. You are responsible for ensuring your use of Your Output does not violate any third-party rights or applicable law. For high-stakes commercial use, you may wish to seek legal advice.
+        </p>
+
+        <h3>7. CHANGES TO THIS LICENSE</h3>
+        <p>
+          We may update this Content License from time to time. The “Last Revised” date at the top will be updated when we do. Material changes may be communicated via the Services or by email. Your continued use of the Services after changes become effective constitutes acceptance of the updated License. For content already generated, the license terms in effect at the time of generation will continue to apply to that content to the extent we have committed to such treatment; otherwise the current terms apply.
+        </p>
+
+        <h3>8. CONTACT</h3>
+        <p>
+          For questions about this Content License or your rights to generated content, contact us at support@themusicgenerator.com.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="grid">
+        <div>
+          <h3>Features</h3>
+          <ul>
+            <li><a href="https://themusicgenerator.com/ai-music-generator">AI Music Generator</a></li>
+            <li><a href="https://themusicgenerator.com/ai-lyrics-generator">AI Lyrics Generator</a></li>
+            <li><a href="https://themusicgenerator.com/pricing">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="https://themusicgenerator.com/privacy">Privacy Policy</a></li>
+            <li><a href="https://themusicgenerator.com/terms">Terms of Service</a></li>
+            <li><a href="https://themusicgenerator.com/license">Content License</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>About Us</h3>
+          <ul>
+            <li><a href="https://themusicgenerator.com/coming-soon">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© ${new Date().getFullYear()} TheAIMusicGenerator.com. All rights reserved.</span>
+        <a href="https://themusicgenerator.com/" class="brand"><span class="v">T</span>he<span class="v">A</span>I<span class="v">M</span>usic<span class="v">G</span>enerator</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+`;
+
+if (!fs.existsSync(outDir)) {
+  fs.mkdirSync(outDir, { recursive: true });
+}
+fs.writeFileSync(outFile, html, "utf-8");
+
+console.log("Generated:", outFile);
+console.log("Content matches /license page with User:", email);
+console.log("Open in browser; use Print → Save as PDF to download.");

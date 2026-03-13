@@ -72,13 +72,16 @@ export function HomeFeatureImage({
   );
 }
 
-/** CTA 背景图：加载失败时显示深色占位，overlay 始终在上层 */
+/** CTA 背景图：加载失败时显示深色占位，overlay 始终在上层；src640 时用原生 img+srcSet 改善移动端（PageSpeed Improve image delivery） */
 export function HomeCtaImage({
   src,
+  src640,
   alt,
   children,
 }: {
   src: string;
+  /** 可选 640w 图，用于 srcset */
+  src640?: string;
   alt: string;
   children: React.ReactNode;
 }) {
@@ -88,6 +91,15 @@ export function HomeCtaImage({
     <>
       {error ? (
         <div className="absolute inset-0 bg-slate-800/80" aria-hidden />
+      ) : src640 ? (
+        <img
+          src={src}
+          srcSet={`${src640} 640w, ${src} 960w`}
+          sizes="(max-width: 1024px) 100vw, 1024px"
+          alt={alt}
+          className="absolute inset-0 h-full w-full object-cover"
+          onError={() => setError(true)}
+        />
       ) : (
         <Image
           src={src}

@@ -1,6 +1,6 @@
 // Logo 预览：在主站背景色（slate-950）上展示字标 + Icon
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/Link";
 
 export const metadata: Metadata = {
   title: "Logo Preview | TAMG",

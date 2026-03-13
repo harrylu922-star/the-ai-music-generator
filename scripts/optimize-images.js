@@ -102,6 +102,87 @@ async function generateCover400Variants() {
   }
 }
 
+/** how-1/2/3 在 ai-music-generator 等页以 96px 显示，生成 192w 避免加载 960px 大图（PageSpeed Improve image delivery） */
+const HOW_BASES = ["how-1-describe", "how-2-ai-compose", "how-3-export"];
+async function generateHow192Variants() {
+  const dirPath = path.join(PUBLIC, "home");
+  if (!fs.existsSync(dirPath)) return;
+  for (const base of HOW_BASES) {
+    const webpPath = path.join(dirPath, `${base}.webp`);
+    if (!fs.existsSync(webpPath)) continue;
+    const outPath = path.join(dirPath, `${base}-192.webp`);
+    await sharp(webpPath)
+      .resize(192, null, { withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toFile(outPath);
+    const stat = fs.statSync(outPath);
+    console.log(`[optimize-images] home/${base}-192.webp (192w, ${(stat.size / 1024).toFixed(0)} KiB)`);
+  }
+}
+
+/** how-1/2/3 在首页 How it works 以 33vw 显示，生成 640w 供 srcset */
+async function generateHow640Variants() {
+  const dirPath = path.join(PUBLIC, "home");
+  if (!fs.existsSync(dirPath)) return;
+  for (const base of HOW_BASES) {
+    const webpPath = path.join(dirPath, `${base}.webp`);
+    if (!fs.existsSync(webpPath)) continue;
+    const outPath = path.join(dirPath, `${base}-640.webp`);
+    await sharp(webpPath)
+      .resize(640, null, { withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toFile(outPath);
+    const stat = fs.statSync(outPath);
+    console.log(`[optimize-images] home/${base}-640.webp (640w, ${(stat.size / 1024).toFixed(0)} KiB)`);
+  }
+}
+
+/** photo-styles：约 120×120 显示，仅处理已知风格 ID，生成小尺寸 WebP 控制加载体积 */
+const PHOTO_STYLE_SIZE = 120;
+const PHOTO_STYLE_IDS = [
+  "auto", "cinematic", "anime", "lofi", "documentary", "flash-grain", "retro-jazz",
+  "epic-fantasy", "nineties-cel", "minimal-luxury", "vhs-synthwave", "cosmic-cel", "cozy-cafe", "hiphop-ink"
+];
+async function optimizePhotoStyles() {
+  const dirPath = path.join(PUBLIC, "photo-styles");
+  if (!fs.existsSync(dirPath)) return;
+  for (const base of PHOTO_STYLE_IDS) {
+    const inputPath = path.join(dirPath, `${base}.png`);
+    if (!fs.existsSync(inputPath)) {
+      console.warn(`[optimize-images] Skip (not found): photo-styles/${base}.png`);
+      continue;
+    }
+    const outPath = path.join(dirPath, `${base}.webp`);
+    await sharp(inputPath)
+      .resize(PHOTO_STYLE_SIZE, PHOTO_STYLE_SIZE, { fit: "cover" })
+      .webp({ quality: 82 })
+      .toFile(outPath);
+    const stat = fs.statSync(outPath);
+    console.log(`[optimize-images] photo-styles/${base}.webp (${PHOTO_STYLE_SIZE}px, ${(stat.size / 1024).toFixed(1)} KiB)`);
+  }
+}
+
+/** 首页大图 640w 版本，供 srcset 移动端/平板减少下载（spark、use-cases、who-uses、copyright、cta、explore-*） */
+const HOME_SECTION_BASES = [
+  "spark-creators", "use-cases-creators", "who-uses-community", "copyright-license", "cta-ready-to-create",
+  "explore-instrumental", "explore-loops", "explore-idea-starters"
+];
+async function generateHomeSection640Variants() {
+  const dirPath = path.join(PUBLIC, "home");
+  if (!fs.existsSync(dirPath)) return;
+  for (const base of HOME_SECTION_BASES) {
+    const webpPath = path.join(dirPath, `${base}.webp`);
+    if (!fs.existsSync(webpPath)) continue;
+    const outPath = path.join(dirPath, `${base}-640.webp`);
+    await sharp(webpPath)
+      .resize(640, null, { withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toFile(outPath);
+    const stat = fs.statSync(outPath);
+    console.log(`[optimize-images] home/${base}-640.webp (640w, ${(stat.size / 1024).toFixed(0)} KiB)`);
+  }
+}
+
 async function main() {
   console.log("[optimize-images] Start (mobile-first WebP)…\n");
   await ensureDir(PUBLIC);
@@ -112,10 +193,15 @@ async function main() {
 
   await convertDirToWebP("home", 960);
   await generateHero640Variants();
+  await generateHow192Variants();
+  await generateHow640Variants();
+  await generateHomeSection640Variants();
   assertHeroCardSizes();
 
   await convertDirToWebP("covers", 640);
   await generateCover400Variants();
+
+  await optimizePhotoStyles();
 
   console.log("\n[optimize-images] Done.");
 }

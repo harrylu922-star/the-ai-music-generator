@@ -1,9 +1,10 @@
-import Link from "next/link";
+import Link from "@/components/Link";
 
 export const LANDING_PAGES: { href: string; label: string; available: boolean }[] = [
   { href: "/ai-music-generator", label: "AI Music Generator", available: true },
   { href: "/text-to-music", label: "Text to Music", available: true },
   { href: "/ai-lyrics-generator", label: "AI Lyrics Generator", available: true },
+  { href: "/ai-lyrics-to-music-generator", label: "AI Lyrics to Music", available: true },
   { href: "/ai-vocal-remover", label: "AI Vocal Remover", available: false },
   { href: "/ai-stem-splitter", label: "AI Stem Splitter", available: false },
   { href: "/ai-singing-voice", label: "AI Singing Voice Generator", available: false },
@@ -12,7 +13,8 @@ export const LANDING_PAGES: { href: string; label: string; available: boolean }[
   { href: "/ai-midi-editor", label: "AI MIDI Editor", available: false },
   { href: "/audio-to-midi", label: "AI Audio to MIDI", available: false },
   { href: "/key-bpm-finder", label: "Key & BPM Finder", available: false },
-  { href: "/ai-music-video", label: "AI Music Video", available: false },
+  { href: "/ai-music-video-generator", label: "AI Music Video Generator", available: true },
+  { href: "/ai-sheet-music-generator", label: "AI Sheet Music Generator", available: true },
 ];
 
 interface LandingNavProps {

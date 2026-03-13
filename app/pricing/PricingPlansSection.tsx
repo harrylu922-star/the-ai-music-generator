@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "@/components/Link";
 import { cn } from "../../lib/utils";
 
 type BillingPeriod = "monthly" | "annually";

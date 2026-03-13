@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import Image from "next/image";
+import Link from "@/components/Link";
 import { ResponsiveHeroImage } from "../../components/ResponsiveHeroImage";
 import { SiteHeader } from "../../components/SiteHeader";
 import { LANDING_PAGES } from "../../components/LandingNav";
@@ -149,7 +148,7 @@ export default function AiLyricsGeneratorPage() {
 
               <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
                 <div className="relative mb-6 aspect-video max-w-xl overflow-hidden rounded-xl">
-                  <Image src="/images/home/explore-idea-starters.webp" alt="AI lyrics ideas and inspiration" fill className="object-cover" sizes="(max-width: 768px) 100vw, 576px" loading="lazy" unoptimized />
+                  <img src="/images/home/explore-idea-starters.webp" srcSet="/images/home/explore-idea-starters-640.webp 640w, /images/home/explore-idea-starters.webp 960w" sizes="(max-width: 768px) 100vw, 576px" alt="AI lyrics ideas and inspiration" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
                 <h2 className="mb-4 text-2xl font-semibold text-slate-100">Showcase: Example Lyrics from the AI Lyrics Generator</h2>
                 <p className="mb-4 leading-relaxed">

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import Link from "@/components/Link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { HomeSampleTracks } from "../../components/HomeSampleTracks";
@@ -15,44 +14,68 @@ const LOFI_SHOWCASE_TRACKS = [
   { category: "Ambient", title: "Ambient bed", description: "Calm bed for playlists or chill.", audioSrc: "/audio/sample-ambient.mp3", coverSrc: "/images/covers/sample-ambient.webp" },
 ];
 
+const PAGE_URL = "https://theaimusicgenerator.com/free-ai-lofi-generator";
+const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
+
 export const metadata: Metadata = {
   title: { absolute: "Free AI Lofi Music Generator for Study & Chill" },
   description:
-    "Make lofi beats for study, chill, or background. Free to try, royalty-free to use. Works with YouTube and streams.",
+    "Generate lofi beats for study sessions, background music, or YouTube in seconds. Royalty-free, no login required. Built on the 2026 v6 model鈥攚armer and less repetitive than older lofi generators.",
+  keywords: [
+    "ai lofi music generator",
+    "lofi beats generator",
+    "free lofi music generator",
+    "lofi hip hop generator",
+    "study music generator",
+    "royalty free lofi",
+    "ai music for youtube",
+    "lofi generator 2026",
+  ],
+  alternates: { canonical: PAGE_URL },
+  robots: { index: true, follow: true },
   openGraph: {
     title: "Free AI Lofi Music Generator for Study & Chill",
     description:
-      "Make lofi beats for study and chill. Free to try, royalty-free.",
-    url: "/free-ai-lofi-generator",
+      "Generate lofi beats for study, background, or YouTube in seconds. Royalty-free. No login needed.",
+    url: PAGE_URL,
+    type: "website",
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Free AI Lofi Music Generator" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free AI Lofi Music Generator for Study & Chill",
+    description:
+      "Generate lofi beats for study, background, or YouTube in seconds. Royalty-free.",
+    images: [OG_IMAGE],
   },
 };
 
 /** FAQ: plain text for JSON-LD; display adds internal links via FAQAnswer */
 const FAQ_ITEMS = [
   {
-    question: "Is The AI Music Generator really free to use for Lofi beats?",
+    question: "Is The AI Music Generator's lofi tool really free?",
     answer:
-      "Yes. You can create and preview beats at no cost. Free tier has limits on length and exports; paid plans unlock longer tracks and full commercial use. If you need lyrics first, try our AI Lyrics Generator.",
+      "The free tier lets you generate and preview lofi beats with no account required. There are limits: free tracks are shorter and export options are restricted. Paid plans unlock tracks up to 8 minutes and full commercial licensing. If you also need lyrics, try our AI Lyrics Generator - a separate free tool on the same platform.",
   },
   {
-    question: "Can I monetize AI-generated music on YouTube in 2026?",
+    question: "Can I monetize AI-generated lofi music on YouTube in 2026?",
     answer:
-      "Yes. Generated tracks are royalty-free. Follow YouTube’s 2026 AI disclosure rules and you can use them for background, study streams, and vlogs. Full terms: see our Content License.",
+      "Yes, with a caveat. YouTube requires creators to disclose AI-generated content using the 'altered or synthetic content' label in upload settings. Tracks from this generator are royalty-free, so you won't get copyright claims from us. Apply the disclosure label and review our Content License for full terms.",
   },
   {
-    question: "Why is this considered the best AI music tool for 2026?",
+    question: "How does this lofi generator compare to other AI music tools?",
     answer:
-      "Compared to best ai music generation tools 2025, our 2026 engine handles more varied phrasing and lofi-style warmth. Less loop-only, more usable as full backing. We’ve improved on the 2025 baseline.",
+      "Most AI music tools from 2025 and earlier generated short, repetitive loops with little rhythmic variation. The v6 model here is tuned for lofi output - it produces tracks with subtle chord movement, natural-sounding percussion, and slight imperfections that make lofi feel warm rather than mechanical. Tracks go up to 8 minutes, covering a full Pomodoro work session.",
   },
   {
-    question: "How can I tell if music is AI generated vs. human-made?",
+    question: "How can I tell if a piece of music is AI generated?",
     answer:
-      "It’s getting harder. Older AI often had repetitive patterns or artifacts. We aim for warmer, less mechanical output - but we still label tracks so you can disclose AI use where platforms require it.",
+      "Earlier AI music often had telltale signs: very regular note timing, repetitive four-bar loops that never resolve, and an absence of natural room tone. Newer models are harder to identify. Our tracks are labeled as AI-generated in their metadata so you can disclose correctly on YouTube, Twitch, and other platforms that require it.",
   },
   {
-    question: "Can I use these Lofi beats for commercial projects like indie games or ads?",
+    question: "Can I use these lofi beats in commercial projects like games, ads, or podcasts?",
     answer:
-      "Yes. Tracks come with a clear license for commercial use - indie games, ads, TikTok, etc. Check our AI Music Tools and Content License for full options.",
+      "Yes. Tracks come with a royalty-free license covering personal and commercial use - indie games, YouTube ads, podcast intros, TikTok, and more. The free tier has some restrictions; paid plans remove them. Check our AI Music Tools page and Content License for full terms before using tracks in high-stakes campaigns.",
   },
 ] as const;
 
@@ -69,22 +92,62 @@ function getPageSchema() {
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "WebSite",
+        "@id": "https://theaimusicgenerator.com/#website",
+        name: "The AI Music Generator",
+        url: "https://theaimusicgenerator.com",
+      },
+      {
         "@type": "WebPage",
-        "@id": "https://theaimusicgenerator.com/free-ai-lofi-generator#webpage",
-        url: "https://theaimusicgenerator.com/free-ai-lofi-generator",
+        "@id": `${PAGE_URL}#webpage`,
+        url: PAGE_URL,
         name: "Free AI Lofi Music Generator for Study & Chill",
         description:
-          "Make lofi beats for study, chill, or background. Free to try, royalty-free to use.",
-        isPartOf: {
-          "@type": "WebSite",
-          "@id": "https://theaimusicgenerator.com/#website",
+          "Generate lofi beats for study sessions, background music, or YouTube in seconds. Royalty-free, no login required. Built on the 2026 v6 model.",
+        isPartOf: { "@id": "https://theaimusicgenerator.com/#website" },
+        breadcrumb: { "@id": `${PAGE_URL}#breadcrumb` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${PAGE_URL}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://theaimusicgenerator.com" },
+          { "@type": "ListItem", position: 2, name: "AI Music Tools", item: "https://theaimusicgenerator.com/ai-music-tools" },
+          { "@type": "ListItem", position: 3, name: "Free AI Lofi Generator", item: PAGE_URL },
+        ],
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": `${PAGE_URL}#app`,
+        name: "Free AI Lofi Music Generator",
+        url: PAGE_URL,
+        applicationCategory: "MusicApplication",
+        operatingSystem: "Web browser",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          description: "Free tier available. Paid plans unlock longer tracks and full commercial use.",
+        },
+        description:
+          "An AI-powered web app that generates lofi hip-hop beats for study, chill, and background use. Describe a mood and the engine returns a royalty-free track in seconds. Built on the 2026 v6 model.",
+        featureList: [
+          "AI lofi beat generation from text prompts",
+          "Styles: Chill, Study Focus, Rainy Window, Night Drive, Lofi Jazz",
+          "Track lengths from 1 to 8 minutes",
+          "Royalty-free for YouTube and commercial use",
+          "No account required for free tier",
+        ],
+        provider: {
+          "@type": "Organization",
           name: "The AI Music Generator",
           url: "https://theaimusicgenerator.com",
         },
       },
       {
         "@type": "FAQPage",
-        name: "Free AI Lofi Music Generator for Study & Chill - FAQ",
+        "@id": `${PAGE_URL}#faqpage`,
+        name: "AI Lofi Music Generator - Frequently Asked Questions",
         mainEntity: FAQ_ITEMS.map((item) => ({
           "@type": "Question",
           name: schemaText(item.question),
@@ -143,7 +206,7 @@ export default function FreeAiLofiGeneratorPage() {
         <SiteHeader />
         <LofiGeneratorHero />
 
-        {/* Social proof / stats — first block, fits in first viewport when locked */}
+        {/* Social proof / stats 鈥?first block, fits in first viewport when locked */}
         <section className="border-b border-slate-800/80 bg-slate-950/95 py-6 sm:py-8">
           <div className="mx-auto max-w-6xl px-4 text-center">
             <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
@@ -159,12 +222,12 @@ export default function FreeAiLofiGeneratorPage() {
           </div>
         </section>
 
-        {/* Showcase — hear it in action */}
+        {/* Showcase 鈥?hear it in action */}
         <section className="border-b border-slate-800/80 bg-slate-950">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center">
             <h2 className="text-3xl font-semibold text-slate-100 mb-2">Hear it in action</h2>
             <p className="text-slate-400 max-w-2xl mx-auto mb-8">
-              A few beats in the kind of vibe you can get—study, chill, or background.
+              A few beats in the kind of vibe you can get鈥攕tudy, chill, or background.
             </p>
             <HomeSampleTracks tracks={LOFI_SHOWCASE_TRACKS} />
             <Link href="/ai-music-generator" className="mt-6 inline-flex items-center justify-center rounded-full bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-violet-500">
@@ -173,7 +236,7 @@ export default function FreeAiLofiGeneratorPage() {
           </div>
         </section>
 
-        {/* How it works — 3 steps + images */}
+        {/* How it works 鈥?3 steps + images */}
         <section className="border-b border-slate-800/80 bg-slate-950/95">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center">
             <h2 className="text-3xl font-semibold text-slate-100 mb-2">How it works</h2>
@@ -182,13 +245,13 @@ export default function FreeAiLofiGeneratorPage() {
             </p>
             <div className="grid gap-6 md:grid-cols-3 text-left">
               {[
-                { step: "1. Describe the mood", text: "Chill, study, rainy window, lofi jazz—whatever you’re after. A short line is enough.", img: "/images/home/how-1-describe.webp", alt: "Describe your idea" },
+                { step: "1. Describe the mood", text: "Chill, study, rainy window, lofi jazz鈥攚hatever you鈥檙e after. A short line is enough.", img: "/images/home/how-1-describe.webp", alt: "Describe your idea" },
                 { step: "2. We compose a track", text: "The engine turns that into a beat. Usually a minute or two; you can request longer in the full tool.", img: "/images/home/how-2-ai-compose.webp", alt: "Track is composed" },
                 { step: "3. Preview & export", text: "Play it in the browser. If it fits, export for your video, stream, or playlist.", img: "/images/home/how-3-export.webp", alt: "Download" },
               ].map((item) => (
                 <div key={item.step} className="rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-4">
                   <div className="relative aspect-video mb-4 rounded-xl overflow-hidden bg-slate-800/50">
-                    <Image src={item.img} alt={item.alt} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy" unoptimized />
+                    <img src={item.img} srcSet={`${item.img.replace(".webp", "-640.webp")} 640w, ${item.img} 960w`} sizes="(max-width: 768px) 100vw, 33vw" alt={item.alt} className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                   </div>
                   <h3 className="mb-1 text-base font-semibold text-slate-50">{item.step}</h3>
                   <p className="text-sm text-slate-200">{item.text}</p>
@@ -208,29 +271,29 @@ export default function FreeAiLofiGeneratorPage() {
             <div className="grid gap-6 md:grid-cols-3 text-left">
               <article className="rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm overflow-hidden">
                 <div className="relative aspect-video w-full">
-                  <Image src="/images/home/explore-loops.webp" alt="Loops for study and chill" fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy" unoptimized />
+                  <img src="/images/home/explore-loops.webp" srcSet="/images/home/explore-loops-640.webp 640w, /images/home/explore-loops.webp 960w" sizes="(max-width: 768px) 100vw, 33vw" alt="Lofi loops for study sessions and chill background music" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
                 <div className="p-5">
                   <h3 className="text-base font-semibold text-slate-50 mb-2">Warm, natural sound</h3>
                   <p className="text-sm text-slate-200">
-                    The current model is tuned for lofi and chill—less sterile than older tools. Good for focus and background.
+                    The current model is tuned for lofi and chill鈥攍ess sterile than older tools. Good for focus and background.
                   </p>
                 </div>
               </article>
               <article className="rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm overflow-hidden">
                 <div className="relative aspect-video w-full">
-                  <Image src="/images/home/copyright-license.webp" alt="License and commercial use" fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy" unoptimized />
+                  <img src="/images/home/copyright-license.webp" srcSet="/images/home/copyright-license-640.webp 640w, /images/home/copyright-license.webp 960w" sizes="(max-width: 768px) 100vw, 33vw" alt="License and commercial use" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
                 <div className="p-5">
                   <h3 className="text-base font-semibold text-slate-50 mb-2">Royalty-free</h3>
                   <p className="text-sm text-slate-200">
-                    Tracks are cleared for <Link href="/license" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">commercial use</Link>. Personal or paid projects—details in the license.
+                    Tracks are cleared for <Link href="/license" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">commercial use</Link>. Personal or paid projects鈥攄etails in the license.
                   </p>
                 </div>
               </article>
               <article className="rounded-2xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm overflow-hidden">
                 <div className="relative aspect-video w-full">
-                  <Image src="/images/home/use-cases-creators.webp" alt="Creators and streams" fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy" unoptimized />
+                  <img src="/images/home/use-cases-creators.webp" srcSet="/images/home/use-cases-creators-640.webp 640w, /images/home/use-cases-creators.webp 960w" sizes="(max-width: 768px) 100vw, 33vw" alt="Content creators using AI lofi music for YouTube and live streams" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
                 <div className="p-5">
                   <h3 className="text-base font-semibold text-slate-50 mb-2">YouTube & streams</h3>
@@ -243,7 +306,7 @@ export default function FreeAiLofiGeneratorPage() {
           </div>
         </section>
 
-        {/* Comparison — use srcSet so small viewports get 640w (~26 KB) instead of full (~43 KB) */}
+        {/* Comparison 鈥?use srcSet so small viewports get 640w (~26 KB) instead of full (~43 KB) */}
         <section className="border-b border-slate-800/80 bg-slate-950/95">
           <div className="mx-auto max-w-6xl px-4 py-14">
             <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -253,7 +316,7 @@ export default function FreeAiLofiGeneratorPage() {
                   src="/images/home/hero-card-ai-music-generator-640.webp"
                   srcSet="/images/home/hero-card-ai-music-generator-640.webp 640w, /images/home/hero-card-ai-music-generator.webp 960w"
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  alt="Generator in use"
+                  alt="AI lofi music generator interface showing a beat being created"
                   className="absolute inset-0 h-full w-full object-cover"
                   loading="lazy"
                   decoding="async"
@@ -262,7 +325,7 @@ export default function FreeAiLofiGeneratorPage() {
               <div>
                 <h2 className="text-2xl font-semibold text-slate-100 mb-4">2026 vs earlier tools</h2>
                 <p className="text-slate-200 text-base leading-relaxed">
-                  A lot of <strong>best ai music generation tools 2025</strong> stuff sounded flat and licensing was fuzzy. We’re on a newer model (v6) and ship a clear royalty-free license so you know where you stand. More options: <Link href="/ai-music-tools" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Music Tools</Link>.
+                  Before 2026, most <strong>AI music generators</strong> had two common problems: output that sounded repetitive after a few bars, and licenses that were unclear about commercial use. The <strong>v6 model</strong> used here addresses both - it was trained to produce more varied lofi progressions, and the <strong>royalty-free license</strong> is documented plainly. More tools: <Link href="/ai-music-tools" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Music Tools</Link>.
                 </p>
               </div>
             </div>
@@ -272,7 +335,7 @@ export default function FreeAiLofiGeneratorPage() {
         {/* FAQ */}
         <section id="faq" className="border-b border-slate-800/80 bg-slate-950/95">
           <div className="mx-auto max-w-3xl px-4 py-14 text-center">
-            <h2 className="text-3xl font-semibold text-slate-100 mb-6">FAQ</h2>
+            <h2 className="text-3xl font-semibold text-slate-100 mb-6">Common questions about AI lofi generation</h2>
             <div className="space-y-3 text-left">
               {FAQ_ITEMS.map((item) => (
                 <details
@@ -291,29 +354,29 @@ export default function FreeAiLofiGeneratorPage() {
           </div>
         </section>
 
-        {/* SEO content — natural voice; one short lead; keywords in <strong>; image */}
+        {/* SEO content 鈥?natural voice; one short lead; keywords in <strong>; image */}
         <section className="border-b border-slate-800/80 bg-slate-950">
           <div className="mx-auto max-w-3xl px-4 py-14">
             <div className="prose prose-invert prose-slate max-w-none text-slate-200 text-base leading-relaxed space-y-4">
-              <h2 className="text-xl font-semibold text-slate-100">About this lofi tool</h2>
+              <h2 className="text-xl font-semibold text-slate-100">What is lofi music and how does this generator work?</h2>
               <p className="text-slate-300">
-                In short: you describe a mood, get a beat. Free to try; royalty-free to use. Up to 8 minutes in the full generator.
+                Describe a mood - coffee shop, rain on window, late-night study - and the generator produces a lofi track. No account needed for the free tier; royalty-free for personal and commercial use. Full generator supports tracks up to 8 minutes.
               </p>
               <div className="grid md:grid-cols-2 gap-6 items-start my-6">
                 <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-800/50">
-                  <Image src="/images/home/explore-idea-starters.webp" alt="Music ideas and beats" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" unoptimized />
+                  <img src="/images/home/explore-idea-starters.webp" srcSet="/images/home/explore-idea-starters-640.webp 640w, /images/home/explore-idea-starters.webp 960w" sizes="(max-width: 768px) 100vw, 50vw" alt="Lofi beat ideas - coffee shop, rain, and late-night study prompts" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
                 <div className="space-y-4">
                   <p>
-                    An <strong>ai lofi music generator free</strong> tier is useful when you want <strong>lofi beats</strong> for study or background without hunting sample packs. We’re built on a <strong>best ai music generation tools 2025</strong>–era idea but with a newer model—warmer, less mechanical.
+                    This tool is an <strong>AI lofi music generator</strong> that generates original, <strong>royalty-free lofi beats</strong> from a short text prompt. It is free to try, with no login required for the first few tracks. If you use lofi music for study sessions, background streams, or YouTube videos, the generated tracks are cleared for <strong>commercial use</strong> once you check the license terms for your plan.
                   </p>
                   <p>
-                    <strong>Can ai generated music be monetized on youtube</strong>? Yes, if you stick to platform rules. Our stuff is <strong>commercial use</strong> and we explain <strong>how to tell if music is ai generated</strong> and how to label it: <Link href="/resources/youtube-ai-music-labeling-2026" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">YouTube AI labeling 2026</Link>.
+                    A common concern is whether <strong>AI-generated music can be monetized on YouTube</strong>. The short answer is yes, as long as you follow YouTube's AI content disclosure requirements. We provide guidance on how to label AI music correctly: <Link href="/resources/youtube-ai-music-labeling-2026" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">YouTube AI labeling 2026</Link>.
                   </p>
                 </div>
               </div>
               <p>
-                Beyond the <strong>best ai music generation tools of 2025</strong>, this <strong>lofi music generator</strong> gives you a quick way to try. For longer tracks and full <strong>commercial use music</strong>, use the main <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Music Generator</Link>, <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Lyrics Generator</Link>, or <Link href="/ai-music-tools" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Music Tools</Link>. Same engine—more control and export options there.
+                Lofi music sits at the intersection of hip-hop rhythm, jazz harmony, and ambient texture. It is typically 60-90 BPM, built around warm vinyl-like tones and simple, repeating chord progressions - which makes it ideal for long background listening. The <strong>lofi music generator</strong> here handles that full range. For longer tracks, instrumental variations, and full export options, the main <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Music Generator</Link>, <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Lyrics Generator</Link>, and <Link href="/ai-music-tools" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Music Tools</Link> give more control.
               </p>
             </div>
           </div>
@@ -324,13 +387,13 @@ export default function FreeAiLofiGeneratorPage() {
           <div className="mx-auto max-w-4xl px-4 text-center">
             <p className="text-slate-400 text-sm mb-6">
               <Link href="/" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">Home</Link>
-              {" · "}
+              {" 路 "}
               <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Music Generator</Link>
-              {" · "}
+              {" 路 "}
               <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Lyrics Generator</Link>
-              {" · "}
+              {" 路 "}
               <Link href="/ai-music-tools" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI Music Tools</Link>
-              {" · "}
+              {" 路 "}
               <Link href="/pricing" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">Pricing</Link>
             </p>
             <Link
@@ -348,3 +411,4 @@ export default function FreeAiLofiGeneratorPage() {
     </>
   );
 }
+
