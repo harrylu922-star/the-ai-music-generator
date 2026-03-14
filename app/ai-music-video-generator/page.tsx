@@ -10,13 +10,13 @@ const PAGE_URL = "/ai-music-video-generator";
 const SITE_URL = "https://theaimusicgenerator.com";
 
 export const metadata: Metadata = {
-  title: { absolute: "AI Music Video Generator from audio | Best for YouTube 2026" },
+  title: { absolute: "AI Music Video Generator from Lyrics | Best for YouTube 2026" },
   description:
-    "Turn audio into music videos in seconds. Best AI music video generator for YouTube 2026. Cinematic, Anime, Lo-fi. Royalty-free, 4K export.",
+    "Turn lyrics or audio into music videos in seconds. Best AI music video generator for YouTube 2026. Cinematic, Anime, Lo-fi. Royalty-free, 4K export.",
   openGraph: {
-    title: "AI Music Video Generator from audio | Best for YouTube 2026",
+    title: "AI Music Video Generator from Lyrics | Best for YouTube 2026",
     description:
-      "Turn audio into music videos in seconds. Best for YouTube 2026. Royalty-free, 4K export.",
+      "Turn lyrics or audio into music videos in seconds. Best for YouTube 2026. Royalty-free, 4K export.",
     url: PAGE_URL,
     siteName: "The AI Music Generator",
     type: "website",
@@ -26,21 +26,21 @@ export const metadata: Metadata = {
         url: "/images/home/hero-card-ai-music-generator.webp",
         width: 1200,
         height: 630,
-        alt: "AI Music Video Generator from audio — The AI Music Generator v6",
+        alt: "AI Music Video Generator from Lyrics — The AI Music Generator v6",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Music Video Generator from audio | Best for YouTube 2026",
-    description: "Cinematic music videos from audio in seconds. v6 engine. Royalty-free.",
+    title: "AI Music Video Generator from Lyrics | Best for YouTube 2026",
+    description: "Cinematic music videos from lyrics in seconds. v6 engine. Royalty-free.",
     images: ["/images/home/hero-card-ai-music-generator.webp"],
   },
   alternates: { canonical: `${SITE_URL}${PAGE_URL}` },
 };
 
 const SHOWCASE_ITEMS = [
-  { style: "Anime", src: "/images/covers/sample-lofi.webp", alt: "AI music video generator — Anime style output from audio" },
+  { style: "Anime", src: "/images/covers/sample-lofi.webp", alt: "AI music video generator — Anime style output from lyrics" },
   { style: "Cinematic", src: "/images/covers/sample-cinematic.webp", alt: "AI music video generator — Cinematic 4K output for YouTube" },
   { style: "Lo-fi", src: "/images/covers/sample-rnb.webp", alt: "AI music video generator — Lo-fi visual style, royalty-free" },
   { style: "Anime", src: "/images/covers/sample-ambient.webp", alt: "Anime ambient AI music video, generated from audio track" },
@@ -52,32 +52,32 @@ const FAQ_ITEMS = [
   {
     question: "Which company makes the best AI-generated music videos?",
     answer:
-      "The AI Music Generator stands out among the top companies for AI-generated music videos. What separates us isn't a single feature—it's how the v6 Multi-modal Engine connects audio, mood, and visual pacing into a coherent result. You get High-definition output and a fully Royalty-free license, so there's no ambiguity when you publish on YouTube or license the clip commercially. See our Content License for full terms.",
+      "The AI Music Generator stands out among the top companies for AI-generated music videos. What separates us isn't a single feature—it's how the v6 Multi-modal Engine connects lyrics, mood, and visual pacing into a coherent result. You get High-definition output and a fully Royalty-free license, so there's no ambiguity when you publish on YouTube or license the clip commercially. See our Content License for full terms.",
   },
   {
     question: "Can I use the AI Music Video Generator for free?",
     answer:
-      "Yes. We offer a free tier so you can try generating music videos from your audio. Free credits let you explore styles like Anime, Cinematic, and Lo-fi. Paid plans unlock more credits and longer 4K exports. Start with the AI Music Generator or AI Lyrics Generator to create your track, then bring it here.",
+      "Yes. We offer a free tier so you can try generating music videos from your lyrics or audio. Free credits let you explore styles like Anime, Cinematic, and Lo-fi. Paid plans unlock more credits and longer 4K exports. Start with the AI Music Generator or AI Lyrics Generator to create your track, then bring it here.",
   },
   {
     question: "How do I make an AI-generated music video step by step?",
     answer:
-      "Start in the AI Music Generator or AI Lyrics Generator to get your track. Upload or paste your audio into the video tool, pick a visual style—Cinematic works well for emotional ballads, Lo-fi for study or ambient content, Anime for upbeat tracks. The v6 Multi-modal Engine maps your beat structure to scene cuts automatically, so what you get is High-definition and already synced. Export is Royalty-free and 4K-ready for YouTube, TikTok, or Instagram.",
+      "Start in the AI Music Generator or AI Lyrics Generator to get your track and lyrics. Paste them into the video tool, pick a visual style—Cinematic works well for emotional ballads, Lo-fi for study or ambient content, Anime for upbeat tracks. The v6 Multi-modal Engine maps your beat structure to scene cuts automatically, so what you get is High-definition and already synced. Export is Royalty-free and 4K-ready for YouTube, TikTok, or Instagram.",
   },
   {
     question: "Can I use my own music with this music video maker?",
     answer:
-      "Yes. You can upload an audio file or select a track you created in our AI Music Generator. The tool analyzes your music to sync visuals and captions. All outputs are Royalty-free for commercial use under our Content License.",
+      "Yes. You can paste lyrics you wrote, upload an audio file, or select a track you created in our AI Music Generator. The tool analyzes your music to sync visuals and captions. All outputs are Royalty-free for commercial use under our Content License.",
   },
   {
     question: "What kind of customization options does the AI Music Video Maker offer?",
     answer:
-      "You can choose visual themes (Anime, Cinematic, Lo-fi), dynamic caption styles, and alignment. The v6 Multi-modal Engine uses your audio and mood to drive scene selection. Export with or without captions and sound waves, in 4K, Royalty-free for YouTube, TikTok, and Instagram.",
+      "You can choose visual themes (Anime, Cinematic, Lo-fi), dynamic caption styles, and alignment. The v6 Multi-modal Engine uses your lyrics and mood to drive scene selection. Export with or without captions and sound waves, in 4K, Royalty-free for YouTube, TikTok, and Instagram.",
   },
   {
-    question: "Does the AI Music Video Generator support captions and sound waves?",
+    question: "Does the AI Music Video Generator support lyrics and sound waves?",
     answer:
-      "Yes. You can generate videos with or without on-screen captions and dynamic sound waves. Caption style and alignment are customizable. Outputs are High-definition and Royalty-free. See our AI Lyrics Generator to create your track first.",
+      "Yes. You can generate videos with or without on-screen lyrics and dynamic sound waves. Caption style and alignment are customizable. Outputs are High-definition and Royalty-free. See our AI Lyrics Generator to create lyrics first.",
   },
   {
     question: "Is the content generated royalty-free for commercial use?",
@@ -97,12 +97,12 @@ const FAQ_ITEMS = [
   {
     question: "Which AI tools produce the most realistic music video visuals?",
     answer:
-      "Realism in AI music videos comes down to two things: whether the visual model understands the emotional texture of the audio, and whether the output resolution holds up on a 4K display. The v6 Multi-modal Engine processes audio features—not just a static image prompt—which is why the scenes feel connected to the music rather than random. All outputs are Royalty-free and High-definition. For the full creation workflow, start with the AI Lyrics Generator, then bring the result here.",
+      "Realism in AI music videos comes down to two things: whether the visual model understands the emotional texture of the audio, and whether the output resolution holds up on a 4K display. The v6 Multi-modal Engine processes both lyrics and audio features—not just a static image prompt—which is why the scenes feel connected to the music rather than random. All outputs are Royalty-free and High-definition. For the full creation workflow, start with the AI Lyrics Generator, then bring the result here.",
   },
   {
     question: "What makes this the best music video generator online?",
     answer:
-      "We combine frame-accurate audio-visual sync (v6 Multi-modal Engine), clear Royalty-free commercial licensing, and a simple workflow: upload audio, pick a style, export 4K. No video editing required. That makes it a strong fit for YouTube creators and anyone who needs High-definition, commercially safe music videos quickly.",
+      "We combine frame-accurate audio-visual sync (v6 Multi-modal Engine), clear Royalty-free commercial licensing, and a simple workflow: paste lyrics or audio, pick a style, export 4K. No video editing required. That makes it a strong fit for YouTube creators and anyone who needs High-definition, commercially safe music videos quickly.",
   },
 ] as const;
 
@@ -130,9 +130,9 @@ function getPageSchema() {
         "@type": "WebPage",
         "@id": `${SITE_URL}${PAGE_URL}#webpage`,
         url: `${SITE_URL}${PAGE_URL}`,
-        name: "AI Music Video Generator from audio | Best for YouTube 2026",
+        name: "AI Music Video Generator from Lyrics | Best for YouTube 2026",
         description:
-          "Turn audio into music videos in seconds. Best for YouTube 2026. Royalty-free, 4K export.",
+          "Turn lyrics or audio into music videos in seconds. Best for YouTube 2026. Royalty-free, 4K export.",
         datePublished: publishedDate,
         dateModified: modifiedDate,
         isPartOf: {
@@ -150,11 +150,11 @@ function getPageSchema() {
         operatingSystem: "Web",
         url: `${SITE_URL}${PAGE_URL}`,
         description:
-          "AI-powered music video generator from audio. Cinematic, Anime, Lo-fi styles. v6 Multi-modal Engine. Frame-accurate audio-visual sync. 4K export for YouTube, TikTok, Instagram. Royalty-free commercial license.",
+          "AI-powered music video generator from lyrics or audio. Cinematic, Anime, Lo-fi styles. v6 Multi-modal Engine. Frame-accurate audio-visual sync. 4K export for YouTube, TikTok, Instagram. Royalty-free commercial license.",
         screenshot: `${SITE_URL}/images/home/hero-card-ai-music-generator.webp`,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         featureList: [
-          "AI music video from audio",
+          "AI music video from lyrics",
           "Cinematic, Anime, Lo-fi visual styles",
           "Frame-accurate audio-visual sync",
           "4K royalty-free export",
@@ -241,10 +241,10 @@ export default function AiMusicVideoGeneratorPage() {
         <section id="showcase" className="border-b border-slate-800/80 bg-slate-950/95 py-14">
           <div className="mx-auto max-w-6xl px-4">
             <h2 className="text-2xl sm:text-3xl font-semibold text-slate-100 text-center mb-2">
-              See what AI Music Video Made with The AI Music Generator v6
+              AI Music Video Examples — Made with The AI Music Generator v6
             </h2>
             <p className="text-slate-400 text-center max-w-xl mx-auto mb-10">
-              Each clip below was generated from a real audio track. Hover to preview. All styles export at 4K and include a royalty-free commercial license.
+              Each clip below was generated from a real lyrics prompt. Hover to preview. All styles export at 4K and include a royalty-free commercial license.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
               {SHOWCASE_ITEMS.map((item, i) => (
@@ -280,7 +280,7 @@ export default function AiMusicVideoGeneratorPage() {
         {/* Step-by-Step Guide */}
         <section className="border-b border-slate-800/80 bg-slate-950 py-14">
           <div className="mx-auto max-w-6xl px-4 text-center">
-            <h2 className="text-2xl sm:text-3xl font-semibold text-slate-100 mb-2">How to Make an AI Music Video from audio</h2>
+            <h2 className="text-2xl sm:text-3xl font-semibold text-slate-100 mb-2">How to Make an AI Music Video from Lyrics</h2>
             <p className="text-slate-400 max-w-xl mx-auto mb-10">
               Three steps. No video editing experience needed.
             </p>
@@ -288,7 +288,7 @@ export default function AiMusicVideoGeneratorPage() {
               {[
                 {
                   step: "1. Upload or Type",
-                  text: "Input your audio or choose a track. Upload a file or connect your existing music from our AI Music Generator.",
+                  text: "Input your lyrics or choose a track. Paste text or connect your existing music from our AI Music Generator.",
                 },
                 {
                   step: "2. Customize Style",
@@ -339,8 +339,8 @@ export default function AiMusicVideoGeneratorPage() {
                   </tr>
                   <tr className="border-b border-slate-800/60">
                     <td className="py-3 px-4 font-medium text-slate-100">Multi-modal understanding</td>
-                    <td className="py-3 px-4">Limited audio/mood</td>
-                    <td className="py-3 px-4 text-violet-100">v6 audio + mood + style</td>
+                    <td className="py-3 px-4">Limited lyrics/mood</td>
+                    <td className="py-3 px-4 text-violet-100">v6 lyrics + mood + style</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-medium text-slate-100">Export quality</td>
@@ -371,7 +371,7 @@ export default function AiMusicVideoGeneratorPage() {
               <div className="my-6 rounded-xl overflow-hidden border border-slate-700/80">
                 <Image
                   src="/images/home/how-1-describe.webp"
-                  alt="Input audio or describe mood for AI music video"
+                  alt="Input lyrics or describe mood for AI music video"
                   width={672}
                   height={378}
                   className="w-full h-auto"
@@ -379,7 +379,7 @@ export default function AiMusicVideoGeneratorPage() {
                 />
               </div>
               <p>
-                Our approach with the <strong>v6 Multi-modal Engine</strong> was to invert that process: audio analysis runs first. The engine extracts beat positions, phrase boundaries, and emotional arc from the track, then builds a scene schedule around those anchors. Caption timing follows the same map.
+                Our approach with the <strong>v6 Multi-modal Engine</strong> was to invert that process: audio analysis runs first. The engine extracts beat positions, phrase boundaries, and emotional arc from the track (or lyrics-derived audio), then builds a scene schedule around those anchors. Caption timing follows the same map.
               </p>
               <p>
                 In practice, this keeps cuts within a single frame of the target beat across a standard 3-minute track—a meaningful improvement over tools that treated sync as an afterthought.

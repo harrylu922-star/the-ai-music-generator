@@ -5,7 +5,7 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { LANDING_PAGES } from "../../components/LandingNav";
 import { DualLayerWrapper } from "../../components/DualLayerWrapper";
 import { LyricsGeneratorWorkspace } from "./LyricsGeneratorWorkspace";
-import { LyricsFooter } from "./LyricsFooter";
+import { SiteFooter } from "../../components/SiteFooter";
 import { getJsonLdScript, FAQ_ITEMS } from "./json-ld";
 
 const PAGE_URL = "/ai-lyrics-generator";
@@ -13,11 +13,10 @@ const OG_IMAGE = "/images/home/hero-card-ai-lyrics-generator.jpg";
 
 export const metadata: Metadata = {
   title: { absolute: "Free AI Lyrics Generator | Write Song Lyrics in Seconds" },
-  description: "Create original song lyrics in seconds with our free AI lyrics generator. Perfect for songwriters, rappers & creators. Pick mood, structure & style—then turn lyrics into music.",
-  keywords: ["AI lyrics generator", "free AI song lyrics", "write song lyrics with AI", "AI songwriting", "lyrics generator for rappers"],
+  description: "Free AI lyrics generator: create original song lyrics in seconds. For songwriters, rappers & creators. Pick mood, structure & style—then turn lyrics into music.",
   openGraph: {
     title: "Free AI Lyrics Generator | Write Song Lyrics in Seconds",
-    description: "Create original lyrics in seconds. For songwriters, rappers & creators. Pick mood & style—then turn lyrics into music.",
+    description: "Free AI lyrics generator: create original song lyrics in seconds. For songwriters, rappers & creators. Pick mood & style—then turn lyrics into music.",
     url: PAGE_URL,
     siteName: "The AI Music Generator",
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Lyrics Generator - Write song lyrics with AI" }],
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Free AI Lyrics Generator | Write Song Lyrics in Seconds",
-    description: "Create original lyrics in seconds. For songwriters, rappers & creators. Turn lyrics into music.",
+    description: "Free AI lyrics generator: create original song lyrics in seconds. For songwriters, rappers & creators. Turn lyrics into music.",
     images: [OG_IMAGE],
   },
   alternates: { canonical: PAGE_URL },
@@ -147,10 +146,11 @@ export default function AiLyricsGeneratorPage() {
               </section>
 
               <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
+                <h2 className="mb-4 text-2xl font-semibold text-slate-100">What Our AI Lyrics Generator Creates for You</h2>
                 <div className="relative mb-6 aspect-video max-w-xl overflow-hidden rounded-xl">
                   <img src="/images/home/explore-idea-starters.webp" srcSet="/images/home/explore-idea-starters-640.webp 640w, /images/home/explore-idea-starters.webp 960w" sizes="(max-width: 768px) 100vw, 576px" alt="AI lyrics ideas and inspiration" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
                 </div>
-                <h2 className="mb-4 text-2xl font-semibold text-slate-100">Showcase: Example Lyrics from the AI Lyrics Generator</h2>
+                <h3 className="mb-2 text-base font-semibold text-slate-100">Lyrics Examples</h3>
                 <p className="mb-4 leading-relaxed">
                   The AI lyrics generator can produce a wide range of styles, from emotional ballads to upbeat anthems. Example outputs include titles like &quot;The Words Unsaid&quot;, &quot;My Urgent Condition&quot;, and &quot;Take Your Breath Away&quot;—each with full verse and chorus structures. These examples are generated from simple prompts (e.g. &quot;lost love&quot;, &quot;night drive&quot;, &quot;first meeting&quot;) and can be edited or used as inspiration. You can try the same prompts on the generator above and compare results; the AI often produces different variations each time, so you can run it multiple times until you find a draft you like. All showcase lyrics are for demonstration and can be replaced by your own prompts and settings.
                 </p>
@@ -174,7 +174,7 @@ export default function AiLyricsGeneratorPage() {
             </div>
           </div>
 
-          <LyricsFooter />
+          <SiteFooter />
         </main>
       </DualLayerWrapper>
     </>

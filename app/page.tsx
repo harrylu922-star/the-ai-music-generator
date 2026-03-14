@@ -2,15 +2,28 @@
 import type { Metadata } from "next";
 import Link from "@/components/Link";
 import { getHomeFaqJsonLd } from "./home-faq-ld";
+import { getHomePageAndAppJsonLd } from "./home-website-ld";
+import { getHomeMusicModelJsonLd, getLatestMusicModelJsonLd } from "./home-music-model-ld";
 import { HomeFeatureImage, HomeCtaImage } from "../components/HomeFeatureImage";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { HomeSampleTracks } from "../components/HomeSampleTracks";
+import { MusicModelModalTrigger } from "../components/MusicModelModal";
 
 export const metadata: Metadata = {
-  title: { absolute: "Free AI Music Generator for Creators | Royalty-Free in Seconds" },
+  title: { absolute: "The free AI Music Generator for Creators | Royalty-Free" },
   description:
-    "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators, filmmakers & YouTubers. Royalty-free, no copyright strikes—start creating.",
+    "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators, filmmakers & YouTubers. No copyright strikes—try free.",
+  openGraph: {
+    title: "The free AI Music Generator for Creators | Royalty-Free",
+    description:
+      "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators. No copyright strikes—try free.",
+  },
+  twitter: {
+    title: "The free AI Music Generator for Creators | Royalty-Free",
+    description:
+      "Turn text into songs and instrumentals in seconds. Free AI music generator for creators. No copyright strikes—try free.",
+  },
 };
 
 const sampleTracks = [
@@ -43,7 +56,19 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getHomePageAndAppJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getHomeMusicModelJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getLatestMusicModelJsonLd()) }}
       />
       <main className="min-h-screen bg-slate-950 text-slate-50">
       {/* 使用统一 SiteHeader：移动端仅图标+汉堡菜单，修复 Sign in 溢出 */}
@@ -81,10 +106,10 @@ export default function Home() {
                 <span className="text-[10px] font-medium uppercase tracking-wider text-violet-400">License</span>
                 100% Royalty-Free
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-sm text-slate-300">
+              <MusicModelModalTrigger className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-sm text-slate-300 hover:border-violet-500/50 hover:text-violet-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                 <span className="text-[10px] font-medium uppercase tracking-wider text-violet-400">Model</span>
                 2026 latest model v6
-              </span>
+              </MusicModelModalTrigger>
             </div>
           </div>
         </div>
@@ -268,23 +293,33 @@ export default function Home() {
           <h2 className="mb-6 text-3xl font-semibold text-slate-100">AI music generator FAQ</h2>
           <div className="space-y-3 text-left">
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <summary className="cursor-pointer text-base font-semibold text-slate-50">What can I create with your AI music generator?</summary>
+              <summary className="cursor-pointer">
+                <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">What can I create with your AI music generator?</h3>
+              </summary>
               <p className="mt-2 text-sm text-slate-200">You can generate full songs, short hooks, lyrics, or pure instrumentals — all from text prompts.</p>
             </details>
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <summary className="cursor-pointer text-base font-semibold text-slate-50">Do I own the music I create?</summary>
+              <summary className="cursor-pointer">
+                <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">Do I own the music I create?</h3>
+              </summary>
               <p className="mt-2 text-sm text-slate-200">You get a broad license. For details, see our <Link href="#copyright" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">copyright and licensing section</Link>.</p>
             </details>
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <summary className="cursor-pointer text-base font-semibold text-slate-50">Can I use AI-generated music on YouTube or TikTok?</summary>
+              <summary className="cursor-pointer">
+                <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">Can I use AI-generated music on YouTube or TikTok?</h3>
+              </summary>
               <p className="mt-2 text-sm text-slate-200">Yes. We recommend testing on non-critical videos first and reviewing our licensing terms.</p>
             </details>
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <summary className="cursor-pointer text-base font-semibold text-slate-50">Do I need music production experience?</summary>
+              <summary className="cursor-pointer">
+                <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">Do I need music production experience?</h3>
+              </summary>
               <p className="mt-2 text-sm text-slate-200">Not at all. If you can describe how you want your song to feel, the AI music generator can turn that into audio.</p>
             </details>
             <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-              <summary className="cursor-pointer text-base font-semibold text-slate-50">Can I start with lyrics first?</summary>
+              <summary className="cursor-pointer">
+                <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">Can I start with lyrics first?</h3>
+              </summary>
               <p className="mt-2 text-sm text-slate-200">Yes. You can use our <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI lyrics generator</Link> and then turn them into songs with the same <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI music generator</Link> workflow.</p>
             </details>
           </div>

@@ -18,6 +18,8 @@ export function SiteFooter() {
               <li><Link href="/free-ai-lofi-generator" className="underline underline-offset-2 hover:text-violet-200">AI Lofi Generator</Link></li>
               <li><Link href="/ai-music-video-generator" className="underline underline-offset-2 hover:text-violet-200">AI Music Video Generator</Link></li>
               <li><Link href="/pricing" className="underline underline-offset-2 hover:text-violet-200">Pricing</Link></li>
+              <li><Link href="/ai-country-music-generator" className="underline underline-offset-2 hover:text-violet-200">AI Country Music Generator</Link></li>
+              <li><Link href="/ai-blues-music-generator" className="underline underline-offset-2 hover:text-violet-200">AI Blues Music Generator</Link></li>
             </ul>
           </div>
           <div>

@@ -99,7 +99,7 @@ export function SheetMusicGeneratorWorkspace() {
       >
         <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4 pb-0">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-base font-semibold text-slate-100">Audio to Notation</h2>
+            <p className="text-base font-medium text-slate-300">Audio to Notation</p>
             <button
               type="button"
               onClick={() => setWorkspaceExpanded((e) => !e)}
@@ -116,14 +116,14 @@ export function SheetMusicGeneratorWorkspace() {
               </svg>
             </button>
           </div>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-base font-normal text-slate-300">
             Upload audio to generate piano notation and sheet music
           </p>
 
           <div className="mt-4">
-            <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-500 mb-2">
-              Source audio
-            </label>
+            <label className="block text-xs font-medium uppercase tracking-wider text-slate-500 mb-2">
+            Source audio
+          </label>
             <input
               ref={fileInputRef}
               type="file"
@@ -138,7 +138,7 @@ export function SheetMusicGeneratorWorkspace() {
               onDrop={handleDrop}
               onClick={fileName ? undefined : () => fileInputRef.current?.click()}
               className={cn(
-                "relative flex min-h-[140px] flex-col items-center justify-center rounded-xl border-2 border-dashed transition",
+                "relative flex min-h-[240px] flex-col items-center justify-center rounded-xl border-2 border-dashed transition",
                 isDragging && "border-violet-400/60 bg-violet-500/10",
                 fileName && !isDragging && "border-slate-600 bg-slate-800/40",
                 !fileName && !isDragging && "cursor-pointer border-slate-600 bg-slate-800/30 hover:border-slate-500 hover:bg-slate-800/50"
@@ -149,8 +149,8 @@ export function SheetMusicGeneratorWorkspace() {
                   <svg className="h-9 w-9 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                   </svg>
-                  <p className="text-sm font-medium text-slate-200">Drop audio or click to upload</p>
-                  <p className="text-xs text-slate-500 mt-0.5">WAV, MP3, M4A — up to 10 min</p>
+                  <p className="text-base font-medium text-slate-200">Drop audio or click to upload</p>
+                  <p className="text-sm text-slate-500 mt-0.5">WAV, MP3, M4A — up to 10 min</p>
                 </>
               ) : (
                 <div className="text-center px-3">
@@ -178,7 +178,7 @@ export function SheetMusicGeneratorWorkspace() {
           </div>
 
           <div className="mt-4 rounded-2xl bg-slate-800/30 p-3 overflow-hidden">
-            <p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-slate-500">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">
               Output format
             </p>
             <div className="flex flex-wrap gap-2">
@@ -188,7 +188,7 @@ export function SheetMusicGeneratorWorkspace() {
                   type="button"
                   onClick={() => toggleOutputFormat(format)}
                   className={cn(
-                    "rounded-full border px-3 py-1.5 text-xs font-medium transition capitalize",
+                    "rounded-full border px-3 py-1.5 text-sm font-medium transition capitalize",
                     outputFormats.includes(format)
                       ? "border-violet-500 bg-violet-500/20 text-violet-300"
                       : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200"
@@ -198,7 +198,7 @@ export function SheetMusicGeneratorWorkspace() {
                 </button>
               ))}
             </div>
-            <p className="mt-2 text-[10px] text-slate-500">
+            <p className="mt-2 text-sm text-slate-500">
               Piano notation (staff), MIDI export, or PDF sheet music. Select one or more.
             </p>
           </div>
@@ -216,17 +216,21 @@ export function SheetMusicGeneratorWorkspace() {
         </div>
       </aside>
 
-      {/* 右侧：预览 / 最近转录列表 */}
+      {/* 右侧：H1 + TL/DR 在 Notation preview 上方，预览 / 最近转录列表 */}
       <div className="flex flex-1 min-w-0 min-h-0 flex-col rounded-l-2xl bg-slate-800/30 overflow-hidden">
-        <div className="shrink-0 px-4 pt-3 pb-2 rounded-tl-2xl bg-slate-900/50">
-          <h2 className="text-base font-semibold text-slate-100 md:text-lg">
-            Notation preview
-          </h2>
-          <p className="mt-0.5 text-xs text-slate-400">
-            {transcriptions.length === 0
-              ? "Your transcriptions will appear here after you convert"
-              : "Select an item to view piano notation and export"}
+        <div className="shrink-0 px-4 pt-2 pb-2 rounded-tl-2xl bg-slate-900/50 border-b border-slate-800/50">
+          <h1 className="text-lg font-semibold tracking-tight text-slate-100 sm:text-xl">
+            AI Sheet Music Generator: Precision Transcription (2026)
+          </h1>
+          <p className="mt-0.5 text-sm text-slate-400 leading-snug">
+            Turn audio into piano notation and sheet music. V6 engine handles polyphony and velocity. MIDI &amp; PDF export for composers.
           </p>
+          <p className="mt-2 text-sm font-medium text-slate-300">Notation preview</p>
+          <h2 className="mt-0.5 text-sm font-normal text-slate-400">
+            {transcriptions.length === 0
+              ? "What the AI sheet music generator outputs — your transcriptions appear here after you convert"
+              : "What the AI sheet music generator outputs — select an item to view piano notation and export"}
+          </h2>
         </div>
 
         <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3">

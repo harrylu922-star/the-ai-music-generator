@@ -14,8 +14,7 @@ const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
 export const metadata: Metadata = {
   title: { absolute: "Free AI Music Generator | Royalty-Free Music from Text" },
-  description: "Generate unique, royalty-free music from text in seconds. Free AI music generator for creators, filmmakers & YouTubers. Describe genre, mood & style—get full tracks. Try free.",
-  keywords: ["AI music generator", "free AI song generator", "text to music", "royalty-free music", "AI music creator", "generate music from text"],
+  description: "Generate unique, royalty-free music from text in seconds. Free AI music generator for creators, filmmakers & YouTubers. Describe genre, mood & style—get full tracks.",
   openGraph: {
     title: "Free AI Music Generator | Royalty-Free Music from Text",
     description: "Generate royalty-free music from text in seconds. For creators, filmmakers & YouTubers. Full tracks—try free.",
@@ -86,8 +85,11 @@ export default function AiMusicGeneratorPage() {
           <div className="mx-auto max-w-3xl px-4 py-12 text-slate-200">
             <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8">
               <h2 className="mb-6 text-2xl font-semibold text-slate-100">How AI Music Generator Works</h2>
-              <p className="mb-6 leading-relaxed">
-                Experience the future of music creation with our easy 3-step process.
+              <p className="mb-4 leading-relaxed">
+                Experience the future of music creation with our easy 3-step process. Describe what you want in plain text—genre, mood, instruments, or tempo—and get a full, royalty-free track in minutes. No music theory or production skills required.
+              </p>
+              <p className="mb-6 leading-relaxed text-slate-300">
+                Below are the three steps: describe your idea, let the AI generate the music, then download and use it anywhere—YouTube, podcasts, or commercial projects.
               </p>
               <div className="space-y-6">
                 <div className="flex gap-4 rounded-2xl bg-slate-800/40 p-4">
@@ -137,7 +139,8 @@ export default function AiMusicGeneratorPage() {
                 />
               </div>
               <h2 className="mb-6 text-2xl font-semibold text-slate-100">Explore our AI Music Generator</h2>
-              <p className="mb-6 leading-relaxed text-slate-400">Crafting meaningful music for you, not just industrial noise.</p>
+              <p className="mb-4 leading-relaxed text-slate-300">Crafting meaningful music for you, not just industrial noise. Whether you need a background track for a video, a jingle for a brand, or a full song with your own lyrics, the generator adapts to your text and delivers royalty-free audio you can use immediately.</p>
+              <p className="mb-6 leading-relaxed text-slate-400">Here’s what you can do with it.</p>
               <div className="space-y-4">
                 <div className="rounded-2xl bg-slate-900/50 p-4">
                   <h3 className="font-semibold text-slate-100 mb-2">Create Unique AI Music From Text</h3>
@@ -164,27 +167,52 @@ export default function AiMusicGeneratorPage() {
 
             <section className="mb-12 rounded-2xl bg-slate-900/40 p-6 md:p-8" id="faq">
               <h2 className="mb-6 text-2xl font-semibold text-slate-100">Frequently Asked Questions</h2>
-              <div className="space-y-4">
-                <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
-                  <h3 className="mb-2 text-base font-semibold text-slate-100">Is there a free AI song generator?</h3>
-                  <p className="text-sm leading-relaxed text-slate-200">Yes, you can try our AI Music Generator for free. We offer a free tier so you can experiment with generating songs based on your prompts and explore different styles. It&apos;s a great way to test the quality and features before deciding on a paid plan for more extensive use.</p>
-                </div>
-                <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
-                  <h3 className="mb-2 text-base font-semibold text-slate-100">Can I use the generated music commercially?</h3>
-                  <p className="text-sm leading-relaxed text-slate-200">Music generated on our platform can be royalty-free and used for both personal and commercial purposes when you have the appropriate license or membership. Check our pricing and terms for commercial use.</p>
-                </div>
-                <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
-                  <h3 className="mb-2 text-base font-semibold text-slate-100">Which AI generates song from text?</h3>
-                  <p className="text-sm leading-relaxed text-slate-200">Our AI Music Generator is designed to generate music based on text prompts. You describe genre, mood, tempo, and voice in words; the AI interprets your description and produces a complete song structure. Our <Link href="/ai-lyrics-generator" className="text-violet-400 hover:underline">AI Lyrics Generator</Link> creates lyrics from text, while the Music Generator turns textual ideas about sound into full tracks.</p>
-                </div>
-                <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
-                  <h3 className="mb-2 text-base font-semibold text-slate-100">How long does it take to generate music?</h3>
-                  <p className="text-sm leading-relaxed text-slate-200">Most songs are generated within 1–5 minutes, depending on the complexity and length requested. You can start with short clips to iterate quickly.</p>
-                </div>
-                <div className="rounded-2xl bg-slate-800/40 p-4 md:p-5">
-                  <h3 className="mb-2 text-base font-semibold text-slate-100">How to generate a song with AI?</h3>
-                  <p className="text-sm leading-relaxed text-slate-200">Generating a song with AI is simple. Enter text prompts that describe the content, genre, mood, tempo, and voice of the music. The AI Music Generator processes your input and creates a unique song based on your specifications. You can also add your own lyrics via the Own Lyrics flow for full vocal tracks.</p>
-                </div>
+              <div className="space-y-3">
+                <details className="group rounded-2xl bg-slate-800/40 overflow-hidden">
+                  <summary className="cursor-pointer list-none p-4 md:p-5 flex items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                    <h3 className="text-base font-semibold text-slate-100 pr-2">Is there a free AI song generator?</h3>
+                    <span className="shrink-0 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <p className="text-sm leading-relaxed text-slate-200 px-4 pb-4 md:px-5 md:pb-5 border-t border-slate-700/50 pt-3">
+                    Yes, you can try our AI Music Generator for free. We offer a free tier so you can experiment with generating songs based on your prompts and explore different styles. It&apos;s a great way to test the quality and features before deciding on a paid plan for more extensive use.
+                  </p>
+                </details>
+                <details className="group rounded-2xl bg-slate-800/40 overflow-hidden">
+                  <summary className="cursor-pointer list-none p-4 md:p-5 flex items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                    <h3 className="text-base font-semibold text-slate-100 pr-2">Can I use the generated music commercially?</h3>
+                    <span className="shrink-0 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <p className="text-sm leading-relaxed text-slate-200 px-4 pb-4 md:px-5 md:pb-5 border-t border-slate-700/50 pt-3">
+                    Music generated on our platform can be royalty-free and used for both personal and commercial purposes when you have the appropriate license or membership. Check our pricing and terms for commercial use.
+                  </p>
+                </details>
+                <details className="group rounded-2xl bg-slate-800/40 overflow-hidden">
+                  <summary className="cursor-pointer list-none p-4 md:p-5 flex items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                    <h3 className="text-base font-semibold text-slate-100 pr-2">Which AI generates song from text?</h3>
+                    <span className="shrink-0 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <p className="text-sm leading-relaxed text-slate-200 px-4 pb-4 md:px-5 md:pb-5 border-t border-slate-700/50 pt-3">
+                    Our AI Music Generator is designed to generate music based on text prompts. You describe genre, mood, tempo, and voice in words; the AI interprets your description and produces a complete song structure. Our <Link href="/ai-lyrics-generator" className="text-violet-400 hover:underline">AI Lyrics Generator</Link> creates lyrics from text, while the Music Generator turns textual ideas about sound into full tracks.
+                  </p>
+                </details>
+                <details className="group rounded-2xl bg-slate-800/40 overflow-hidden">
+                  <summary className="cursor-pointer list-none p-4 md:p-5 flex items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                    <h3 className="text-base font-semibold text-slate-100 pr-2">How long does it take to generate music?</h3>
+                    <span className="shrink-0 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <p className="text-sm leading-relaxed text-slate-200 px-4 pb-4 md:px-5 md:pb-5 border-t border-slate-700/50 pt-3">
+                    Most songs are generated within 1–5 minutes, depending on the complexity and length requested. You can start with short clips to iterate quickly.
+                  </p>
+                </details>
+                <details className="group rounded-2xl bg-slate-800/40 overflow-hidden">
+                  <summary className="cursor-pointer list-none p-4 md:p-5 flex items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                    <h3 className="text-base font-semibold text-slate-100 pr-2">How to generate a song with AI?</h3>
+                    <span className="shrink-0 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <p className="text-sm leading-relaxed text-slate-200 px-4 pb-4 md:px-5 md:pb-5 border-t border-slate-700/50 pt-3">
+                    Generating a song with AI is simple. Enter text prompts that describe the content, genre, mood, tempo, and voice of the music. The AI Music Generator processes your input and creates a unique song based on your specifications. You can also add your own lyrics via the Own Lyrics flow for full vocal tracks.
+                  </p>
+                </details>
               </div>
             </section>
 

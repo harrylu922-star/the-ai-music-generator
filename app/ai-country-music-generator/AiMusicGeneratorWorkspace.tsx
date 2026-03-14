@@ -6,30 +6,37 @@ import { Input } from "../../components/ui/input";
 import { cn } from "../../lib/utils";
 import { useLoginPreview } from "../../lib/use-login-preview";
 
-const PROMPT_PRESETS = [
-  "Upbeat pop with acoustic guitar and warm vocals, summer vibes",
-  "Dark electronic with heavy bass and atmospheric synths, 120 BPM",
-  "Smooth R&B with soft piano and warm male vocals, late night vibe",
-];
-const COVER_STYLE_PRESETS = [
-  "Smooth R&B with soft piano and warm male vocals, late night vibe",
-  "Upbeat pop with acoustic guitar and catchy chorus, summer feel",
-  "Dark electronic with heavy bass and atmospheric synths",
+/** Get inspired 共用的约 10 个 country 风格预设，点击依次切换 */
+const COUNTRY_PROMPT_PRESETS = [
+  "Slow country ballad, acoustic guitar and soft piano, open road, 70 BPM, warm and nostalgic",
+  "Country shuffle, pedal steel and telecaster, upbeat and twangy, 120 BPM",
+  "Americana folk, fingerpicked guitar, minimal drums, campfire feel, intimate",
+  "Dust road ballad, warm vocals, open-road storytelling, acoustic and strings",
+  "Southern country, piano and strings, emotional build, 85 BPM",
+  "Bluegrass drive, banjo and fiddle, fast and bright, 140 BPM",
+  "Outlaw country, gritty telecaster, raw and honest, mid-tempo",
+  "Country waltz, pedal steel and piano, romantic and tender, 3/4 time",
+  "Honky-tonk bar, live feel, piano and steel, 100 BPM",
+  "Country gospel, soulful and uplifting, choir-style harmonies",
 ];
 
-const genres = ["Hip Hop", "Jazz", "Reggae", "Pop", "R&B", "EDM", "Country", "Folk", "Rock", "Blues", "Classical", "Disco", "Funk"];
-const moods = ["Joyous", "Sad", "Gentle", "Warm", "Cold", "Festive", "Romantic", "Soothing", "Inspiring", "Soulful"];
-const instruments = ["Piano", "Guitar", "Drums", "Bass", "Synth", "Strings", "Vocal", "Electric Guitar", "Acoustic"];
-const ambiences = ["Studio", "Live", "Epic", "Minimal", "Warm", "Spacey"];
+/** Country 页面预设：风格选项以 country 为主 */
+const COUNTRY_GENRES = ["Country", "Americana", "Folk", "Southern", "Bluegrass", "Outlaw"];
+const COUNTRY_MOODS = ["Warm", "Nostalgic", "Soulful", "Gentle", "Romantic", "Inspiring", "Joyous", "Sad"];
+const COUNTRY_AMBIENCES = ["Warm", "Minimal", "Studio", "Live", "Epic"];
+const instruments = ["Piano", "Guitar", "Drums", "Bass", "Acoustic", "Pedal Steel", "Telecaster", "Strings", "Synth", "Electric Guitar"];
 const VOCAL_OPTIONS = ["Male Vocal", "Female Vocal", "Male And Female Vocal"] as const;
+/** 初始 prompt 预填：country 风格默认 */
+const DEFAULT_COUNTRY_PROMPT = "Country, Warm, Acoustic guitar, Pedal Steel, Warm";
+
 type OpenPanel = "genre" | "mood" | "instrument" | "ambience" | "vocal" | null;
 
-/** 未登录时右侧展示的示例（仅用于 Explore 面板） */
+/** 未登录时展示区：2 首歌曲（vocal）+ 2 首纯音乐（instrumental） */
 const MUSIC_EXPLORE_EXAMPLES = [
-  { title: "High-Energy Progressive House Anthem", description: "Built for massive festival moments", duration: "03:21", tags: ["EDM", "Progressive House"] },
-  { title: "Cold and Mysterious Lofi Vocal Track", description: "Floating through dreamy night echoes", duration: "02:35", tags: ["Mystery", "Cold", "Lofi Vocal"] },
-  { title: "Smooth and Lazy Neo-Soul R&B Groove", description: "Designed for slow comfortable evenings", duration: "03:05", tags: ["R&B", "Lazy", "Neo-Soul"] },
-  { title: "Warm Chill Folk-Country Journey", description: "Filled with acoustic strings and gentle stories", duration: "04:01", tags: ["Folk", "Country", "Chill"] },
+  { title: "Dust Road Ballad", description: "Acoustic guitar and warm vocals, open-road Americana", duration: "03:45", tags: ["Country", "Ballad", "Acoustic"], kind: "vocal" as const },
+  { title: "Southern Twilight", description: "Country storytelling with vocals, pedal steel and piano", duration: "03:58", tags: ["Country", "Southern", "Storytelling"], kind: "vocal" as const },
+  { title: "Americana Campfire", description: "Fingerpicked guitar, minimal drums, intimate instrumental", duration: "03:20", tags: ["Americana", "Folk", "Instrumental"], kind: "instrumental" as const },
+  { title: "Open Road", description: "Warm ballad, acoustic and strings, nostalgic instrumental", duration: "04:02", tags: ["Country", "Ballad", "Instrumental"], kind: "instrumental" as const },
 ];
 
 interface HistoryItem {
@@ -58,7 +65,7 @@ export function AiMusicGeneratorWorkspace() {
   const isLoggedIn = useLoginPreview();
   const [tabMode, setTabMode] = useState<TabMode>("prompt");
   const [workspaceExpanded, setWorkspaceExpanded] = useState(false);
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState(DEFAULT_COUNTRY_PROMPT);
   const [title, setTitle] = useState("");
   const [lyrics, setLyrics] = useState("");
   const [coverStyle, setCoverStyle] = useState("");
@@ -71,6 +78,8 @@ export function AiMusicGeneratorWorkspace() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
   const [vocalChoice, setVocalChoice] = useState<string>("");
+  const [promptPresetIndex, setPromptPresetIndex] = useState(0);
+  const [coverStylePresetIndex, setCoverStylePresetIndex] = useState(0);
   const promptRef = useRef<HTMLTextAreaElement>(null);
   const lyricsRef = useRef<HTMLTextAreaElement>(null);
   const coverStyleRef = useRef<HTMLTextAreaElement>(null);
@@ -81,8 +90,9 @@ export function AiMusicGeneratorWorkspace() {
 
   const addVocalToPrompt = (value: string) => {
     setPrompt((prev) => {
-      const without = prev.replace(/\b(Male Vocal|Female Vocal|Male And Female Vocal)\b/g, "").replace(/,?\s+,/g, ", ").trim().replace(/^,\s*|,\s*$/g, "");
-      return value ? (without ? without + ", " + value : value) : without;
+      let next = prev.replace(/\b(Male Vocal|Female Vocal|Male And Female Vocal)\b/g, "").replace(/,?\s+,/g, ", ").trim().replace(/^,\s*|,\s*$/g, "");
+      if (value) next = next ? next + ", " + value : value;
+      return next;
     });
     setVocalChoice(value);
     setOpenPanel(null);
@@ -95,8 +105,9 @@ export function AiMusicGeneratorWorkspace() {
 
   const setVocalInCoverStyle = (value: string) => {
     setCoverStyle((prev) => {
-      const without = prev.replace(/\b(Male Vocal|Female Vocal|Male And Female Vocal)\b/gi, "").replace(/,?\s+,/g, ", ").trim().replace(/^,\s*|,\s*$/g, "");
-      return value ? (without ? without + ", " + value : value) : without;
+      let next = prev.replace(/\b(Male Vocal|Female Vocal|Male And Female Vocal)\b/gi, "").replace(/,?\s+,/g, ", ").trim().replace(/^,\s*|,\s*$/g, "");
+      if (value) next = next ? next + ", " + value : value;
+      return next;
     });
     setVocalChoice(value);
     setOpenPanel(null);
@@ -104,8 +115,9 @@ export function AiMusicGeneratorWorkspace() {
   };
 
   const handleGetInspiredCover = () => {
-    const preset = COVER_STYLE_PRESETS[Math.floor(Math.random() * COVER_STYLE_PRESETS.length)];
-    setCoverStyle((s) => (s ? s + "\n" + preset : preset));
+    const preset = COUNTRY_PROMPT_PRESETS[coverStylePresetIndex];
+    setCoverStyle(preset);
+    setCoverStylePresetIndex((i) => (i + 1) % COUNTRY_PROMPT_PRESETS.length);
     coverStyleRef.current?.focus();
   };
 
@@ -115,8 +127,9 @@ export function AiMusicGeneratorWorkspace() {
   };
 
   const handleGetInspired = () => {
-    const preset = PROMPT_PRESETS[Math.floor(Math.random() * PROMPT_PRESETS.length)];
+    const preset = COUNTRY_PROMPT_PRESETS[promptPresetIndex];
     setPrompt(preset);
+    setPromptPresetIndex((i) => (i + 1) % COUNTRY_PROMPT_PRESETS.length);
     promptRef.current?.focus();
   };
 
@@ -137,7 +150,6 @@ export function AiMusicGeneratorWorkspace() {
     ]);
     setPlayingId(id);
     setPlayerVisible(true);
-    // MVP: 无真实 API 时，延迟后标记为完成，避免一直处于 generating
     setTimeout(() => {
       setHistory((prev) =>
         prev.map((item) =>
@@ -165,7 +177,6 @@ export function AiMusicGeneratorWorkspace() {
   return (
     <>
       <div className="flex flex-1 min-w-0 min-h-0 flex-col lg:flex-row">
-        {/* 中间：表单区，与 Own Lyrics 同布局（标题 + 双标签 + 表单 + CTA 贴底） */}
         <aside
           className={cn(
             "flex w-full shrink-0 flex-col rounded-r-2xl bg-slate-900/30 border-r border-slate-800 min-h-0 overflow-hidden transition-[width] duration-200",
@@ -174,7 +185,7 @@ export function AiMusicGeneratorWorkspace() {
         >
           <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4 pb-0">
             <div className="flex items-center justify-between gap-2">
-              <p className="text-base font-semibold text-slate-100">AI Music Generator</p>
+              <p className="text-base text-slate-200">AI Country Music Generator</p>
               <button
                 type="button"
                 onClick={() => setWorkspaceExpanded((e) => !e)}
@@ -227,10 +238,10 @@ export function AiMusicGeneratorWorkspace() {
               <div className="relative">
                 <textarea
                   ref={promptRef}
-                  rows={4}
+                  rows={7}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  placeholder="Describe the music you want… genre, mood, instruments…"
+                  placeholder="e.g. Slow country ballad, acoustic guitar, 70 BPM…"
                   maxLength={500}
                   className="w-full resize-none rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 pr-20 pb-7 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
                 />
@@ -242,10 +253,10 @@ export function AiMusicGeneratorWorkspace() {
               </div>
             </div>
             <div className="rounded-2xl bg-slate-800/30 p-3 overflow-hidden">
-              <p className="mb-2 text-xs font-medium text-slate-400">#Genre #Mood #Instrument #Ambience #Vocal</p>
+              <p className="mb-2 text-xs font-medium text-slate-400">#Genre #Mood #Ambience #Vocal</p>
               <div className="flex flex-col gap-1.5">
                 <div className="flex flex-wrap gap-1.5">
-                  {(["genre", "mood", "instrument"] as const).map((key) => (
+                  {(["genre", "mood", "ambience"] as const).map((key) => (
                     <button
                       key={key}
                       type="button"
@@ -260,33 +271,47 @@ export function AiMusicGeneratorWorkspace() {
                   ))}
                 </div>
                 <div className="flex flex-wrap gap-1.5">
-                  {(["ambience", "vocal"] as const).map((key) => (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => togglePanel(key)}
-                      className={cn(
-                        "shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition capitalize",
-                        openPanel === key ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200"
-                      )}
-                    >
-                      {key} {openPanel === key ? "▾" : "▸"}
-                      {key === "vocal" && vocalChoice ? ` · ${vocalChoice}` : ""}
-                    </button>
-                  ))}
+                  <button
+                    type="button"
+                    onClick={() => togglePanel("vocal")}
+                    className={cn(
+                      "shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition capitalize",
+                      openPanel === "vocal" ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200"
+                    )}
+                  >
+                    Vocal {openPanel === "vocal" ? "▾" : "▸"}
+                    {vocalChoice ? ` · ${vocalChoice}` : ""}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => togglePanel("instrument")}
+                    className={cn(
+                      "shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition capitalize",
+                      openPanel === "instrument" ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200"
+                    )}
+                  >
+                    Instrument {openPanel === "instrument" ? "▾" : "▸"}
+                  </button>
                 </div>
               </div>
               {openPanel === "genre" && (
                 <div className="mt-3 flex flex-wrap gap-1.5 rounded-xl overflow-hidden">
-                  {genres.map((g) => (
+                  {COUNTRY_GENRES.map((g) => (
                     <button key={g} type="button" onClick={() => addToPrompt(g)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{g}</button>
                   ))}
                 </div>
               )}
               {openPanel === "mood" && (
                 <div className="mt-3 flex flex-wrap gap-1.5 rounded-xl overflow-hidden">
-                  {moods.map((m) => (
+                  {COUNTRY_MOODS.map((m) => (
                     <button key={m} type="button" onClick={() => addToPrompt(m)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{m}</button>
+                  ))}
+                </div>
+              )}
+              {openPanel === "ambience" && (
+                <div className="mt-3 flex flex-wrap gap-1.5 rounded-xl overflow-hidden">
+                  {COUNTRY_AMBIENCES.map((a) => (
+                    <button key={a} type="button" onClick={() => addToPrompt(a)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{a}</button>
                   ))}
                 </div>
               )}
@@ -294,13 +319,6 @@ export function AiMusicGeneratorWorkspace() {
                 <div className="mt-3 flex flex-wrap gap-1.5 rounded-xl overflow-hidden">
                   {instruments.map((i) => (
                     <button key={i} type="button" onClick={() => addToPrompt(i)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{i}</button>
-                  ))}
-                </div>
-              )}
-              {openPanel === "ambience" && (
-                <div className="mt-3 flex flex-wrap gap-1.5 rounded-xl overflow-hidden">
-                  {ambiences.map((a) => (
-                    <button key={a} type="button" onClick={() => addToPrompt(a)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{a}</button>
                   ))}
                 </div>
               )}
@@ -369,28 +387,27 @@ export function AiMusicGeneratorWorkspace() {
               />
               <p className="text-[10px] text-slate-500 mt-0.5">{coverStyle.length}/500</p>
             </div>
-            <div className="rounded-2xl bg-slate-800/30 p-2.5 overflow-hidden">
-              <p className="mb-1.5 text-[10px] font-medium text-slate-400">#Genre #Mood #Instrument #Ambience #Vocal</p>
-              <div className="flex flex-col gap-1">
-                <div className="flex flex-wrap gap-1">
-                  {(["genre", "mood", "instrument"] as const).map((key) => (
-                    <button key={key} type="button" onClick={() => togglePanel(key)} className={cn("shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium transition capitalize", openPanel === key ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200")}>{key} {openPanel === key ? "▾" : "▸"}</button>
+            <div className="rounded-2xl bg-slate-800/30 p-3 overflow-hidden">
+              <p className="mb-2 text-xs font-medium text-slate-400">#Genre #Mood #Ambience #Vocal</p>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex flex-wrap gap-1.5">
+                  {(["genre", "mood", "ambience"] as const).map((key) => (
+                    <button key={key} type="button" onClick={() => togglePanel(key)} className={cn("shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition capitalize", openPanel === key ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200")}>{key} {openPanel === key ? "▾" : "▸"}</button>
                   ))}
                 </div>
-                <div className="flex flex-wrap gap-1">
-                  {(["ambience", "vocal"] as const).map((key) => (
-                    <button key={key} type="button" onClick={() => togglePanel(key)} className={cn("shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium transition capitalize", openPanel === key ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200")}>{key} {openPanel === key ? "▾" : "▸"}{key === "vocal" && vocalChoice ? ` · ${vocalChoice}` : ""}</button>
-                  ))}
+                <div className="flex flex-wrap gap-1.5">
+                  <button type="button" onClick={() => togglePanel("vocal")} className={cn("shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition capitalize", openPanel === "vocal" ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200")}>Vocal {openPanel === "vocal" ? "▾" : "▸"}{vocalChoice ? ` · ${vocalChoice}` : ""}</button>
+                  <button type="button" onClick={() => togglePanel("instrument")} className={cn("shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition capitalize", openPanel === "instrument" ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-950 text-slate-400 hover:border-violet-500/50 hover:text-violet-200")}>Instrument {openPanel === "instrument" ? "▾" : "▸"}</button>
                 </div>
               </div>
-              {openPanel === "genre" && <div className="mt-2 flex flex-wrap gap-1">{genres.map((g) => <button key={g} type="button" onClick={() => addToCoverStyle(g)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2 py-0.5 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{g}</button>)}</div>}
-              {openPanel === "mood" && <div className="mt-2 flex flex-wrap gap-1">{moods.map((m) => <button key={m} type="button" onClick={() => addToCoverStyle(m)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2 py-0.5 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{m}</button>)}</div>}
-              {openPanel === "instrument" && <div className="mt-2 flex flex-wrap gap-1">{instruments.map((i) => <button key={i} type="button" onClick={() => addToCoverStyle(i)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2 py-0.5 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{i}</button>)}</div>}
-              {openPanel === "ambience" && <div className="mt-2 flex flex-wrap gap-1">{ambiences.map((a) => <button key={a} type="button" onClick={() => addToCoverStyle(a)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2 py-0.5 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{a}</button>)}</div>}
+              {openPanel === "genre" && <div className="mt-3 flex flex-wrap gap-1.5">{COUNTRY_GENRES.map((g) => <button key={g} type="button" onClick={() => addToCoverStyle(g)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{g}</button>)}</div>}
+              {openPanel === "mood" && <div className="mt-3 flex flex-wrap gap-1.5">{COUNTRY_MOODS.map((m) => <button key={m} type="button" onClick={() => addToCoverStyle(m)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{m}</button>)}</div>}
+              {openPanel === "ambience" && <div className="mt-3 flex flex-wrap gap-1.5">{COUNTRY_AMBIENCES.map((a) => <button key={a} type="button" onClick={() => addToCoverStyle(a)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{a}</button>)}</div>}
+              {openPanel === "instrument" && <div className="mt-3 flex flex-wrap gap-1.5">{instruments.map((i) => <button key={i} type="button" onClick={() => addToCoverStyle(i)} className="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 text-[10px] text-slate-300 hover:border-violet-500/50 hover:text-violet-200">{i}</button>)}</div>}
               {openPanel === "vocal" && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {VOCAL_OPTIONS.map((v) => <button key={v} type="button" onClick={() => setVocalInCoverStyle(v)} className={cn("rounded-full border px-2 py-0.5 text-[10px]", vocalChoice === v ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-900/80 text-slate-300 hover:border-violet-500/50 hover:text-violet-200")}>{v}</button>)}
-                  <button type="button" onClick={() => setVocalInCoverStyle("")} className="rounded-full border border-slate-700 px-2 py-0.5 text-[10px] text-slate-500 hover:text-violet-200">Clear</button>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {VOCAL_OPTIONS.map((v) => <button key={v} type="button" onClick={() => setVocalInCoverStyle(v)} className={cn("rounded-full border px-2.5 py-1 text-[10px] font-medium", vocalChoice === v ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-900/80 text-slate-300 hover:border-violet-500/50 hover:text-violet-200")}>{v}</button>)}
+                  <button type="button" onClick={() => setVocalInCoverStyle("")} className="rounded-full border border-slate-700 px-2.5 py-1 text-[10px] text-slate-500 hover:border-violet-500/50 hover:text-violet-200">Clear</button>
                 </div>
               )}
             </div>
@@ -399,20 +416,19 @@ export function AiMusicGeneratorWorkspace() {
           </div>
           <div className="shrink-0 border-t border-slate-800 p-4 bg-slate-900/30">
             <button type="button" onClick={handleGenerate} className="w-full rounded-full bg-violet-500 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.4)] hover:bg-violet-400 transition">
-              Generate Music for Free Now
+              Create country track
             </button>
           </div>
         </aside>
 
-        {/* 右侧：登录时 My Workspace，未登录时 Explore 示例 + Sign in CTA；标题栏统一 */}
         <div className="flex flex-1 min-w-0 min-h-0 flex-col rounded-l-2xl bg-slate-800/30 overflow-hidden">
           <div className="shrink-0 px-4 pt-3 pb-2 rounded-tl-2xl bg-slate-900/50">
-            <h1 className="text-base font-semibold text-slate-100 md:text-lg">
-              {isLoggedIn ? "My Workspace" : "AI Music Generator for Free"}
+            <h1 className="text-xl font-semibold text-slate-100 md:text-2xl tracking-tight">
+              {isLoggedIn ? "My Workspace" : "AI Country Music Generator for Free"}
             </h1>
-            <p className="mt-0.5 text-xs text-slate-400">
-              {isLoggedIn ? "Your generated tracks" : "Explore some music examples generated by AI"}
-            </p>
+            <h2 className="mt-1 text-sm font-medium text-slate-400 md:text-base">
+              {isLoggedIn ? "Your Generated Tracks" : "Explore Country Examples Generated by AI Country Music Generator"}
+            </h2>
           </div>
 
           {isLoggedIn ? (
@@ -516,7 +532,12 @@ export function AiMusicGeneratorWorkspace() {
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-slate-100">{item.title}</p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="truncate text-sm font-medium text-slate-100">{item.title}</p>
+                          <span className={cn("shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium", item.kind === "vocal" ? "bg-violet-500/20 text-violet-300" : "bg-slate-700 text-slate-400")}>
+                            {item.kind === "vocal" ? "Song" : "Instrumental"}
+                          </span>
+                        </div>
                         <p className="truncate text-xs text-slate-400 mt-0.5">{item.description}</p>
                         <div className="mt-1 flex flex-wrap gap-1">
                           {item.tags.map((tag) => (
@@ -540,7 +561,6 @@ export function AiMusicGeneratorWorkspace() {
         </div>
       </div>
 
-      {/* Bottom: Music player bar */}
       <footer
         className={cn(
           "fixed bottom-0 left-0 right-0 z-50 flex h-20 shrink-0 items-center justify-center border-t border-slate-800 bg-slate-900/95 backdrop-blur transition-[transform] duration-300 ease-out",

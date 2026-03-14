@@ -9,21 +9,21 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden border-b border-amber-200/30 bg-gradient-to-b from-amber-50/80 to-transparent py-16 md:py-24">
+    <section className="shrink-0 border-b border-slate-700/50 bg-slate-900/40 py-10 md:py-14">
       <div className="mx-auto max-w-4xl px-4 text-center">
-        <p className="mb-3 text-sm font-medium uppercase tracking-widest text-amber-800/70">
-          AI Music Generator from Lyrics
+        <p className="mb-2 text-sm font-medium uppercase tracking-widest text-slate-500">
+          Lyrics to Music
         </p>
-        <h1 className="font-serif text-4xl font-semibold tracking-tight text-stone-800 sm:text-5xl md:text-6xl">
+        <p className="text-xl font-semibold text-slate-100 sm:text-2xl md:text-3xl">
           Your Lyrics, Our Melody.
-        </h1>
-        <p className="mt-4 text-lg text-stone-600 sm:text-xl">
-          Turn your words into songs with the 2026 v6 model — built for creators who have the lyrics and need the tune.
+        </p>
+        <p className="mt-3 text-slate-400 sm:text-lg">
+          Turn your words into songs with the 2026 v6 model — paste lyrics, get a full track.
         </p>
         <button
           type="button"
           onClick={scrollToGenerator}
-          className="mt-8 inline-flex items-center gap-2 rounded-full border-2 border-amber-700/40 bg-amber-100/90 px-6 py-3 font-medium text-amber-900 shadow-sm transition hover:border-amber-700/60 hover:bg-amber-200/80 hover:shadow-md"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-violet-600 px-6 py-3 font-medium text-white shadow-lg transition hover:bg-violet-500 hover:shadow-violet-500/25"
         >
           <span>Paste Your Lyrics</span>
           <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
