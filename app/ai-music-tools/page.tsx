@@ -34,6 +34,18 @@ export default function AiMusicToolsPage() {
             </li>
           ))}
         </ul>
+
+        <section id="instrumentals" className="scroll-mt-20 pt-12 mt-12 border-t border-slate-800">
+          <h2 className="text-xl font-semibold text-slate-100 mb-2">Instrumental generator</h2>
+          <p className="text-slate-400 mb-4">Turn any idea into a clean instrumental with our AI music generator, ready for background use.</p>
+          <Link href="/ai-music-generator" className="inline-flex rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500 transition">Open instrumental generator</Link>
+        </section>
+
+        <section id="loops" className="scroll-mt-20 pt-12 mt-12 border-t border-slate-800">
+          <h2 className="text-xl font-semibold text-slate-100 mb-2">Loops and background music</h2>
+          <p className="text-slate-400 mb-4">Generate loops for talking-head videos, tutorials, and explainers without digging through stock libraries.</p>
+          <Link href="/ai-music-generator" className="inline-flex rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500 transition">Explore loops tool</Link>
+        </section>
       </div>
       <SiteFooter />
     </main>

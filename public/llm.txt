@@ -2,16 +2,32 @@
 
 > Free AI music generator and lyrics tool for creators. Turn text into royalty-free songs and instrumentals in seconds. No copyright strikes—for YouTubers, filmmakers, and musicians.
 
-The AI Music Generator offers text-to-music generation, AI lyrics writing, and focused tools (instrumentals, loops). Output is royalty-free and suitable for videos, podcasts, and commercial use. All tools run in the browser; no install required.
+The AI Music Generator offers text-to-music generation, AI lyrics writing, and focused tools (instrumentals, loops, genre-specific generators). Output is royalty-free and suitable for videos, podcasts, and commercial use. All tools run in the browser; no install required.
 
-## Tools
+## Main tools
 
 - [AI Music Generator](https://theaimusicgenerator.com/ai-music-generator): Generate full tracks from a text prompt. Describe genre, mood, and style—get royalty-free music in seconds.
+- [AI Music Generator — Own Lyrics](https://theaimusicgenerator.com/ai-music-generator/own-lyrics): Paste your own lyrics and generate a song with the same AI music engine.
 - [AI Lyrics Generator](https://theaimusicgenerator.com/ai-lyrics-generator): Write song lyrics with AI, then turn them into music. For songwriters, rappers, and content creators.
+- [AI Lyrics to Music](https://theaimusicgenerator.com/ai-lyrics-to-music-generator): Turn lyrics into full songs in one workflow.
 - [Text to Music](https://theaimusicgenerator.com/text-to-music): Convert text descriptions into full music tracks. Describe genre, mood, instruments—get original songs; no music theory required.
 - [AI Music Tools](https://theaimusicgenerator.com/ai-music-tools): Overview of tools—full tracks, lyrics, instrumentals, and loops in one platform.
-- [AI Music for YouTube Creators](https://theaimusicgenerator.com/for-youtube-creators): Royalty-free AI music for YouTube videos, vlogs, and Shorts; compliant disclosure guidance.
-- [Free AI Rap Lyrics & Beat Generator](https://theaimusicgenerator.com/ai-rap-lyrics-generator): Write rap and hip hop lyrics with AI, then generate a beat or full song.
+
+## Genre & style tools
+
+- [AI Country Music Generator](https://theaimusicgenerator.com/ai-country-music-generator): Generate country-style tracks from prompts or your own lyrics; royalty-free.
+- [AI Blues Music Generator](https://theaimusicgenerator.com/ai-blues-music-generator): Create blues-style music with AI; commercial use allowed.
+- [Free AI Lofi Generator](https://theaimusicgenerator.com/free-ai-lofi-generator): Generate lofi beats and background music for study, work, or streams.
+
+## Creative & video
+
+- [AI Music Video Generator](https://theaimusicgenerator.com/ai-music-video-generator): Create music videos from your tracks with AI-generated visuals.
+- [AI Sheet Music Generator](https://theaimusicgenerator.com/ai-sheet-music-generator): Generate sheet music from your ideas or audio.
+- [AI Rap Lyrics & Beat Generator](https://theaimusicgenerator.com/ai-rap-lyrics-generator): Write rap and hip hop lyrics with AI, then generate a beat or full song.
+
+## For creators
+
+- [For YouTube Creators](https://theaimusicgenerator.com/for-youtube-creators): Royalty-free AI music for YouTube videos, vlogs, and Shorts; compliant disclosure guidance.
 
 ## Resources
 
@@ -21,14 +37,14 @@ The AI Music Generator offers text-to-music generation, AI lyrics writing, and f
 - [Monetize AI Music 2026](https://theaimusicgenerator.com/resources/monetize-ai-music-2026): Commercial rights, platform compliance, steps and templates for YouTubers and podcasters.
 - [Who Owns AI Generated Music?](https://theaimusicgenerator.com/resources/who-owns-ai-generated-music): Copyright in 2026—human+AI works, ownership, and how to protect your rights.
 
-## Legal & Policies
+## Legal & policies
 
 - [Legal](https://theaimusicgenerator.com/legal): Index for Privacy, Terms, and Content License.
 - [Privacy Policy](https://theaimusicgenerator.com/privacy): How we collect, use, and protect your information.
 - [Terms of Service](https://theaimusicgenerator.com/terms): User accounts, subscriptions, refunds, and legal terms.
 - [Content License](https://theaimusicgenerator.com/license): Royalty-free and commercial use rights for AI-generated music.
 
-## Optional
+## Other
 
 - [Pricing](https://theaimusicgenerator.com/pricing): Free trial and subscription plans for AI music generation.
 - [Coming Soon](https://theaimusicgenerator.com/coming-soon): Upcoming features.

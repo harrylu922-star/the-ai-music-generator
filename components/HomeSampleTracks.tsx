@@ -51,7 +51,7 @@ export function HomeSampleTracks({ tracks }: { tracks: SampleTrackItem[] }) {
                   src={t.coverSrc}
                   srcSet={`${t.coverSrc.replace(".webp", "-400.webp")} 400w, ${t.coverSrc} 640w`}
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  alt=""
+                  alt={`${t.title} – ${t.category} cover`}
                   className="absolute inset-0 h-full w-full object-cover rounded-none"
                   loading="lazy"
                   decoding="async"

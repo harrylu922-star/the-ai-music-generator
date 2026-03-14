@@ -102,6 +102,33 @@ async function generateCover400Variants() {
   }
 }
 
+/** 为 AI 音乐视频 6 首曲目生成 1920×1080 高清封面，输出到 covers/hd/，供 Gemini/ChatGPT 等生成视频用 */
+const COVER_HD_BASES = ["sample-cinematic", "sample-lofi", "sample-loop", "sample-documentary", "sample-rnb", "sample-ambient"];
+const HD_WIDTH = 1920;
+const HD_HEIGHT = 1080;
+async function generateCoverHD1920() {
+  const dirPath = path.join(PUBLIC, "covers");
+  const hdDir = path.join(dirPath, "hd");
+  if (!fs.existsSync(dirPath)) return;
+  await ensureDir(hdDir);
+  for (const base of COVER_HD_BASES) {
+    const jpgPath = path.join(dirPath, `${base}.jpg`);
+    const webpPath = path.join(dirPath, `${base}.webp`);
+    const inputPath = fs.existsSync(jpgPath) ? jpgPath : webpPath;
+    if (!fs.existsSync(inputPath)) {
+      console.warn(`[optimize-images] Skip HD (no source): covers/${base}.jpg or .webp`);
+      continue;
+    }
+    const outPath = path.join(hdDir, `${base}-1920x1080.webp`);
+    await sharp(inputPath)
+      .resize(HD_WIDTH, HD_HEIGHT, { fit: "cover", position: "center" })
+      .webp({ quality: 85 })
+      .toFile(outPath);
+    const stat = fs.statSync(outPath);
+    console.log(`[optimize-images] covers/hd/${base}-1920x1080.webp (${HD_WIDTH}×${HD_HEIGHT}, ${(stat.size / 1024).toFixed(0)} KiB)`);
+  }
+}
+
 /** how-1/2/3 在 ai-music-generator 等页以 96px 显示，生成 192w 避免加载 960px 大图（PageSpeed Improve image delivery） */
 const HOW_BASES = ["how-1-describe", "how-2-ai-compose", "how-3-export"];
 async function generateHow192Variants() {
@@ -200,6 +227,7 @@ async function main() {
 
   await convertDirToWebP("covers", 640);
   await generateCover400Variants();
+  await generateCoverHD1920();
 
   await optimizePhotoStyles();
 
