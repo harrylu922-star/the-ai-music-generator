@@ -1,43 +1,53 @@
 /**
  * JSON-LD for the homepage: WebSite (site), WebPage (home), SoftwareApplication (the app).
  * Restores the "关于页面和应用的 schema" for SEO.
+ * 传入 config 时按域名使用对应站名与 URL。
  */
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theaimusicgenerator.com";
+import type { SiteBrandConfig } from "@/lib/site-config";
 
-export function getHomePageAndAppJsonLd() {
+const FALLBACK_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theaimusicgenerator.com";
+const FALLBACK_NAME = "The AI Music Generator";
+
+export function getHomePageAndAppJsonLd(config?: SiteBrandConfig | null) {
+  const siteUrl = config?.siteUrl ?? FALLBACK_URL;
+  const siteName = config?.siteName ?? FALLBACK_NAME;
+  const defaultTitle = config?.defaultTitle ?? "The free AI Music Generator for Creators | Royalty-Free";
+  const defaultDescription =
+    config?.defaultDescription ??
+    "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators, filmmakers & YouTubers. No copyright strikes—try free.";
+
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
-        name: "The AI Music Generator",
-        url: SITE_URL,
+        "@id": `${siteUrl}/#website`,
+        name: siteName,
+        url: siteUrl,
         description:
           "The free AI Music Generator for creators. Turn text into songs and instrumentals in seconds. Royalty-free, try free.",
         potentialAction: {
           "@type": "SearchAction",
-          target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/ai-music-generator?q={search_term_string}` },
+          target: { "@type": "EntryPoint", urlTemplate: `${siteUrl}/ai-music-generator?q={search_term_string}` },
           "query-input": "required name=search_term_string",
         },
       },
       {
         "@type": "WebPage",
-        "@id": `${SITE_URL}/#webpage`,
-        url: SITE_URL,
-        name: "The free AI Music Generator for Creators | Royalty-Free",
-        description:
-          "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators, filmmakers & YouTubers. No copyright strikes—try free.",
-        isPartOf: { "@id": `${SITE_URL}/#website` },
+        "@id": `${siteUrl}/#webpage`,
+        url: siteUrl,
+        name: defaultTitle,
+        description: defaultDescription,
+        isPartOf: { "@id": `${siteUrl}/#website` },
       },
       {
         "@type": "SoftwareApplication",
-        "@id": `${SITE_URL}/#app`,
-        name: "The AI Music Generator",
+        "@id": `${siteUrl}/#app`,
+        name: siteName,
         applicationCategory: "MultimediaApplication",
         applicationSubCategory: "AI Music Generation",
         operatingSystem: "Web browser",
-        url: SITE_URL,
+        url: siteUrl,
         description:
           "Free AI music generator for creators. Turn text into songs and instrumentals in seconds. Royalty-free music and lyrics tools. No copyright strikes—try free. Built on the 2026 latest model v6.",
         offers: {
@@ -55,8 +65,8 @@ export function getHomePageAndAppJsonLd() {
         ],
         provider: {
           "@type": "Organization",
-          name: "The AI Music Generator",
-          url: SITE_URL,
+          name: siteName,
+          url: siteUrl,
         },
       },
     ],

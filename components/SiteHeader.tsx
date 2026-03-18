@@ -3,14 +3,15 @@
 import Link from "@/components/Link";
 import { useState } from "react";
 import { LANDING_PAGES } from "./LandingNav";
+import { useSiteConfig } from "./SiteConfigProvider";
 
-function HeaderLogo() {
+function HeaderLogo({ alt }: { alt: string }) {
   const [src, setSrc] = useState("/images/tamg-icon2-72.webp");
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
-      alt="The AI Music Generator"
+      alt={alt}
       width={36}
       height={36}
       className="h-9 w-9 flex-shrink-0 object-contain object-left block"
@@ -32,17 +33,24 @@ export type SiteHeaderProps = {
 
 export function SiteHeader({ hideLandingLinks, mobileNavKind = "default", currentPath = "" }: SiteHeaderProps = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const config = useSiteConfig();
 
   return (
     <header className="border-b border-slate-800/80 bg-slate-950/90 backdrop-blur shrink-0">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 sm:gap-4 px-3 sm:px-4 py-4 min-w-0">
-        <Link href="/" className="flex shrink-0 items-center gap-2 min-w-0 bg-transparent" aria-label="The AI Music Generator 首页">
+        <Link href="/" className="flex shrink-0 items-center gap-2 min-w-0 bg-transparent" aria-label={`${config.siteName} 首页`}>
           {/* 透明 ICON，无白底：使用原生 img 并强制透明，直接嵌入页面 */}
           {/* 使用 72px WebP 小图，避免加载 6.9MB 原图；LCP/首屏优先加载；无 WebP 时回退到 PNG */}
-          <HeaderLogo />
-          {/* 桌面端：保留文字品牌名（TAMG 强调） */}
+          <HeaderLogo alt={config.siteName} />
+          {/* 桌面端：主站保留 TAMG 字母高亮，其他域名用 shortName */}
           <span className="hidden sm:inline text-base font-semibold tracking-tight text-slate-100">
-            <span className="text-violet-400">T</span>he<span className="text-violet-400">A</span>I<span className="text-violet-400">M</span>usic<span className="text-violet-400">G</span>enerator
+            {config.shortName === "The AI Music Generator" ? (
+              <>
+                <span className="text-violet-400">T</span>he<span className="text-violet-400">A</span>I<span className="text-violet-400">M</span>usic<span className="text-violet-400">G</span>enerator
+              </>
+            ) : (
+              config.shortName
+            )}
           </span>
         </Link>
         <nav className="hidden sm:flex flex-1 items-center justify-evenly gap-2 text-sm text-slate-300 max-w-3xl mx-auto">
