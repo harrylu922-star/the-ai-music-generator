@@ -15,6 +15,7 @@ const LOFI_SHOWCASE_TRACKS = [
 ];
 
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
+const PAGE_PATH = "/free-ai-lofi-generator";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { getServerSiteConfig, getSubPageMeta } = await import("../../lib/site-config");
@@ -93,40 +94,41 @@ function schemaText(s: string): string {
     .replace(/\u2013/g, " - ");
 }
 
-function getPageSchema() {
+function getPageSchema(siteUrl: string) {
+  const pageUrl = `${siteUrl}${PAGE_PATH}`;
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": "https://theaimusicgenerator.com/#website",
+        "@id": `${siteUrl}/#website`,
         name: "The AI Music Generator",
-        url: "https://theaimusicgenerator.com",
+        url: siteUrl,
       },
       {
         "@type": "WebPage",
-        "@id": `${PAGE_URL}#webpage`,
-        url: PAGE_URL,
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
         name: "Free AI Lofi Music Generator for Study & Chill",
         description:
           "Generate lofi beats for study sessions, background music, or YouTube in seconds. Royalty-free, no login required. Built on the 2026 v6 model.",
-        isPartOf: { "@id": "https://theaimusicgenerator.com/#website" },
-        breadcrumb: { "@id": `${PAGE_URL}#breadcrumb` },
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `${PAGE_URL}#breadcrumb`,
+        "@id": `${pageUrl}#breadcrumb`,
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://theaimusicgenerator.com" },
-          { "@type": "ListItem", position: 2, name: "AI Music Tools", item: "https://theaimusicgenerator.com/ai-music-tools" },
-          { "@type": "ListItem", position: 3, name: "Free AI Lofi Generator", item: PAGE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "AI Music Tools", item: `${siteUrl}/ai-music-tools` },
+          { "@type": "ListItem", position: 3, name: "Free AI Lofi Generator", item: pageUrl },
         ],
       },
       {
         "@type": "SoftwareApplication",
-        "@id": `${PAGE_URL}#app`,
+        "@id": `${pageUrl}#app`,
         name: "Free AI Lofi Music Generator",
-        url: PAGE_URL,
+        url: pageUrl,
         applicationCategory: "MusicApplication",
         operatingSystem: "Web browser",
         offers: {
@@ -147,12 +149,12 @@ function getPageSchema() {
         provider: {
           "@type": "Organization",
           name: "The AI Music Generator",
-          url: "https://theaimusicgenerator.com",
+          url: siteUrl,
         },
       },
       {
         "@type": "FAQPage",
-        "@id": `${PAGE_URL}#faqpage`,
+        "@id": `${pageUrl}#faqpage`,
         name: "AI Lofi Music Generator - Frequently Asked Questions",
         mainEntity: FAQ_ITEMS.map((item) => ({
           "@type": "Question",
@@ -198,8 +200,10 @@ function FAQAnswer({ text }: { text: string }) {
   return <>{nodes}</>;
 }
 
-export default function FreeAiLofiGeneratorPage() {
-  const schema = getPageSchema();
+export default async function FreeAiLofiGeneratorPage() {
+  const { getServerSiteConfig } = await import("../../lib/site-config");
+  const config = await getServerSiteConfig();
+  const schema = getPageSchema(config.siteUrl);
 
   return (
     <>
