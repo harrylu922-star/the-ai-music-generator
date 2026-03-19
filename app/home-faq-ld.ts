@@ -1,7 +1,12 @@
 /**
- * Homepage FAQ data for JSON-LD (FAQPage). Must match the exact questions and answers in app/page.tsx.
- * Used for AEO: answer engines can cite this schema when answering "AI music generator" questions.
+ * Homepage FAQ JSON-LD (FAQPage schema).
+ * 支持按站点 config 使用不同 FAQ 条目，以匹配各域名的 SEO/AEO 关键词策略。
+ * - TAMG：通用 AI music generator FAQ
+ * - AMF：面向内容创作者的 "AI music generator for content creators" FAQ
  */
+import type { SiteBrandConfig } from "@/lib/site-config";
+
+/** TAMG 默认 FAQ（静态，向后兼容） */
 export const HOME_FAQ = [
   {
     question: "What can I create with your AI music generator?",
@@ -11,7 +16,7 @@ export const HOME_FAQ = [
   {
     question: "Do I own the music I create?",
     answer:
-      "You get a broad license. For details, see our copyright and licensing section on this site.",
+      "You get a broad royalty-free license. For details, see our copyright and licensing section on this site.",
   },
   {
     question: "Can I use AI-generated music on YouTube or TikTok?",
@@ -30,11 +35,20 @@ export const HOME_FAQ = [
   },
 ] as const;
 
-export function getHomeFaqJsonLd() {
+/**
+ * 生成 FAQPage JSON-LD。
+ * 传入 config 时使用 config.home.faqItems（按域名定制）；否则使用 TAMG 默认 FAQ。
+ */
+export function getHomeFaqJsonLd(config?: SiteBrandConfig | null) {
+  const items =
+    config?.home?.faqItems && config.home.faqItems.length > 0
+      ? config.home.faqItems
+      : HOME_FAQ;
+
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: HOME_FAQ.map((item) => ({
+    mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {

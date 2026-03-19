@@ -63,7 +63,7 @@ export default async function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getHomePageAndAppJsonLd(config)) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getHomeFaqJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getHomeFaqJsonLd(config)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getHomeMusicModelJsonLd()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getLatestMusicModelJsonLd()) }} />
 
@@ -301,41 +301,19 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* 10) FAQ */}
+        {/* 10) FAQ — 从 config.home.faqItems 渲染，支持按域名定制 Q&A */}
         <section className="bg-slate-950">
           <div className="mx-auto max-w-3xl px-4 py-14 text-center">
             <h2 className="mb-6 text-3xl font-semibold text-slate-100">{home.section10Heading}</h2>
             <div className="space-y-3 text-left">
-              <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                <summary className="cursor-pointer">
-                  <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">What can I create with {siteName}?</h3>
-                </summary>
-                <p className="mt-2 text-sm text-slate-200">You can generate full songs, short hooks, lyrics, or pure instrumentals — all from text prompts. Great for single tracks or batching music for your entire content calendar.</p>
-              </details>
-              <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                <summary className="cursor-pointer">
-                  <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">Do I own the music I create?</h3>
-                </summary>
-                <p className="mt-2 text-sm text-slate-200">You get a broad royalty-free license. For details, see our <Link href="#copyright" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">copyright and licensing section</Link>.</p>
-              </details>
-              <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                <summary className="cursor-pointer">
-                  <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">Can I use AI-generated music on YouTube or TikTok?</h3>
-                </summary>
-                <p className="mt-2 text-sm text-slate-200">Yes. Tracks are royalty-free for YouTube, TikTok, Instagram, and podcasts. We recommend testing on non-critical content first and reviewing our licensing terms.</p>
-              </details>
-              <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                <summary className="cursor-pointer">
-                  <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">Do I need music production experience?</h3>
-                </summary>
-                <p className="mt-2 text-sm text-slate-200">Not at all. If you can describe how you want your track to feel, {siteName} can turn that into audio.</p>
-              </details>
-              <details className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
-                <summary className="cursor-pointer">
-                  <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">Can I start with lyrics first?</h3>
-                </summary>
-                <p className="mt-2 text-sm text-slate-200">Yes. Use our <Link href="/ai-lyrics-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">AI lyrics generator</Link> and then turn them into full songs with the same <Link href="/ai-music-generator" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">{toolName}</Link> workflow.</p>
-              </details>
+              {home.faqItems.map((faq) => (
+                <details key={faq.question} className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+                  <summary className="cursor-pointer">
+                    <h3 className="text-base font-semibold text-slate-50 mt-0 mb-0 [&:not(:first-child)]:mt-0">{faq.question}</h3>
+                  </summary>
+                  <p className="mt-2 text-sm text-slate-200">{faq.answer}</p>
+                </details>
+              ))}
             </div>
           </div>
         </section>

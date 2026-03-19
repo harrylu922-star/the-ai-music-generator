@@ -35,6 +35,8 @@ export type HomeCopy = {
   section9Body1: string;
   section9Body2: string;
   section10Heading: string;
+  /** FAQ 条目，用于页面渲染与 JSON-LD FAQPage schema */
+  faqItems: readonly { question: string; answer: string }[];
   ctaHeading: string;
   ctaSubtitle: string;
 };
@@ -124,76 +126,165 @@ const TAMG_HOME_COPY: HomeCopy = {
   section9Body1: "Tracks you create with our AI music generator come with a clear license for online use in videos, streams, podcasts, and more.",
   section9Body2: "We design our AI music generator to avoid copying existing songs, but we cannot provide legal advice. For high-stakes campaigns, we recommend consulting your own counsel.",
   section10Heading: "AI music generator FAQ",
+  faqItems: [
+    { question: "What can I create with your AI music generator?", answer: "You can generate full songs, short hooks, lyrics, or pure instrumentals — all from text prompts." },
+    { question: "Do I own the music I create?", answer: "You get a broad royalty-free license. For details, see our copyright and licensing section on this site." },
+    { question: "Can I use AI-generated music on YouTube or TikTok?", answer: "Yes. We recommend testing on non-critical videos first and reviewing our licensing terms." },
+    { question: "Do I need music production experience?", answer: "Not at all. If you can describe how you want your song to feel, the AI music generator can turn that into audio." },
+    { question: "Can I start with lyrics first?", answer: "Yes. You can use our AI lyrics generator and then turn them into songs with the same AI music generator workflow." },
+  ],
   ctaHeading: "Ready to create your own unique music?",
   ctaSubtitle: "Join thousands of creators who use our AI music generator.",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AI Music Factory — 面向内容创作者的批量 AI 音乐生成平台
-// SEO focus: batch AI music, bulk music generator, content creator music, AI music factory
-// GEO focus: YouTubers, TikTok creators, podcasters, short-form video editors
+// AI Music Factory — aimusicfactory.com
+//
+// SEO 关键词策略：以 "AI music generator for content creators" 为核心句式，
+// 衍生长尾：
+//   "AI music generator for YouTube videos"
+//   "AI music generator for bulk content production"
+//   "AI music generator for podcasters"
+//   "AI music generator for multiple videos"
+//   "AI music generator for TikTok and Reels"
+//
+// toolName = "the AI music generator" → body inline 提及天然含目标关键词
+// tagline  = "AI Music Generator for Content Creators" → 出现在 H1 第二行（最高权重）
+// GEO/AEO：FAQ 条目直接回答 "是否是面向内容创作者的 AI music generator" 等搜索意图
 // ─────────────────────────────────────────────────────────────────────────────
 
 const AMF_HOME_COPY: HomeCopy = {
   heroSubtitle:
-    "Describe your content. AI Music Factory produces royalty-free songs, instrumentals, and loops in seconds—ready for your next video, podcast, or social clip.",
+    "The AI music generator for content creators who publish at scale. Describe your video, podcast, or social clip—get a royalty-free track in seconds.",
   sampleTrackDescriptions: [
-    "An epic cinematic intro produced by AI Music Factory—ready for product launches and trailers.",
-    "A laid-back lo-fi instrumental generated in one click with AI Music Factory.",
-    "A subtle background loop for talking-head videos, produced on demand by AI Music Factory.",
-    "A short, punchy social clip—use AI Music Factory to batch-generate variations for Reels and Shorts.",
-    "Gentle piano and strings for storytelling and narrative moments.",
-    "Bright acoustic energy for channel or episode openers.",
-    "Smooth neo-soul vibe for chill or romantic content.",
-    "Calm, peaceful ambient loop for game menus or app backgrounds.",
+    "An epic cinematic opener—the kind of track content creators generate for product launches and channel trailers.",
+    "A laid-back lo-fi instrumental generated for focus videos, study content, and background playlists.",
+    "A subtle background loop for talking-head videos and tutorials—produced by the AI music generator in seconds.",
+    "A 15-second social clip. Use the AI music generator to batch-generate variations for Reels, Shorts, and TikTok.",
+    "Gentle piano and strings for storytelling—ready for YouTube narratives and podcast intros.",
+    "Bright acoustic energy for vlog openers and channel intros.",
+    "Smooth neo-soul groove for lifestyle and chill content creators.",
+    "Calm ambient loop for game content, tutorials, and app background.",
   ],
-  section2Heading: "Everything your content pipeline needs, in one place",
-  section2Subtitle: "Full tracks, lyrics, and audio tools—built to keep up with your upload schedule.",
+  section2Heading: "Everything content creators need in one AI music generator",
+  section2Subtitle: "Full tracks, AI lyrics, and audio tools—the AI music generator built to keep up with your upload schedule.",
   section2Cards: [
-    { title: "Batch AI music generation", copy: "Generate songs and instrumentals from text prompts. Build a royalty-free music library that keeps pace with your content calendar.", href: "/ai-music-generator", label: "Start generating music →" },
-    { title: "AI lyrics for every style", copy: "Write hooks and full verses in seconds. Turn them into complete tracks with the same AI Music Factory workflow—no music background needed.", href: "/ai-lyrics-generator", label: "Try AI lyrics →" },
-    { title: "Audio tools for content creators", copy: "Instrumentals, loops, and background music—produced on demand by AI Music Factory for YouTube, TikTok, podcasts, and beyond.", href: "/ai-music-tools", label: "Explore audio tools →" },
+    {
+      title: "AI music generator for YouTube videos",
+      copy: "Generate background music, intros, and full tracks for your YouTube channel. Build a royalty-free library fast enough for your publishing cadence.",
+      href: "/ai-music-generator",
+      label: "Generate for YouTube →",
+    },
+    {
+      title: "AI music generator for lyrics and vocals",
+      copy: "Write hooks and full verses in seconds. Turn them into complete vocal tracks with the same AI music generator workflow—no music background needed.",
+      href: "/ai-lyrics-generator",
+      label: "Try lyrics generator →",
+    },
+    {
+      title: "AI music generator for podcasts and streams",
+      copy: "Unique intros, mid-roll transitions, and ambient beds—generated on demand for your show, stream, or channel.",
+      href: "/ai-music-tools",
+      label: "Explore audio tools →",
+    },
   ],
-  section3Heading: "Hear what AI Music Factory sounds like",
-  section3Subtitle: "Preview songs, instrumentals, and loops across genres—every track is royalty-free and ready to publish.",
-  section4Heading: "Explore the AI Music Factory toolkit",
-  section4Subtitle: "Production-ready audio tools for content creators. Generate exactly what your channel needs, on demand.",
+  section3Heading: "Hear what this AI music generator produces for content creators",
+  section3Subtitle: "Preview royalty-free songs, instrumentals, and loops—every track ready to publish on YouTube, TikTok, or your podcast.",
+  section4Heading: "Tools inside this AI music generator for content creators",
+  section4Subtitle: "Built for creators who need music in volume. Generate instrumentals, loops, and full tracks—on demand.",
   section4Cards: [
-    { title: "Instrumental generator", copy: "Turn any idea into a clean instrumental. Perfect for background use in videos, tutorials, and live streams.", href: "/ai-music-tools#instrumentals", label: "Open instrumental generator" },
-    { title: "Loops and background music", copy: "Quickly generate loops for talking-head videos and explainers—no stock library or composer needed.", href: "/ai-music-tools#loops", label: "Explore loops tool" },
-    { title: "Batch music for social content", copy: "Describe the vibe and generate multiple variations. Find the sound that drives engagement on Reels, Shorts, and TikTok.", href: "/ai-music-generator", label: "Open AI Music Factory" },
+    {
+      title: "AI music generator for instrumentals",
+      copy: "Generate clean instrumentals for any video background—talking-head, tutorial, vlog, or game. No composer required.",
+      href: "/ai-music-tools#instrumentals",
+      label: "Open instrumental generator",
+    },
+    {
+      title: "AI music generator for loops",
+      copy: "Produce looping background music for long-form videos and live streams without digging through stock libraries.",
+      href: "/ai-music-tools#loops",
+      label: "Explore loops tool",
+    },
+    {
+      title: "AI music generator for social clips",
+      copy: "Describe the vibe and generate multiple variations. Pick the sound that drives engagement on Reels, Shorts, and TikTok.",
+      href: "/ai-music-generator",
+      label: "Open AI Music Factory",
+    },
   ],
-  section5Heading: "Your content deserves original music",
+  section5Heading: "The AI music generator built for your upload schedule",
   section5Body1:
-    "Whether you publish daily or weekly, AI Music Factory keeps your audio library stocked. Describe the vibe, genre, and mood—get a finished track in seconds.",
+    "Publishing daily or weekly takes a constant stream of fresh, royalty-free music. AI Music Factory is the AI music generator for content creators who cannot slow down for sound—describe what you need and get a finished track in seconds.",
   section5Body2:
-    "Stop searching stock libraries. AI Music Factory generates unique, royalty-free music matched to your content—on demand, at any scale.",
-  section6Heading: "How AI Music Factory works",
+    "Stop searching stock libraries. The AI music generator behind AI Music Factory produces unique audio matched to your content—one track or a library's worth, on demand.",
+  section6Heading: "How this AI music generator works for content creators",
   section6Steps: [
-    { step: "1. Describe your content", text: "Tell AI Music Factory the genre, mood, and energy level. Add lyrics or keep it instrumental—your call.", img: "/images/home/how-1-describe.webp", alt: "Person typing on laptop, thinking" },
-    { step: "2. AI generates your tracks", text: "AI Music Factory processes your prompt and builds unique audio in seconds. Generate one track or queue a batch for your content calendar.", img: "/images/home/how-2-ai-compose.webp", alt: "Hands on keyboard with sound waves" },
-    { step: "3. Export and publish", text: "Download royalty-free audio ready for YouTube, TikTok, podcasts, or any platform. No copyright claims, no licensing headaches.", img: "/images/home/how-3-export.webp", alt: "Creator with headphones exporting" },
+    {
+      step: "1. Describe your content",
+      text: "Tell the AI music generator the genre, mood, and energy level. Add lyrics or keep it instrumental—your call.",
+      img: "/images/home/how-1-describe.webp",
+      alt: "Person typing on laptop, thinking",
+    },
+    {
+      step: "2. Generate one or many tracks",
+      text: "The AI music generator builds unique audio in seconds. Run multiple prompts in parallel to stock your channel music library.",
+      img: "/images/home/how-2-ai-compose.webp",
+      alt: "Hands on keyboard with sound waves",
+    },
+    {
+      step: "3. Export and publish anywhere",
+      text: "Download royalty-free tracks ready for YouTube, TikTok, podcasts, or any platform. No copyright claims, no per-video fees.",
+      img: "/images/home/how-3-export.webp",
+      alt: "Creator with headphones exporting",
+    },
   ],
-  section6FooterCta: "Open AI Music Factory",
-  section7Heading: "How content creators use AI Music Factory",
-  section8Heading: "Who AI Music Factory is built for",
-  section8Subtitle: "Built for creators who ship content fast and need music that keeps up.",
+  section6FooterCta: "Start using the AI music generator",
+  section7Heading: "How content creators use this AI music generator",
+  section8Heading: "Who this AI music generator for content creators is built for",
+  section8Subtitle: "The AI music generator for every type of creator—from solo YouTubers to podcast networks and social media agencies.",
   section8ListItems: [
-    "YouTube creators who need background music that fits their voice and pacing—generated in seconds.",
-    "Short-form editors who need fresh, royalty-free clips every day for Reels, Shorts, and TikTok.",
-    "Indie game developers looking for instrumentals that evolve with each level.",
-    "Podcast hosts who want distinct intros and transitions without hiring a composer.",
-    "Startup teams launching products and wanting a sound that matches their brand.",
-    "Songwriters using AI Music Factory as a fast sketchpad to hear ideas before booking studio time.",
+    "YouTube creators who need fresh background music that fits every video—without copyright claims.",
+    "Short-form editors who generate multiple clip variations daily for Reels, Shorts, and TikTok.",
+    "Podcast hosts who want unique intros, transitions, and ad beds without hiring a composer.",
+    "Twitch and YouTube live streamers who need ambient loops and energy tracks on demand.",
+    "Indie game developers using the AI music generator for level themes and ambient soundscapes.",
+    "Social media agencies managing multiple channels and needing music at scale.",
   ],
-  section9Heading: "Copyright and licensing with AI Music Factory",
+  section9Heading: "Licensing for content creators using this AI music generator",
   section9Body1:
-    "Every track you produce with AI Music Factory comes with a clear royalty-free license—ready for videos, streams, podcasts, and commercial use.",
+    "Every track this AI music generator produces comes with a clear royalty-free license—ready for YouTube, TikTok, Instagram, podcasts, and commercial use.",
   section9Body2:
-    "AI Music Factory generates original music, not copies. For high-stakes campaigns, review our full licensing terms or consult your own counsel.",
-  section10Heading: "AI Music Factory FAQ",
-  ctaHeading: "Ready to build your music library?",
-  ctaSubtitle: "Join thousands of content creators who use AI Music Factory to fuel their upload schedules.",
+    "The AI music generator is designed to produce original music, not copies. For high-stakes campaigns, review our full licensing terms or consult your own counsel.",
+  section10Heading: "AI music generator for content creators — FAQ",
+  faqItems: [
+    {
+      question: "Is AI Music Factory an AI music generator for content creators?",
+      answer:
+        "Yes. AI Music Factory is an AI music generator built specifically for content creators who publish at scale—YouTubers, podcasters, TikTok creators, and social media teams. Generate royalty-free songs, instrumentals, and loops from text prompts, one track or many.",
+    },
+    {
+      question: "Can I use this AI music generator to produce music for multiple videos at once?",
+      answer:
+        "Yes. You can run multiple prompts and generate several tracks in parallel. AI Music Factory is designed as an AI music generator for bulk content production—build your music library as fast as you publish.",
+    },
+    {
+      question: "Is the music from this AI music generator royalty-free for YouTube and TikTok?",
+      answer:
+        "Yes. All tracks are royalty-free for YouTube, TikTok, Instagram, podcasts, and commercial use. No copyright claims, no per-video fees—publish everywhere your content lives.",
+    },
+    {
+      question: "Do I need music experience to use this AI music generator?",
+      answer:
+        "Not at all. Describe the vibe, genre, and mood—the AI music generator produces a finished, ready-to-publish track. No DAW, no plugins, no production background needed.",
+    },
+    {
+      question: "Can this AI music generator also create lyrics and full songs with vocals?",
+      answer:
+        "Yes. Use the AI lyrics generator to write hooks and verses, then turn them into complete vocal tracks with the same AI music generator workflow. Full songs or pure instrumentals—your choice.",
+    },
+  ],
+  ctaHeading: "The AI music generator your channel has been missing",
+  ctaSubtitle: "Join thousands of content creators generating music in bulk with AI Music Factory.",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -227,14 +318,18 @@ const AMF_BRAND: Partial<SiteBrandConfig> = {
   siteUrl: "https://aimusicfactory.com",
   siteName: "AI Music Factory",
   shortName: "AI Music Factory",
-  tagline: "Batch AI Music for Content Creators",
+  // tagline 直接出现在 H1 第二行，是页面权重最高的位置——用作核心 SEO 关键词
+  tagline: "AI Music Generator for Content Creators",
   copyrightName: "AIMusicFactory.com",
   titleTemplate: "%s | AI Music Factory",
-  defaultTitle: "AI Music Factory – Batch AI Music Generator for Content Creators",
+  // defaultTitle：目标关键词 + 核心差异化修饰词（bulk/批量），控制在 60 字符内
+  defaultTitle: "AI Music Generator for Content Creators | Bulk Music – AI Music Factory",
   defaultDescription:
-    "Generate royalty-free songs, instrumentals, and lyrics in bulk with AI Music Factory. The batch AI music generator built for YouTubers, podcasters, and digital creators. Try free.",
-  ogImageAlt: "AI Music Factory – Batch AI Music Generator for Content Creators",
-  toolName: "AI Music Factory",
+    "The AI music generator for content creators who publish at scale. Generate royalty-free songs, instrumentals, and loops for YouTube, TikTok, and podcasts—in bulk. Try free.",
+  ogImageAlt: "AI Music Factory – AI Music Generator for Content Creators",
+  // toolName 用于 body inline 提及："paste your prompt into the AI music generator"
+  // → 每次 inline 出现都自然包含核心关键词
+  toolName: "the AI music generator",
   home: AMF_HOME_COPY,
 };
 
