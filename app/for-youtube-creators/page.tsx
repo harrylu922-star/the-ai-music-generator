@@ -4,12 +4,21 @@ import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { YoutubeCreatorsLock } from "./YoutubeCreatorsLock";
 import { getYoutubeCreatorsFaqJsonLd, YOUTUBE_CREATORS_FAQ } from "./youtube-faq-ld";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
-export const metadata: Metadata = {
-  title: { absolute: "AI Music for YouTube | Royalty-Free Music for Videos" },
-  description:
-    "Create royalty-free AI music for YouTube videos, vlogs & Shorts in seconds. No copyright strikes. Custom background music from text—compliant disclosure guides included.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, "/for-youtube-creators", {
+    title: "AI Music for YouTube | Royalty-Free Music for Videos",
+    description: "Create royalty-free AI music for YouTube videos, vlogs & Shorts in seconds. No copyright strikes. Custom background music from text—compliant disclosure guides included.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: { title, description, siteName: config.siteName },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export default function ForYoutubeCreatorsPage() {
   const faqLd = getYoutubeCreatorsFaqJsonLd();

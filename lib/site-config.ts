@@ -41,6 +41,9 @@ export type HomeCopy = {
   ctaSubtitle: string;
 };
 
+/** 子页面元数据覆盖，key = 路由路径（如 "/ai-music-generator"） */
+export type PageMeta = { title: string; description: string };
+
 export type SiteBrandConfig = {
   /** 站点根 URL，用于 metadataBase、sitemap、robots */
   siteUrl: string;
@@ -64,6 +67,8 @@ export type SiteBrandConfig = {
   toolName: string;
   /** 首页各区块文案 */
   home: HomeCopy;
+  /** 子页面元数据覆盖表（按路由路径）；未覆盖的页面用页面自身的默认值 */
+  pagesMeta?: Partial<Record<string, PageMeta>>;
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -314,6 +319,104 @@ const DEFAULT_CONFIG: SiteBrandConfig = {
 // Host → config overrides table
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────────────────────
+// AMF 子页面元数据
+// 核心策略：每个页面标题以 "AI music generator for [use case]" 句式强化关键词
+// ─────────────────────────────────────────────────────────────────────────────
+
+const AMF_PAGES_META: Partial<Record<string, PageMeta>> = {
+  "/ai-music-generator": {
+    title: "AI Music Generator for Content Creators | Bulk Music Production – AI Music Factory",
+    description:
+      "The AI music generator for content creators. Generate royalty-free songs, instrumentals, and loops in bulk for YouTube, TikTok, and podcasts. Try free.",
+  },
+  "/ai-lyrics-generator": {
+    title: "AI Lyrics Generator for Content Creators | Write Songs Fast – AI Music Factory",
+    description:
+      "Write hooks, verses, and full song lyrics in seconds with the AI music generator for content creators. Turn lyrics into royalty-free tracks instantly.",
+  },
+  "/ai-lyrics-to-music-generator": {
+    title: "AI Lyrics to Music Generator for Content Creators | AI Music Factory",
+    description:
+      "Turn your lyrics into royalty-free songs with the AI music generator for content creators. Perfect for YouTube, TikTok, and podcast music.",
+  },
+  "/ai-rap-lyrics-generator": {
+    title: "AI Rap Lyrics Generator for Content Creators | AI Music Factory",
+    description:
+      "Generate rap lyrics and hip-hop beats for your content with the AI music generator for content creators. Royalty-free, ready to publish.",
+  },
+  "/text-to-music": {
+    title: "Text to Music Generator for Content Creators | AI Music Factory",
+    description:
+      "Type your idea and get a royalty-free track. The AI music generator for content creators—turn text into songs for YouTube, TikTok, and podcasts.",
+  },
+  "/ai-music-tools": {
+    title: "AI Music Tools for Content Creators | Instrumentals & Loops – AI Music Factory",
+    description:
+      "A full suite of AI music tools for content creators. Generate instrumentals, background loops, and full tracks for YouTube, TikTok, and podcasts.",
+  },
+  "/ai-music-video-generator": {
+    title: "AI Music Video Generator for Content Creators | AI Music Factory",
+    description:
+      "Generate music videos for your content with the AI music generator for content creators. Royalty-free video and audio, ready for YouTube.",
+  },
+  "/ai-sheet-music-generator": {
+    title: "AI Sheet Music Generator | Audio to Notation – AI Music Factory",
+    description:
+      "Turn AI-generated audio into sheet music and MIDI. The notation tool inside AI Music Factory—the AI music generator for content creators.",
+  },
+  "/ai-country-music-generator": {
+    title: "AI Country Music Generator for Content Creators | AI Music Factory",
+    description:
+      "Generate royalty-free country music for your videos and podcasts. The AI music generator for content creators—authentic Americana and Southern sound.",
+  },
+  "/ai-blues-music-generator": {
+    title: "AI Blues Music Generator for Content Creators | AI Music Factory",
+    description:
+      "Generate authentic blues music for your content. The AI music generator for content creators—12-bar, Delta, and soul blues, royalty-free.",
+  },
+  "/free-ai-lofi-generator": {
+    title: "Free AI Lofi Generator for Content Creators | Study & Chill Music – AI Music Factory",
+    description:
+      "Generate lofi beats for YouTube study videos, background music, and streams. The AI music generator for content creators—royalty-free, no login needed.",
+  },
+  "/for-youtube-creators": {
+    title: "AI Music Generator for YouTube Creators | Royalty-Free Music – AI Music Factory",
+    description:
+      "The AI music generator for YouTube creators. Generate background music, intros, and full tracks for your channel—100% royalty-free, no copyright claims.",
+  },
+  "/pricing": {
+    title: "Pricing | AI Music Generator for Content Creators – AI Music Factory",
+    description:
+      "Plans for content creators who need music at scale. Start free, upgrade for bulk production and full commercial use.",
+  },
+  "/resources": {
+    title: "AI Music Resources for Content Creators | Guides & Tips – AI Music Factory",
+    description:
+      "Guides on AI music licensing, YouTube requirements, and how to use the AI music generator for content creators. Free resources.",
+  },
+  "/legal": {
+    title: "Legal | AI Music Factory",
+    description:
+      "Privacy Policy, Terms of Service, and Content License for AI Music Factory. User rights, data use, and royalty-free music license terms.",
+  },
+  "/privacy": {
+    title: "Privacy Policy | AI Music Factory",
+    description:
+      "Privacy Policy for AI Music Factory: how we collect, use, and protect your information. Data and cookie practices for our AI music generator service.",
+  },
+  "/terms": {
+    title: "Terms of Service | AI Music Factory",
+    description:
+      "Terms of Service for AI Music Factory: user accounts, subscriptions, refunds, and legal terms. Read before using the AI music generator for content creators.",
+  },
+  "/license": {
+    title: "Content License | Royalty-Free & Commercial Use – AI Music Factory",
+    description:
+      "Content License for AI Music Factory: royalty-free and commercial use rights for music produced by the AI music generator for content creators.",
+  },
+};
+
 const AMF_BRAND: Partial<SiteBrandConfig> = {
   siteUrl: "https://aimusicfactory.com",
   siteName: "AI Music Factory",
@@ -331,6 +434,7 @@ const AMF_BRAND: Partial<SiteBrandConfig> = {
   // → 每次 inline 出现都自然包含核心关键词
   toolName: "the AI music generator",
   home: AMF_HOME_COPY,
+  pagesMeta: AMF_PAGES_META,
 };
 
 /** 按 host（不含端口，小写）匹配的配置表；新增域名在此添加 */
@@ -386,4 +490,27 @@ export async function getServerSiteConfig(): Promise<SiteBrandConfig> {
   } catch {
     return getSiteConfig(null);
   }
+}
+
+/**
+ * 返回子页面的 title 和 description。
+ * 优先使用 config.pagesMeta[route]（按域名覆盖），无覆盖时使用 defaults。
+ * 在各子页面的 generateMetadata() 中调用以实现多域名元数据差异化。
+ *
+ * 用法：
+ *   const { title, description } = getSubPageMeta(config, "/ai-music-generator", {
+ *     title: "Free AI Music Generator | ...",
+ *     description: "...",
+ *   });
+ */
+export function getSubPageMeta(
+  config: SiteBrandConfig,
+  route: string,
+  defaults: PageMeta
+): PageMeta {
+  const override = config.pagesMeta?.[route];
+  return {
+    title: override?.title ?? defaults.title,
+    description: override?.description ?? defaults.description,
+  };
 }

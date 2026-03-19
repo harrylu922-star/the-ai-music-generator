@@ -3,11 +3,21 @@ import Link from "@/components/Link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { PricingPlansSection } from "./PricingPlansSection";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
-export const metadata: Metadata = {
-  title: "Pricing | Free Trial & Plans for AI Music Generation",
-  description: "Free trial and flexible plans for AI music generation. Create royalty-free music from text and your own lyrics. Affordable credits and commercial rights.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, "/pricing", {
+    title: "Pricing | Free Trial & Plans for AI Music Generation",
+    description: "Free trial and flexible plans for AI music generation. Create royalty-free music from text and your own lyrics. Affordable credits and commercial rights.",
+  });
+  return {
+    title,
+    description,
+    openGraph: { title, description, siteName: config.siteName },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 const CREDIT_PACKS = [
   { name: "One-time Purchase", price: "$50", credits: "1,600 Credits (1,067 songs)", cta: "One-time Purchase", href: "/coming-soon" },

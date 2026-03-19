@@ -7,37 +7,42 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { HeroFirstScreen } from "./HeroFirstScreen";
 
 const PAGE_URL = "/ai-music-video-generator";
-const SITE_URL = "https://theaimusicgenerator.com";
 
-export const metadata: Metadata = {
-  title: { absolute: "AI Music Video Generator from Lyrics | Best for YouTube 2026" },
-  description:
-    "Turn lyrics or audio into music videos in seconds. Best AI music video generator for YouTube 2026. Cinematic, Anime, Lo-fi. Royalty-free, 4K export.",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const { getServerSiteConfig, getSubPageMeta } = await import("../../lib/site-config");
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, PAGE_URL, {
     title: "AI Music Video Generator from Lyrics | Best for YouTube 2026",
-    description:
-      "Turn lyrics or audio into music videos in seconds. Best for YouTube 2026. Royalty-free, 4K export.",
-    url: PAGE_URL,
-    siteName: "The AI Music Generator",
-    type: "website",
-    locale: "en_US",
-    images: [
-      {
-        url: "/images/home/hero-card-ai-music-generator.webp",
-        width: 1200,
-        height: 630,
-        alt: "AI Music Video Generator from Lyrics — The AI Music Generator v6",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "AI Music Video Generator from Lyrics | Best for YouTube 2026",
-    description: "Cinematic music videos from lyrics in seconds. v6 engine. Royalty-free.",
-    images: ["/images/home/hero-card-ai-music-generator.webp"],
-  },
-  alternates: { canonical: `${SITE_URL}${PAGE_URL}` },
-};
+    description: "Turn lyrics or audio into music videos in seconds. Best AI music video generator for YouTube 2026. Cinematic, Anime, Lo-fi. Royalty-free, 4K export.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: {
+      title,
+      description,
+      url: PAGE_URL,
+      siteName: config.siteName,
+      type: "website",
+      locale: "en_US",
+      images: [
+        {
+          url: "/images/home/hero-card-ai-music-generator.webp",
+          width: 1200,
+          height: 630,
+          alt: `AI Music Video Generator from Lyrics — ${config.siteName} v6`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/home/hero-card-ai-music-generator.webp"],
+    },
+    alternates: { canonical: `${config.siteUrl}${PAGE_URL}` },
+  };
+}
 
 const SHOWCASE_ITEMS = [
   { style: "Anime", src: "/images/covers/sample-lofi.webp", alt: "AI music video generator — Anime style output from lyrics" },

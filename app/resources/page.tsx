@@ -3,10 +3,15 @@ import Link from "@/components/Link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 
-export const metadata: Metadata = {
-  title: "AI Music Guides & Resources | Licensing, YouTube & More",
-  description: "Guides on AI music licensing, YouTube disclosure, monetization & ownership. Tips and workflows for creators using The AI Music Generator. Free resources.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { getServerSiteConfig, getSubPageMeta } = await import("../../lib/site-config");
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, "/resources", {
+    title: "AI Music Guides & Resources | Licensing, YouTube & More",
+    description: `Guides on AI music licensing, YouTube disclosure, monetization & ownership. Tips and workflows for creators using ${config.siteName}. Free resources.`,
+  });
+  return { title, description };
+}
 
 export default function ResourcesPage() {
   return (

@@ -3,12 +3,21 @@ import Link from "@/components/Link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { getRapFaqJsonLd, RAP_FAQ } from "./rap-faq-ld";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
-export const metadata: Metadata = {
-  title: { absolute: "Free AI Rap Lyrics & Beat Generator | Write Rap Online" },
-  description:
-    "Free rap generator: write rap and hip hop lyrics with AI, then generate a beat or full song. Lyrics + beat in one tool. No signup—create rap music in seconds.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, "/ai-rap-lyrics-generator", {
+    title: "Free AI Rap Lyrics & Beat Generator | Write Rap Online",
+    description: "Free rap generator: write rap and hip hop lyrics with AI, then generate a beat or full song. Lyrics + beat in one tool. No signup—create rap music in seconds.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: { title, description, siteName: config.siteName },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export default function AiRapLyricsGeneratorPage() {
   const faqLd = getRapFaqJsonLd();

@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { LicenseContent } from "../legal/sections/LicenseContent";
+import { getServerSiteConfig } from "../../lib/site-config";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://themusicgenerator.com";
-
-export const metadata: Metadata = {
-  title: "Content License | Royalty-Free & Commercial Use",
-  description:
-    "Content License for The AI Music Generator: royalty-free and commercial use rights for AI-generated music. Read full terms and usage rights.",
-  alternates: { canonical: `${BASE_URL}/license` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  return {
+    title: "Content License | Royalty-Free & Commercial Use",
+    description: `Content License for ${config.siteName}: royalty-free and commercial use rights for AI-generated music. Read full terms and usage rights.`,
+    alternates: { canonical: `${config.siteUrl}/license` },
+  };
+}
 
 export default function LicensePage() {
   return (

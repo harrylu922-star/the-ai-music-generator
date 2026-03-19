@@ -8,30 +8,38 @@ import { LANDING_PAGES } from "../../components/LandingNav";
 import { DualLayerWrapper } from "../../components/DualLayerWrapper";
 import { AiMusicGeneratorWorkspace } from "./AiMusicGeneratorWorkspace";
 import { getCountryMusicGeneratorJsonLd } from "./json-ld";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
 const PAGE_URL = "/ai-country-music-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
-export const metadata: Metadata = {
-  title: { absolute: "Best AI Country Music Generator: Authentic Americana & Southern Sound" },
-  description: "Create authentic country music with AI. V6 model delivers warm, storytelling tracks—ballads, shuffles, Americana. Royalty-free for YouTube and Spotify.",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, PAGE_URL, {
     title: "Best AI Country Music Generator: Authentic Americana & Southern Sound",
-    description: "AI country music with soul. Royalty-free for YouTube and Spotify.",
-    url: PAGE_URL,
-    siteName: "The AI Music Generator",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Country Music Generator" }],
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Best AI Country Music Generator: Authentic Americana & Southern Sound",
-    description: "AI country music with soul. Royalty-free for YouTube and Spotify.",
-    images: [OG_IMAGE],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+    description: "Create authentic country music with AI. V6 model delivers warm, storytelling tracks—ballads, shuffles, Americana. Royalty-free for YouTube and Spotify.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: {
+      title,
+      description,
+      url: PAGE_URL,
+      siteName: config.siteName,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Country Music Generator" }],
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+    alternates: { canonical: PAGE_URL },
+  };
+}
 
 export default function AiCountryMusicGeneratorPage() {
   const jsonLd = getCountryMusicGeneratorJsonLd();

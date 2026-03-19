@@ -7,30 +7,38 @@ import { DualLayerWrapper } from "../../components/DualLayerWrapper";
 import { LyricsGeneratorWorkspace } from "./LyricsGeneratorWorkspace";
 import { SiteFooter } from "../../components/SiteFooter";
 import { getJsonLdScript, FAQ_ITEMS } from "./json-ld";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
 const PAGE_URL = "/ai-lyrics-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-lyrics-generator.jpg";
 
-export const metadata: Metadata = {
-  title: { absolute: "Free AI Lyrics Generator | Write Song Lyrics in Seconds" },
-  description: "Free AI lyrics generator: create original song lyrics in seconds. For songwriters, rappers & creators. Pick mood, structure & style—then turn lyrics into music.",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, PAGE_URL, {
     title: "Free AI Lyrics Generator | Write Song Lyrics in Seconds",
-    description: "Free AI lyrics generator: create original song lyrics in seconds. For songwriters, rappers & creators. Pick mood & style—then turn lyrics into music.",
-    url: PAGE_URL,
-    siteName: "The AI Music Generator",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Lyrics Generator - Write song lyrics with AI" }],
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Free AI Lyrics Generator | Write Song Lyrics in Seconds",
-    description: "Free AI lyrics generator: create original song lyrics in seconds. For songwriters, rappers & creators. Turn lyrics into music.",
-    images: [OG_IMAGE],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+    description: "Free AI lyrics generator: create original song lyrics in seconds. For songwriters, rappers & creators. Pick mood, structure & style—then turn lyrics into music.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: {
+      title,
+      description,
+      url: PAGE_URL,
+      siteName: config.siteName,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Lyrics Generator - Write song lyrics with AI" }],
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+    alternates: { canonical: PAGE_URL },
+  };
+}
 
 export default function AiLyricsGeneratorPage() {
   const jsonLd = getJsonLdScript();
