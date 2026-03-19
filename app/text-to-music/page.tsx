@@ -11,27 +11,35 @@ import { TextToMusicWorkspace } from "./TextToMusicWorkspace";
 const PAGE_URL = "/text-to-music";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
-export const metadata: Metadata = {
-  title: { absolute: "Text to Music | Free AI—Turn Words into Songs in Seconds" },
-  description: "Convert text into full music tracks with free AI. Describe genre, mood & instruments—get original, royalty-free songs in seconds. No music theory needed. Try now.",
-  keywords: ["text to music", "AI text to music", "turn text into music", "free AI music generator", "describe music get song"],
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const { getServerSiteConfig, getSubPageMeta } = await import("../../lib/site-config");
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, PAGE_URL, {
     title: "Text to Music | Free AI—Turn Words into Songs in Seconds",
-    description: "Convert text into full music with free AI. Describe genre, mood & instruments—original songs in seconds. No music theory needed.",
-    url: PAGE_URL,
-    siteName: "The AI Music Generator",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Text to Music - Turn words into songs with AI" }],
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Text to Music | Free AI—Words to Songs in Seconds",
-    description: "Convert text into full music with free AI. Original songs in seconds. No music theory needed. Try now.",
-    images: [OG_IMAGE],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+    description: "Convert text into full music tracks with free AI. Describe genre, mood & instruments—get original, royalty-free songs in seconds. No music theory needed. Try now.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    keywords: ["text to music", "AI text to music", "turn text into music", "free AI music generator", "describe music get song"],
+    openGraph: {
+      title,
+      description,
+      url: PAGE_URL,
+      siteName: config.siteName,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Text to Music - Turn words into songs with AI" }],
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+    alternates: { canonical: PAGE_URL },
+  };
+}
 
 export default function TextToMusicPage() {
   return (

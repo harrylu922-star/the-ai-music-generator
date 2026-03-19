@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { TermsContent } from "../legal/sections/TermsContent";
+import { getServerSiteConfig } from "../../lib/site-config";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://themusicgenerator.com";
-
-export const metadata: Metadata = {
-  title: "Terms of Service | The AI Music Generator",
-  description:
-    "Terms of Service for The AI Music Generator: user accounts, subscriptions, refunds and legal terms. Read before using our AI music tools.",
-  alternates: { canonical: `${BASE_URL}/terms` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  return {
+    title: `Terms of Service | ${config.siteName}`,
+    description: `Terms of Service for ${config.siteName}: user accounts, subscriptions, refunds and legal terms. Read before using our AI music tools.`,
+    alternates: { canonical: `${config.siteUrl}/terms` },
+  };
+}
 
 export default function TermsPage() {
   return (

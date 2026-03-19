@@ -9,32 +9,38 @@ import { SheetMusicGeneratorWorkspace } from "./SheetMusicGeneratorWorkspace";
 import { SheetMusicFirstScreenLock } from "./SheetMusicFirstScreenLock";
 import { getJsonLdScript, FAQ_ITEMS } from "./json-ld";
 import { Suspense } from "react";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
 const PAGE_URL = "/ai-sheet-music-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
-export const metadata: Metadata = {
-  title: { absolute: "AI Sheet Music Generator: Precision Transcription (2026)" },
-  description:
-    "Turn audio into piano notation and sheet music. V6 engine handles polyphony and velocity. MIDI & PDF export for composers (2026).",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, PAGE_URL, {
     title: "AI Sheet Music Generator: Precision Transcription (2026)",
-    description:
-      "Turn audio into piano notation and sheet music. V6 engine: polyphony, velocity. MIDI & PDF for composers (2026).",
-    url: PAGE_URL,
-    siteName: "The AI Music Generator",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Sheet Music Generator - Piano notation from audio" }],
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "AI Sheet Music Generator: Precision Transcription (2026)",
-    description: "Turn audio into piano notation. V6 engine. MIDI & PDF for composers (2026).",
-    images: [OG_IMAGE],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+    description: "Turn audio into piano notation and sheet music. V6 engine handles polyphony and velocity. MIDI & PDF export for composers (2026).",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: {
+      title,
+      description,
+      url: PAGE_URL,
+      siteName: config.siteName,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Sheet Music Generator - Piano notation from audio" }],
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+    alternates: { canonical: PAGE_URL },
+  };
+}
 
 export default function AiSheetMusicGeneratorPage() {
   const jsonLd = getJsonLdScript();

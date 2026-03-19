@@ -14,41 +14,47 @@ const LOFI_SHOWCASE_TRACKS = [
   { category: "Ambient", title: "Ambient bed", description: "Calm bed for playlists or chill.", audioSrc: "/audio/sample-ambient.mp3", coverSrc: "/images/covers/sample-ambient.webp" },
 ];
 
-const PAGE_URL = "https://theaimusicgenerator.com/free-ai-lofi-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
-export const metadata: Metadata = {
-  title: { absolute: "Free AI Lofi Music Generator for Study & Chill" },
-  description:
-    "Generate lofi beats for study sessions, background music, or YouTube in seconds. Royalty-free, no login required. Built on the 2026 v6 model鈥攚armer and less repetitive than older lofi generators.",
-  keywords: [
-    "ai lofi music generator",
-    "lofi beats generator",
-    "free lofi music generator",
-    "lofi hip hop generator",
-    "study music generator",
-    "royalty free lofi",
-    "ai music for youtube",
-    "lofi generator 2026",
-  ],
-  alternates: { canonical: PAGE_URL },
-  robots: { index: true, follow: true },
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const { getServerSiteConfig, getSubPageMeta } = await import("../../lib/site-config");
+  const config = await getServerSiteConfig();
+  const PAGE_CANONICAL = `${config.siteUrl}/free-ai-lofi-generator`;
+  const { title, description } = getSubPageMeta(config, "/free-ai-lofi-generator", {
     title: "Free AI Lofi Music Generator for Study & Chill",
-    description:
-      "Generate lofi beats for study, background, or YouTube in seconds. Royalty-free. No login needed.",
-    url: PAGE_URL,
-    type: "website",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Free AI Lofi Music Generator" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Free AI Lofi Music Generator for Study & Chill",
-    description:
-      "Generate lofi beats for study, background, or YouTube in seconds. Royalty-free.",
-    images: [OG_IMAGE],
-  },
-};
+    description: "Generate lofi beats for study sessions, background music, or YouTube in seconds. Royalty-free, no login required. Built on the 2026 v6 model—warmer and less repetitive than older lofi generators.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    keywords: [
+      "ai lofi music generator",
+      "lofi beats generator",
+      "free lofi music generator",
+      "lofi hip hop generator",
+      "study music generator",
+      "royalty free lofi",
+      "ai music for youtube",
+      "lofi generator 2026",
+    ],
+    alternates: { canonical: PAGE_CANONICAL },
+    robots: { index: true, follow: true },
+    openGraph: {
+      title,
+      description,
+      url: PAGE_CANONICAL,
+      siteName: config.siteName,
+      type: "website",
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Free AI Lofi Music Generator" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+  };
+}
 
 /** FAQ: plain text for JSON-LD; display adds internal links via FAQAnswer */
 const FAQ_ITEMS = [

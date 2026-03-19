@@ -1,10 +1,12 @@
 import type { MetadataRoute } from "next";
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theaimusicgenerator.com";
+import { getServerSiteConfig } from "@/lib/site-config";
 
 export const dynamic = "force-static";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const config = await getServerSiteConfig();
+  const BASE_URL = config.siteUrl;
+
   const routes = [
     "",
     "/ai-music-generator",

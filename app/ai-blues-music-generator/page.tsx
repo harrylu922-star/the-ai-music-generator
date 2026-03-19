@@ -8,30 +8,38 @@ import { LANDING_PAGES } from "../../components/LandingNav";
 import { DualLayerWrapper } from "../../components/DualLayerWrapper";
 import { AiMusicGeneratorWorkspace } from "./AiMusicGeneratorWorkspace";
 import { getBluesMusicGeneratorJsonLd } from "./json-ld";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
 const PAGE_URL = "/ai-blues-music-generator";
 const OG_IMAGE = "/images/ai-blues-music-generator/hero-blues.webp";
 
-export const metadata: Metadata = {
-  title: { absolute: "Best AI Blues Music Generator: 12-Bar, Delta & Soul Blues" },
-  description: "Create authentic blues music with AI. V6 model delivers 12-bar, Delta, and soul blues—slide guitar, organ, micro-timing. Royalty-free for YouTube and Spotify.",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, PAGE_URL, {
     title: "Best AI Blues Music Generator: 12-Bar, Delta & Soul Blues",
-    description: "AI blues with soul. Royalty-free for YouTube and Spotify.",
-    url: PAGE_URL,
-    siteName: "The AI Music Generator",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Blues Music Generator" }],
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Best AI Blues Music Generator: 12-Bar, Delta & Soul Blues",
-    description: "AI blues with soul. Royalty-free for YouTube and Spotify.",
-    images: [OG_IMAGE],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+    description: "Create authentic blues music with AI. V6 model delivers 12-bar, Delta, and soul blues—slide guitar, organ, micro-timing. Royalty-free for YouTube and Spotify.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: {
+      title,
+      description,
+      url: PAGE_URL,
+      siteName: config.siteName,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Blues Music Generator" }],
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+    alternates: { canonical: PAGE_URL },
+  };
+}
 
 export default function AiBluesMusicGeneratorPage() {
   const jsonLd = getBluesMusicGeneratorJsonLd();

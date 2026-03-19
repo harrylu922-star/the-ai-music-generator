@@ -2,16 +2,21 @@ import type { Metadata } from "next";
 import Link from "@/components/Link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://themusicgenerator.com";
-
-export const metadata: Metadata = {
-  title: "Legal | Privacy, Terms & Content License",
-  description:
-    "Privacy Policy, Terms of Service and Content License for The AI Music Generator. User rights, data use and royalty-free music license terms.",
-  alternates: { canonical: `${BASE_URL}/legal` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, "/legal", {
+    title: "Legal | Privacy, Terms & Content License",
+    description: `Privacy Policy, Terms of Service and Content License for ${config.siteName}. User rights, data use and royalty-free music license terms.`,
+  });
+  return {
+    title,
+    description,
+    openGraph: { title, description, siteName: config.siteName },
+    alternates: { canonical: `${config.siteUrl}/legal` },
+  };
+}
 
 const LEGAL_LINKS = [
   { href: "/privacy", title: "Privacy Policy" },

@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { PrivacyContent } from "../legal/sections/PrivacyContent";
+import { getServerSiteConfig } from "../../lib/site-config";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://themusicgenerator.com";
-
-export const metadata: Metadata = {
-  title: "Privacy Policy | The AI Music Generator",
-  description:
-    "Privacy Policy for The AI Music Generator: how we collect, use and protect your information. Data and cookie practices for our AI music services.",
-  alternates: { canonical: `${BASE_URL}/privacy` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  return {
+    title: `Privacy Policy | ${config.siteName}`,
+    description: `Privacy Policy for ${config.siteName}: how we collect, use and protect your information. Data and cookie practices for our AI music services.`,
+    alternates: { canonical: `${config.siteUrl}/privacy` },
+  };
+}
 
 export default function PrivacyPage() {
   return (

@@ -1,18 +1,17 @@
 import type { MetadataRoute } from "next";
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theaimusicgenerator.com";
+import { getServerSiteConfig } from "@/lib/site-config";
 
 export const dynamic = "force-static";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const config = await getServerSiteConfig();
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/"],
       },
     ],
-    sitemap: `${BASE_URL}/sitemap.xml`,
+    sitemap: `${config.siteUrl}/sitemap.xml`,
   };
 }

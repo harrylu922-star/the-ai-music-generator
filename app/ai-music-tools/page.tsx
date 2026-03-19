@@ -2,11 +2,21 @@ import type { Metadata } from "next";
 import Link from "@/components/Link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
-export const metadata: Metadata = {
-  title: { absolute: "AI Music Tools | Instrumentals, Loops & Text-to-Music" },
-  description: "One platform for AI music: full tracks, lyrics, instrumentals & loops. Free text-to-music and lyrics generator for creators. Start creating royalty-free music now.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, "/ai-music-tools", {
+    title: "AI Music Tools | Instrumentals, Loops & Text-to-Music",
+    description: "One platform for AI music: full tracks, lyrics, instrumentals & loops. Free text-to-music and lyrics generator for creators. Start creating royalty-free music now.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: { title, description, siteName: config.siteName },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 const TOOLS = [
   { href: "/ai-music-generator", label: "AI Music Generator", desc: "Full tracks from text or your own lyrics." },

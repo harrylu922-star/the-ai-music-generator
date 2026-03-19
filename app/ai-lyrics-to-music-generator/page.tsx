@@ -8,32 +8,36 @@ import { DualLayerWrapper } from "../../components/DualLayerWrapper";
 import { LyricsToMusicGenerator } from "./LyricsToMusicGenerator";
 
 const PAGE_URL = "/ai-lyrics-to-music-generator";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theaimusicgenerator.com";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
-const PAGE_TITLE = "Free AI Music from Lyrics | Turn Words into Songs (2026)";
-
-export const metadata: Metadata = {
-  title: { absolute: PAGE_TITLE },
-  description:
-    "Turn your lyrics into full songs in seconds. Free AI music generator from lyrics. ChatGPT & Suno compatible. Royalty-free for videos, podcasts & commercial use. Try now (2026).",
-  openGraph: {
-    title: PAGE_TITLE,
-    description: "Turn lyrics into full songs in seconds. ChatGPT & Suno compatible. Royalty-free. Try free.",
-    url: PAGE_URL,
-    siteName: "The AI Music Generator",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Music from Lyrics - Turn Your Words into Songs" }],
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: PAGE_TITLE,
-    description: "Turn lyrics into songs in seconds. ChatGPT & Suno compatible. Royalty-free.",
-    images: [OG_IMAGE],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { getServerSiteConfig, getSubPageMeta } = await import("../../lib/site-config");
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, PAGE_URL, {
+    title: "Free AI Music from Lyrics | Turn Words into Songs (2026)",
+    description: "Turn your lyrics into full songs in seconds. Free AI music generator from lyrics. ChatGPT & Suno compatible. Royalty-free for videos, podcasts & commercial use. Try now (2026).",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: {
+      title,
+      description,
+      url: PAGE_URL,
+      siteName: config.siteName,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Music from Lyrics - Turn Your Words into Songs" }],
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+    alternates: { canonical: PAGE_URL },
+  };
+}
 
 const FAQ_ITEMS = [
   {

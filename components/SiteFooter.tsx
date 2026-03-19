@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "@/components/Link";
+import { useSiteConfig } from "./SiteConfigProvider";
 
 export function SiteFooter() {
+  const config = useSiteConfig();
   return (
     <footer className="border-t border-slate-800 bg-slate-950">
       <div className="mx-auto max-w-6xl px-4 py-12">
@@ -43,9 +47,15 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-800 text-sm text-slate-400">
-          <span>© {new Date().getFullYear()} TheAIMusicGenerator.com. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} {config.copyrightName}. All rights reserved.</span>
           <Link href="/" className="flex items-center gap-2 text-slate-100 font-medium">
-            <span className="text-violet-400">T</span>he<span className="text-violet-400">A</span>I<span className="text-violet-400">M</span>usic<span className="text-violet-400">G</span>enerator
+            {config.shortName === "The AI Music Generator" ? (
+              <>
+                <span className="text-violet-400">T</span>he<span className="text-violet-400">A</span>I<span className="text-violet-400">M</span>usic<span className="text-violet-400">G</span>enerator
+              </>
+            ) : (
+              config.shortName
+            )}
           </Link>
         </div>
       </div>

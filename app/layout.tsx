@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { GlobalPlayerLayout } from "../components/GlobalPlayerLayout";
+import { SiteConfigProvider } from "../components/SiteConfigProvider";
+import { getServerSiteConfig } from "../lib/site-config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,50 +15,49 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theaimusicgenerator.com";
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  return {
+    metadataBase: new URL(config.siteUrl),
+    title: {
+      default: config.defaultTitle,
+      template: config.titleTemplate,
+    },
+    description: config.defaultDescription,
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      siteName: config.siteName,
+      title: config.defaultTitle,
+      description: config.defaultDescription,
+      images: [
+        {
+          url: "/images/home/hero-card-ai-music-generator.jpg",
+          width: 1200,
+          height: 630,
+          alt: config.ogImageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: config.defaultTitle,
+      description: config.defaultDescription,
+      images: ["/images/home/hero-card-ai-music-generator.jpg"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: "The free AI Music Generator for Creators | Royalty-Free",
-    template: "%s | The AI Music Generator",
-  },
-  description:
-    "Turn text into songs and instrumentals in seconds. Free AI music generator and lyrics tool for creators, filmmakers & YouTubers. No copyright strikes—try free.",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    siteName: "The AI Music Generator",
-    title: "The free AI Music Generator for Creators | Royalty-Free",
-    description:
-      "Turn text into songs and instrumentals in seconds. Free AI music & lyrics tools for creators. No copyright strikes—try free.",
-    images: [
-      {
-        url: "/images/home/hero-card-ai-music-generator.jpg",
-        width: 1200,
-        height: 630,
-        alt: "The AI Music Generator – Create royalty-free music with AI",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "The free AI Music Generator for Creators | Royalty-Free",
-    description:
-      "Turn text into songs and instrumentals in seconds. Free AI music for creators. No copyright strikes—try free.",
-    images: ["/images/home/hero-card-ai-music-generator.jpg"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const config = await getServerSiteConfig();
   return (
     <html lang="en">
       <head>
@@ -65,7 +66,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <GlobalPlayerLayout>{children}</GlobalPlayerLayout>
+        <SiteConfigProvider config={config}>
+          <GlobalPlayerLayout>{children}</GlobalPlayerLayout>
+        </SiteConfigProvider>
       </body>
     </html>
   );

@@ -8,30 +8,38 @@ import { SiteFooter } from "../../components/SiteFooter";
 import { LANDING_PAGES } from "../../components/LandingNav";
 import { DualLayerWrapper } from "../../components/DualLayerWrapper";
 import { AiMusicGeneratorWorkspace } from "./AiMusicGeneratorWorkspace";
+import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
 const PAGE_URL = "/ai-music-generator";
 const OG_IMAGE = "/images/home/hero-card-ai-music-generator.jpg";
 
-export const metadata: Metadata = {
-  title: { absolute: "Free AI Music Generator | Royalty-Free Music from Text" },
-  description: "Generate unique, royalty-free music from text in seconds. Free AI music generator for creators, filmmakers & YouTubers. Describe genre, mood & style—get full tracks.",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getServerSiteConfig();
+  const { title, description } = getSubPageMeta(config, PAGE_URL, {
     title: "Free AI Music Generator | Royalty-Free Music from Text",
-    description: "Generate royalty-free music from text in seconds. For creators, filmmakers & YouTubers. Full tracks—try free.",
-    url: PAGE_URL,
-    siteName: "The AI Music Generator",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Music Generator - Create royalty-free music from text" }],
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Free AI Music Generator | Royalty-Free Music from Text",
-    description: "Royalty-free music from text in seconds. For creators & YouTubers. Full tracks—try free.",
-    images: [OG_IMAGE],
-  },
-  alternates: { canonical: PAGE_URL },
-};
+    description: "Generate unique, royalty-free music from text in seconds. Free AI music generator for creators, filmmakers & YouTubers. Describe genre, mood & style—get full tracks.",
+  });
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: {
+      title,
+      description,
+      url: PAGE_URL,
+      siteName: config.siteName,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "AI Music Generator - Create royalty-free music from text" }],
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+    alternates: { canonical: PAGE_URL },
+  };
+}
 
 export default function AiMusicGeneratorPage() {
   return (
