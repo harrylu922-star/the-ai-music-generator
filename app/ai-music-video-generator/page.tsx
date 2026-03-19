@@ -118,7 +118,7 @@ function schemaText(s: string): string {
     .replace(/\u2013/g, " - ");
 }
 
-function getPageSchema() {
+function getPageSchema(siteUrl: string) {
   const publishedDate = "2026-01-15";
   const modifiedDate = "2026-03-12";
   return {
@@ -127,14 +127,14 @@ function getPageSchema() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "AI Music Video Generator", item: `${SITE_URL}${PAGE_URL}` },
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "AI Music Video Generator", item: `${siteUrl}${PAGE_URL}` },
         ],
       },
       {
         "@type": "WebPage",
-        "@id": `${SITE_URL}${PAGE_URL}#webpage`,
-        url: `${SITE_URL}${PAGE_URL}`,
+        "@id": `${siteUrl}${PAGE_URL}#webpage`,
+        url: `${siteUrl}${PAGE_URL}`,
         name: "AI Music Video Generator from Lyrics | Best for YouTube 2026",
         description:
           "Turn lyrics or audio into music videos in seconds. Best for YouTube 2026. Royalty-free, 4K export.",
@@ -142,21 +142,21 @@ function getPageSchema() {
         dateModified: modifiedDate,
         isPartOf: {
           "@type": "WebSite",
-          "@id": `${SITE_URL}/#website`,
+          "@id": `${siteUrl}/#website`,
           name: "The AI Music Generator",
-          url: SITE_URL,
+          url: siteUrl,
         },
-        breadcrumb: { "@id": `${SITE_URL}${PAGE_URL}#breadcrumb` },
+        breadcrumb: { "@id": `${siteUrl}${PAGE_URL}#breadcrumb` },
       },
       {
         "@type": "SoftwareApplication",
         name: "The AI Music Generator - Music Video Generator",
         applicationCategory: "MultimediaApplication",
         operatingSystem: "Web",
-        url: `${SITE_URL}${PAGE_URL}`,
+        url: `${siteUrl}${PAGE_URL}`,
         description:
           "AI-powered music video generator from lyrics or audio. Cinematic, Anime, Lo-fi styles. v6 Multi-modal Engine. Frame-accurate audio-visual sync. 4K export for YouTube, TikTok, Instagram. Royalty-free commercial license.",
-        screenshot: `${SITE_URL}/images/home/hero-card-ai-music-generator.webp`,
+        screenshot: `${siteUrl}/images/home/hero-card-ai-music-generator.webp`,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         featureList: [
           "AI music video from lyrics",
@@ -228,8 +228,10 @@ function FAQAnswer({ text }: { text: string }) {
   return <>{nodes}</>;
 }
 
-export default function AiMusicVideoGeneratorPage() {
-  const schema = getPageSchema();
+export default async function AiMusicVideoGeneratorPage() {
+  const { getServerSiteConfig } = await import("../../lib/site-config");
+  const config = await getServerSiteConfig();
+  const schema = getPageSchema(config.siteUrl);
 
   return (
     <>
