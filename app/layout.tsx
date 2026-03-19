@@ -5,11 +5,11 @@ import { GlobalPlayerLayout } from "../components/GlobalPlayerLayout";
 import { SiteConfigProvider } from "../components/SiteConfigProvider";
 import { getServerSiteConfig } from "../lib/site-config";
 
-// 强制动态渲染：所有页面在每次请求时重新渲染。
-// 必须设置，否则 getServerSiteConfig() 内的 try/catch 会吞掉 Next.js 的
-// DYNAMIC_SERVER_USAGE 信号，导致构建期用单一品牌(TAMG)静态预渲染所有页面，
-// 访问 aimusicfactory.com 时也只能拿到预烘焙的 TAMG HTML。
-export const dynamic = "force-dynamic";
+// 注意：Cloudflare Pages 当前使用静态导出 (output: "export")，无法使用 force-dynamic。
+// 静态构建下所有页面在构建期预渲染，单一部署无法按域名切换品牌。
+// 若需 aimusicfactory.com 与 theaimusicgenerator.com 内容不同，请：
+// 方案 A) 为两个域名各建一个 Pages 项目，分别设置 NEXT_PUBLIC_SITE_URL 后构建；
+// 方案 B) 改用 OpenNext/Workers 部署（SSR），保留 force-dynamic 即可按 Host 切换。
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
