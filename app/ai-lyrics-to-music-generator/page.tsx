@@ -64,15 +64,15 @@ function schemaText(s: string): string {
     .replace(/\u2013/g, " - ");
 }
 
-function getPageSchema() {
+function getPageSchema(siteUrl: string) {
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "AI Lyrics to Music Generator", item: `${SITE_URL}${PAGE_URL}` },
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "AI Lyrics to Music Generator", item: `${siteUrl}${PAGE_URL}` },
         ],
       },
       {
@@ -85,7 +85,7 @@ function getPageSchema() {
           { "@type": "HowToStep", position: 2, name: "Optional: set genre and mood", text: "Specify genre and mood so BPM and style match your lyrics." },
           { "@type": "HowToStep", position: 3, name: "Click Turn Lyrics to Melody", text: "The AI generates a full song. Download royalty-free for commercial use." },
         ],
-        url: `${SITE_URL}${PAGE_URL}`,
+        url: `${siteUrl}${PAGE_URL}`,
       },
       {
         "@type": "FAQPage",
@@ -100,8 +100,10 @@ function getPageSchema() {
   };
 }
 
-export default function AiLyricsToMusicGeneratorPage() {
-  const schema = getPageSchema();
+export default async function AiLyricsToMusicGeneratorPage() {
+  const { getServerSiteConfig } = await import("../../lib/site-config");
+  const config = await getServerSiteConfig();
+  const schema = getPageSchema(config.siteUrl);
 
   return (
     <>
