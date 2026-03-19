@@ -100,9 +100,15 @@ function getPageSchema(siteUrl: string) {
   };
 }
 
+const DEFAULT_PAGE_TITLE = "Free AI Music from Lyrics | Turn Words into Songs (2026)";
+
 export default async function AiLyricsToMusicGeneratorPage() {
-  const { getServerSiteConfig } = await import("../../lib/site-config");
+  const { getServerSiteConfig, getSubPageMeta } = await import("../../lib/site-config");
   const config = await getServerSiteConfig();
+  const { title: pageTitle } = getSubPageMeta(config, PAGE_URL, {
+    title: DEFAULT_PAGE_TITLE,
+    description: "Turn your lyrics into full songs in seconds. Free AI music generator from lyrics. ChatGPT & Suno compatible. Royalty-free for videos, podcasts & commercial use. Try now (2026).",
+  });
   const schema = getPageSchema(config.siteUrl);
 
   return (
@@ -144,7 +150,7 @@ export default async function AiLyricsToMusicGeneratorPage() {
             </nav>
 
             <div className="flex flex-1 min-w-0 min-h-0">
-              <LyricsToMusicGenerator pageTitle={PAGE_TITLE} />
+              <LyricsToMusicGenerator pageTitle={pageTitle} />
             </div>
           </div>
 
