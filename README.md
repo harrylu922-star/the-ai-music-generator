@@ -78,6 +78,9 @@ Worker on `theaimusicgenerator.com`, `www.theaimusicgenerator.com`, and
 `app.theaimusicgenerator.com`. The Cloudflare Zone must be active in the same
 account as the Worker before the routes can publish publicly.
 
+The previous static Pages deployment is retired from production: its custom
+domains and Git automatic-deployment connection are removed.
+
 ## Music provider contract
 
 See [docs/music-provider-contract.md](docs/music-provider-contract.md).

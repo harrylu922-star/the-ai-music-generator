@@ -17,6 +17,8 @@
 - [x] The production Zone is active and the application is attached at
   `theaimusicgenerator.com`, `www.theaimusicgenerator.com`, and
   `app.theaimusicgenerator.com`.
+- [x] The legacy Harrylu922 Pages production domains are removed and its Git
+  automatic deployment integration is disconnected.
 - [x] Wrangler OAuth has Worker, route, Zone, and TLS scopes for deployment.
 
 ## AI provider
