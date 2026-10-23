@@ -36,10 +36,6 @@ export function PhotoStyleModal({ open, selectedId, onClose, onConfirm }: PhotoS
   const [failedImages, setFailedImages] = React.useState<Set<string>>(new Set());
   const [usePngFallback, setUsePngFallback] = React.useState<Set<string>>(new Set());
 
-  React.useEffect(() => {
-    setPending(selectedId);
-  }, [selectedId, open]);
-
   const handleImageError = React.useCallback((id: string) => {
     setUsePngFallback((prev) => {
       if (prev.has(id)) {

@@ -34,7 +34,6 @@ const prose =
   "text-slate-300 leading-relaxed space-y-4 max-w-3xl mx-auto px-4";
 const heading1 = "text-3xl font-semibold text-slate-100 mt-12 mb-4";
 const heading2 = "text-xl font-semibold text-slate-100 mt-10 mb-3";
-const heading3 = "text-lg font-medium text-slate-200 mt-6 mb-2";
 const list = "list-disc list-inside space-y-2 text-slate-300";
 const tableWrap = "overflow-x-auto my-6 rounded-xl border border-slate-800";
 const table = "w-full text-sm text-left text-slate-300";

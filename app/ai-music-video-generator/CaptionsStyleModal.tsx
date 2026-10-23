@@ -290,10 +290,6 @@ export function CaptionsStyleModal({
 }: CaptionsStyleModalProps) {
   const [pending, setPending] = React.useState(selectedId);
 
-  React.useEffect(() => {
-    setPending(selectedId);
-  }, [selectedId, open]);
-
   if (!open) return null;
 
   return (

@@ -1,6 +1,6 @@
 # 全站 MVP 上线审计报告
 
-**审计时间**：按执行日  
+**审计时间**：2026-10-22
 **审计范围**：全站路由、链接、SEO、UI、构建、配置  
 **结论**：按「仅展示/静态演示」MVP 标准，**通过，可上线**。以下为逐项结果与建议。
 
@@ -10,9 +10,9 @@
 
 | 项 | 结果 | 说明 |
 |----|------|------|
-| `npm run build` | ✅ 通过 | 22 个静态页生成成功，无 TypeScript/编译错误 |
+| `npm run build` | ✅ 通过 | 46 个页面/API 路由完成构建，无 TypeScript/编译错误 |
 | 路由完整性 | ✅ | 首页、AI Music/Lyrics/Rap、Text to Music、AI Music Tools、For YouTube Creators、Pricing、Resources（含 4 篇子文）、Legal、Coming Soon、404、Logo Preview 均可访问 |
-| Sitemap 与路由一致 | ✅ | `app/sitemap.ts` 包含 14 条路由（含 `/resources/monetize-ai-music-2026`），未包含 `/logo-preview`、`/coming-soon`（符合预期） |
+| Sitemap 与路由一致 | ✅ | `app/sitemap.ts` 包含 24 条路由，逐条检查均存在于静态产物；未包含 `/logo-preview`、`/coming-soon`（符合预期） |
 
 ---
 
@@ -64,14 +64,20 @@
 | 项 | 结果 | 说明 |
 |----|------|------|
 | .env.example | ✅ | 已含 `NEXT_PUBLIC_SITE_URL` 说明 |
-| 生产部署 | ⚪ 建议 | 上线前在目标环境设置 `NEXT_PUBLIC_SITE_URL` 为实际域名，保证 sitemap/robots/og 使用正确根地址 |
+| 生产部署 | ✅ | OpenNext Worker 与 API 路由部署在 `app.theaimusicgenerator.com`，五类服务健康检查均为 `true` |
+| 构建隔离 | ✅ | `npm run build` 先清理 `.next`/`out`，且不再自动改写已跟踪图片 |
+| 本地生产预览 | ✅ | 使用 `npx opennextjs-cloudflare preview` 验证 Workers 运行时 |
+| Lint | ✅ | ESLint 0 error、0 warning |
+| 生产依赖审计 | ✅ | `npm audit --omit=dev` 为 0 vulnerabilities |
+| Lighthouse | ⚪ | 静态版本回归为首页 95、定价 99、AI Music 98；OpenNext 动态版本需在生产域名重新审计 |
+| CWV 局限 | ⚪ | 静态版本首页模拟 LCP 约 3.0 秒；原始观测约 57ms，需以 Cloudflare 生产数据复测 |
 
 ---
 
 ## 六、审计结论
 
-- **无阻塞问题**：构建通过、无死链、404/Coming Soon 就绪、SEO 与 og:image 已配置、Legal 锚点有效、Resources 与 sitemap 一致。
-- **按「仅展示/静态演示」MVP 标准：可上线。**
+- **代码级无阻塞问题**：Next/OpenNext 构建通过，真实认证、歌词、音乐任务、积分、媒体、账户与 Stripe 链路已实现。
+- **生产配置**：音乐供应商、Stripe Test、R2、Durable Object、生产域名和签名 Webhook 已配置；Stripe Live 仍待账户持有人完成 onboarding。
 
 ---
 
@@ -81,13 +87,16 @@
 |--------|------|------|
 | 低 | 生产环境确认 og 图文件 | 确保 `public/images/home/hero-card-ai-music-generator.jpg` 存在且尺寸合适，避免分享/爬虫 404 |
 | 低 | 设置 NEXT_PUBLIC_SITE_URL | 部署时在目标环境配置为生产域名 |
-| 可选 | .env.example 补充 API 占位 | 若后续接歌词/音乐 API，可提前增加 `# LYRICS_API_URL=` 等注释，便于协作 |
+| 上线前 | 配置音乐供应商 | 按 `docs/music-provider-contract.md` 设置 URL 与 API Key |
+| 上线前 | 配置 Stripe | 创建价格、设置密钥，并订阅三个 Webhook 事件 |
+
+**仍未解决**：开发依赖中有 5 个 high 级间接漏洞，来源为 ESLint/fast-glob 链上的 `braces@3.0.3`；当前没有可用补丁，不进入生产依赖。
 
 ---
 
-## 八、与「可注册、可生成、可付费」的差距（非本次 MVP）
+## 八、产品闭环实现状态
 
-若后续要做真实产品闭环，仍需：认证、数据库、BFF（音乐/歌词 API）、积分与支付、音频存储等。详见 `docs/backend-todo.md`、`docs/integration-checklist.md`、`docs/MVP-launch-readiness.md`。
+认证、数据库、BFF、歌词、音乐任务、积分、Stripe Test 和 R2 存储已接通并完成生产验收。剩余上线工作在 Stripe 账户本身：完成 Live onboarding、银行信息验证和第一笔 Live 支付。
 
 ---
 

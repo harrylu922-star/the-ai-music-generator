@@ -110,7 +110,7 @@ export default async function Home() {
         </section>
 
         {/* 2) THREE CORE FEATURE CARDS */}
-        <section className="border-b border-slate-900 bg-slate-950">
+        <section className="content-auto border-b border-slate-900 bg-slate-950">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center">
             <h2 className="mb-4 text-3xl font-semibold text-slate-100">{home.section2Heading}</h2>
             <p className="mb-10 text-base text-slate-400 max-w-2xl mx-auto">{home.section2Subtitle}</p>
@@ -128,7 +128,7 @@ export default async function Home() {
         </section>
 
         {/* 3) SAMPLE TRACKS */}
-        <section className="border-b border-slate-900 bg-slate-950 min-h-screen flex flex-col">
+        <section className="content-auto border-b border-slate-900 bg-slate-950 min-h-screen flex flex-col">
           <div className="mx-auto max-w-6xl px-4 py-6 md:py-8 text-center flex-1 flex flex-col min-h-0">
             <h2 className="mb-1 text-3xl font-semibold text-slate-100">{home.section3Heading}</h2>
             <p className="mb-4 md:mb-5 text-base text-slate-400 max-w-2xl mx-auto">{home.section3Subtitle}</p>
@@ -137,7 +137,7 @@ export default async function Home() {
         </section>
 
         {/* 4) EXPLORE TOOLS */}
-        <section className="border-b border-slate-900 bg-slate-950">
+        <section className="content-auto border-b border-slate-900 bg-slate-950">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center">
             <h2 className="mb-2 text-3xl font-semibold text-slate-100">{home.section4Heading}</h2>
             <p className="mb-10 text-base text-slate-400 max-w-2xl mx-auto">{home.section4Subtitle}</p>
@@ -155,7 +155,7 @@ export default async function Home() {
         </section>
 
         {/* 5) THE SPARK / YOUR CONTENT */}
-        <section className="border-b border-slate-900 bg-slate-950">
+        <section className="content-auto border-b border-slate-900 bg-slate-950">
           <div className="mx-auto max-w-4xl px-4 py-14 text-center">
             <h2 className="mb-6 text-3xl font-semibold text-slate-100">{home.section5Heading}</h2>
             <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -171,7 +171,7 @@ export default async function Home() {
         </section>
 
         {/* 6) HOW IT WORKS */}
-        <section className="border-b border-slate-900 bg-slate-950">
+        <section className="content-auto border-b border-slate-900 bg-slate-950">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center">
             <h2 className="mb-10 text-3xl font-semibold text-slate-100">{home.section6Heading}</h2>
             <div className="grid gap-6 md:grid-cols-3 text-left">
@@ -195,7 +195,7 @@ export default async function Home() {
         </section>
 
         {/* 7) USE CASES */}
-        <section id="use-cases" className="border-b border-slate-900 bg-slate-950">
+        <section id="use-cases" className="content-auto border-b border-slate-900 bg-slate-950">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center">
             <h2 className="mb-10 text-3xl font-semibold text-slate-100">{home.section7Heading}</h2>
             <div className="mb-8 max-w-3xl mx-auto relative aspect-[2/1] rounded-xl overflow-hidden bg-slate-800/50">
@@ -250,7 +250,7 @@ export default async function Home() {
         </section>
 
         {/* 8) WHO USES */}
-        <section className="border-b border-slate-900 bg-slate-950">
+        <section className="content-auto border-b border-slate-900 bg-slate-950">
           <div className="mx-auto max-w-4xl px-4 py-14 text-center">
             <h2 className="mb-4 text-3xl font-semibold text-slate-100">
               {home.section8HeadingLinkText ? (
@@ -284,7 +284,7 @@ export default async function Home() {
         </section>
 
         {/* 9) COPYRIGHT */}
-        <section id="copyright" className="border-b border-slate-900 bg-slate-950">
+        <section id="copyright" className="content-auto border-b border-slate-900 bg-slate-950">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center">
             <h2 className="mb-4 text-3xl font-semibold text-slate-100">{home.section9Heading}</h2>
             <p className="mb-6 text-base text-slate-400 max-w-2xl mx-auto">Clear licensing so you can use your tracks everywhere.</p>
@@ -302,7 +302,7 @@ export default async function Home() {
         </section>
 
         {/* 10) FAQ — 从 config.home.faqItems 渲染，支持按域名定制 Q&A */}
-        <section className="bg-slate-950">
+        <section className="content-auto bg-slate-950">
           <div className="mx-auto max-w-3xl px-4 py-14 text-center">
             <h2 className="mb-6 text-3xl font-semibold text-slate-100">{home.section10Heading}</h2>
             <div className="space-y-3 text-left">
@@ -319,7 +319,7 @@ export default async function Home() {
         </section>
 
         {/* CTA */}
-        <section className="border-b border-slate-900 bg-slate-950 overflow-hidden">
+        <section className="content-auto border-b border-slate-900 bg-slate-950 overflow-hidden">
           <div className="mx-auto max-w-6xl px-3 sm:px-4 py-10 sm:py-14 text-center">
             <div className="relative rounded-2xl sm:rounded-3xl border border-slate-800 bg-slate-900/80 overflow-hidden aspect-[4/3] sm:aspect-[3/1] min-h-[260px] sm:min-h-[280px] w-full max-w-full">
               <HomeCtaImage src="/images/home/cta-ready-to-create.webp" src640="/images/home/cta-ready-to-create-640.webp" alt="Creator ready to make music">

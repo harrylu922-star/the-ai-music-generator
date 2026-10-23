@@ -2,9 +2,11 @@
 
 import { useState, useRef, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "@/components/Link";
 import { Input } from "../../components/ui/input";
 import { cn } from "../../lib/utils";
 import { useLoginPreview } from "../../lib/use-login-preview";
+import { apiJson, pollMusicJob, type ClientGenerationJob } from "../../lib/client/generation";
 
 /** Get inspired 共用的约 10 个 country 风格预设，点击依次切换 */
 const COUNTRY_PROMPT_PRESETS = [
@@ -44,11 +46,13 @@ interface HistoryItem {
   title: string;
   prompt: string;
   duration: string;
-  status: "completed" | "generating";
+  status: "completed" | "generating" | "failed";
+  audioUrl?: string;
+  error?: string;
   createdAt: number;
 }
 
-type StatusFilter = "all" | "completed" | "generating";
+type StatusFilter = "all" | "completed" | "generating" | "failed";
 type SortOrder = "newest" | "oldest";
 
 function appendToPrompt(current: string, value: string, maxLength = 500): string {
@@ -63,17 +67,21 @@ type TabMode = "prompt" | "own-lyrics";
 export function AiMusicGeneratorWorkspace() {
   const searchParams = useSearchParams();
   const isLoggedIn = useLoginPreview();
-  const [tabMode, setTabMode] = useState<TabMode>("prompt");
+  const [tabMode, setTabMode] = useState<TabMode>(() =>
+    searchParams.get("mode") === "own-lyrics" ? "own-lyrics" : "prompt"
+  );
   const [workspaceExpanded, setWorkspaceExpanded] = useState(false);
   const [prompt, setPrompt] = useState(DEFAULT_COUNTRY_PROMPT);
   const [title, setTitle] = useState("");
-  const [lyrics, setLyrics] = useState("");
+  const [lyrics, setLyrics] = useState(() => searchParams.get("lyrics") ?? "");
   const [coverStyle, setCoverStyle] = useState("");
   const [openPanel, setOpenPanel] = useState<OpenPanel>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [playerVisible, setPlayerVisible] = useState(false);
   const [playerProgress, setPlayerProgress] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
@@ -83,10 +91,7 @@ export function AiMusicGeneratorWorkspace() {
   const promptRef = useRef<HTMLTextAreaElement>(null);
   const lyricsRef = useRef<HTMLTextAreaElement>(null);
   const coverStyleRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    if (searchParams.get("mode") === "own-lyrics") setTabMode("own-lyrics");
-  }, [searchParams]);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const addVocalToPrompt = (value: string) => {
     setPrompt((prev) => {
@@ -123,6 +128,7 @@ export function AiMusicGeneratorWorkspace() {
 
   const handleSelectTrack = (id: string) => {
     setPlayingId(id);
+    setPlayerProgress(0);
     setPlayerVisible(true);
   };
 
@@ -142,21 +148,76 @@ export function AiMusicGeneratorWorkspace() {
     setOpenPanel((p) => (p === panel ? null : panel));
   };
 
-  const handleGenerate = () => {
-    const id = Date.now().toString();
+  const updateJob = (temporaryId: string, job: ClientGenerationJob) => {
+    setHistory((prev) =>
+      prev.map((item) =>
+        item.id === temporaryId
+          ? {
+              id: job.id,
+              title: job.title,
+              prompt: prompt || lyrics || "—",
+              duration: job.result?.duration
+                ? `${Math.floor(job.result.duration / 60)}:${Math.floor(job.result.duration % 60).toString().padStart(2, "0")}`
+                : "—",
+              status:
+                job.status === "completed"
+                  ? "completed"
+                  : job.status === "failed"
+                    ? "failed"
+                    : "generating",
+              audioUrl: job.result?.audioUrl,
+              error: job.error ?? undefined,
+              createdAt: item.createdAt,
+            }
+          : item
+      )
+    );
+  };
+
+  const handleGenerate = async () => {
+    if (isGenerating) return;
+    if (!prompt.trim() && !lyrics.trim()) return;
+    const temporaryId = `pending-${Date.now()}`;
     setHistory((prev) => [
-      { id, title: title || "Untitled", prompt: prompt || "—", duration: "—", status: "generating", createdAt: Date.now() },
+      { id: temporaryId, title: title || "Untitled", prompt: prompt || lyrics || "—", duration: "—", status: "generating", createdAt: Date.now() },
       ...prev,
     ]);
-    setPlayingId(id);
-    setPlayerVisible(true);
-    setTimeout(() => {
+    setIsGenerating(true);
+    let activeId = temporaryId;
+    try {
+      const data = await apiJson<{ job: ClientGenerationJob }>("/api/music/generate", {
+        method: "POST",
+        body: JSON.stringify({
+          title,
+          prompt: prompt || lyrics,
+          lyrics,
+          genre: coverStyle || "Country",
+          vocal: vocalChoice,
+        }),
+      });
+      activeId = data.job.id;
+      updateJob(temporaryId, data.job);
+      const finalJob = await pollMusicJob(data.job, (job) => updateJob(temporaryId, job));
+      updateJob(temporaryId, finalJob);
+      if (finalJob.status === "completed") {
+        setPlayingId(finalJob.id);
+        setPlayerVisible(true);
+      }
+    } catch (error) {
       setHistory((prev) =>
         prev.map((item) =>
-          item.id === id ? { ...item, status: "completed" as const } : item
+          item.id === activeId
+            ? {
+                ...item,
+                status: "failed" as const,
+                error: error instanceof Error ? error.message : "Music generation failed.",
+              }
+            : item
         )
       );
-    }, 2000);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const filteredAndSortedHistory = useMemo(() => {
@@ -173,6 +234,38 @@ export function AiMusicGeneratorWorkspace() {
   }, [history, searchQuery, statusFilter, sortOrder]);
 
   const playingItem = history.find((h) => h.id === playingId);
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    void apiJson<{ jobs: ClientGenerationJob[] }>("/api/jobs?type=music", { cache: "no-store" })
+      .then(({ jobs }) => {
+        setHistory(jobs.map((job) => ({
+          id: job.id,
+          title: job.title,
+          prompt: String(job.request.prompt ?? job.request.lyrics ?? "—"),
+          duration: job.result?.duration
+            ? `${Math.floor(job.result.duration / 60)}:${Math.floor(job.result.duration % 60).toString().padStart(2, "0")}`
+            : "—",
+          status: job.status === "completed" ? "completed" : job.status === "failed" ? "failed" : "generating",
+          audioUrl: job.result?.audioUrl,
+          error: job.error ?? undefined,
+          createdAt: job.createdAt,
+        })));
+      })
+      .catch(() => undefined);
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (!playingItem?.audioUrl) {
+      audio.pause();
+      audio.removeAttribute("src");
+      return;
+    }
+    audio.src = playingItem.audioUrl;
+    audio.play().catch(() => setIsPlaying(false));
+  }, [playingItem?.audioUrl]);
 
   return (
     <>
@@ -224,17 +317,17 @@ export function AiMusicGeneratorWorkspace() {
             {tabMode === "prompt" && (
             <div className="mt-3 space-y-3">
             <div>
-              <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-500 mb-1">Title (optional)</label>
+              <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-400 mb-1">Title (optional)</label>
               <Input
                 placeholder="0/80"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 maxLength={80}
-                className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
+                className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
               />
             </div>
             <div>
-              <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-500 mb-1">Prompt · Get inspired</label>
+              <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-400 mb-1">Prompt · Get inspired</label>
               <div className="relative">
                 <textarea
                   ref={promptRef}
@@ -243,12 +336,12 @@ export function AiMusicGeneratorWorkspace() {
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="e.g. Slow country ballad, acoustic guitar, 70 BPM…"
                   maxLength={500}
-                  className="w-full resize-none rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 pr-20 pb-7 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
+                  className="w-full resize-none rounded-lg border border-slate-700 bg-slate-950 px-3 py-3 pr-20 pb-7 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
                 />
-                <div className="absolute bottom-2 left-2 text-xs text-slate-500">{prompt.length}/500</div>
+                <div className="absolute bottom-2 left-2 text-xs text-slate-400">{prompt.length}/500</div>
                 <div className="absolute bottom-2 right-2 flex items-center gap-2">
-                  <button type="button" onClick={() => setPrompt("")} className="text-xs text-slate-500 hover:text-violet-300">Clear</button>
-                  <button type="button" onClick={handleGetInspired} className="text-xs font-medium text-violet-400 hover:text-violet-300">Get Inspired</button>
+                  <button type="button" onClick={() => setPrompt("")} className="inline-flex min-h-6 items-center text-xs text-slate-400 hover:text-violet-300">Clear</button>
+                  <button type="button" onClick={handleGetInspired} className="inline-flex min-h-6 items-center text-xs font-medium text-violet-300 hover:text-violet-200">Get Inspired</button>
                 </div>
               </div>
             </div>
@@ -334,7 +427,7 @@ export function AiMusicGeneratorWorkspace() {
                       {v}
                     </button>
                   ))}
-                  <button type="button" onClick={() => addVocalToPrompt("")} className="rounded-full border border-slate-700 px-2.5 py-1 text-[10px] text-slate-500 hover:border-violet-500/50 hover:text-violet-200">Clear</button>
+                  <button type="button" onClick={() => addVocalToPrompt("")} className="rounded-full border border-slate-700 px-2.5 py-1 text-[10px] text-slate-400 hover:border-violet-500/50 hover:text-violet-200">Clear</button>
                 </div>
               )}
             </div>
@@ -344,17 +437,17 @@ export function AiMusicGeneratorWorkspace() {
             {tabMode === "own-lyrics" && (
             <div className="mt-3 space-y-2">
             <div>
-              <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-500 mb-0.5">Title</label>
+              <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-400 mb-0.5">Title</label>
               <Input
                 placeholder="0/80"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 maxLength={80}
-                className="rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
+                className="rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
               />
             </div>
             <div>
-              <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-500 mb-0.5">Lyrics (Cover)</label>
+              <label className="block text-[10px] font-medium uppercase tracking-wider text-slate-400 mb-0.5">Lyrics (Cover)</label>
               <div className="relative">
                 <textarea
                   ref={lyricsRef}
@@ -363,17 +456,17 @@ export function AiMusicGeneratorWorkspace() {
                   onChange={(e) => setLyrics(e.target.value.slice(0, 5000))}
                   placeholder="Paste or type your lyrics…"
                   maxLength={5000}
-                  className="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 pr-16 pb-6 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-400/60 resize-none"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 pr-16 pb-6 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-violet-400/60 resize-none"
                 />
                 <div className="absolute top-1 right-1">
                   <button type="button" onClick={() => setLyrics("(Verse 1)\n…\n\n(Chorus)\n…\n\n(Verse 2)\n…")} className="text-[10px] font-medium text-violet-300 hover:text-violet-200">Auto</button>
                 </div>
-                <div className="absolute bottom-1 left-1 text-[10px] text-slate-500">{lyrics.length}/5000</div>
+                <div className="absolute bottom-1 left-1 text-[10px] text-slate-400">{lyrics.length}/5000</div>
               </div>
             </div>
             <div>
               <div className="flex items-center justify-between gap-1 mb-0.5">
-                <label className="text-[10px] font-medium uppercase tracking-wider text-slate-500">Cover Style</label>
+                <label className="text-[10px] font-medium uppercase tracking-wider text-slate-400">Cover Style</label>
                 <button type="button" onClick={handleGetInspiredCover} className="text-[10px] font-medium text-violet-300 hover:text-violet-200">Get Inspired</button>
               </div>
               <textarea
@@ -383,9 +476,9 @@ export function AiMusicGeneratorWorkspace() {
                 onChange={(e) => setCoverStyle(e.target.value.slice(0, 500))}
                 placeholder="Describe the music style… 0/500"
                 maxLength={500}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-400/60 resize-none"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-violet-400/60 resize-none"
               />
-              <p className="text-[10px] text-slate-500 mt-0.5">{coverStyle.length}/500</p>
+              <p className="text-[10px] text-slate-400 mt-0.5">{coverStyle.length}/500</p>
             </div>
             <div className="rounded-2xl bg-slate-800/30 p-3 overflow-hidden">
               <p className="mb-2 text-xs font-medium text-slate-400">#Genre #Mood #Ambience #Vocal</p>
@@ -407,7 +500,7 @@ export function AiMusicGeneratorWorkspace() {
               {openPanel === "vocal" && (
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {VOCAL_OPTIONS.map((v) => <button key={v} type="button" onClick={() => setVocalInCoverStyle(v)} className={cn("rounded-full border px-2.5 py-1 text-[10px] font-medium", vocalChoice === v ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-700 bg-slate-900/80 text-slate-300 hover:border-violet-500/50 hover:text-violet-200")}>{v}</button>)}
-                  <button type="button" onClick={() => setVocalInCoverStyle("")} className="rounded-full border border-slate-700 px-2.5 py-1 text-[10px] text-slate-500 hover:border-violet-500/50 hover:text-violet-200">Clear</button>
+                  <button type="button" onClick={() => setVocalInCoverStyle("")} className="rounded-full border border-slate-700 px-2.5 py-1 text-[10px] text-slate-400 hover:border-violet-500/50 hover:text-violet-200">Clear</button>
                 </div>
               )}
             </div>
@@ -415,8 +508,8 @@ export function AiMusicGeneratorWorkspace() {
             )}
           </div>
           <div className="shrink-0 border-t border-slate-800 p-4 bg-slate-900/30">
-            <button type="button" onClick={handleGenerate} className="w-full rounded-full bg-violet-500 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.4)] hover:bg-violet-400 transition">
-              Create country track
+            <button type="button" onClick={handleGenerate} disabled={isGenerating} className="w-full rounded-full bg-violet-600 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.4)] hover:bg-violet-500 transition disabled:cursor-wait disabled:opacity-60">
+              {isGenerating ? "Generating music…" : "Create country track"}
             </button>
           </div>
         </aside>
@@ -435,7 +528,7 @@ export function AiMusicGeneratorWorkspace() {
             <>
               <div className="shrink-0 px-4 py-3 space-y-2 border-b border-slate-800/50">
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                   </span>
                   <input
@@ -443,13 +536,13 @@ export function AiMusicGeneratorWorkspace() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search by title or prompt…"
-                    className="w-full rounded-lg border border-slate-700 bg-slate-950 pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
+                    className="w-full rounded-lg border border-slate-700 bg-slate-950 pl-9 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-violet-400/60"
                     aria-label="Search tracks"
                   />
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-slate-500">Status</span>
-                  {(["all", "completed", "generating"] as const).map((status) => (
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400">Status</span>
+                  {(["all", "completed", "generating", "failed"] as const).map((status) => (
                     <button
                       key={status}
                       type="button"
@@ -459,10 +552,10 @@ export function AiMusicGeneratorWorkspace() {
                         statusFilter === status ? "bg-violet-500/20 text-violet-300" : "bg-slate-800/80 text-slate-400 hover:text-slate-200"
                       )}
                     >
-                      {status === "all" ? "All" : status === "completed" ? "Completed" : "Generating"}
+                      {status === "all" ? "All" : status === "completed" ? "Completed" : status === "failed" ? "Failed" : "Generating"}
                     </button>
                   ))}
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-slate-500 ml-1">Sort</span>
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 ml-1">Sort</span>
                   {(["newest", "oldest"] as const).map((order) => (
                     <button
                       key={order}
@@ -482,10 +575,10 @@ export function AiMusicGeneratorWorkspace() {
                 {filteredAndSortedHistory.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
                     <div className="rounded-full bg-slate-800/80 p-4 mb-3">
-                      <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" /></svg>
+                      <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" /></svg>
                     </div>
                     <p className="text-sm font-medium text-slate-300">No tracks yet</p>
-                    <p className="mt-1 text-xs text-slate-500 max-w-[220px]">Generate your first track using the form on the left. Your creations will appear here.</p>
+                    <p className="mt-1 text-xs text-slate-400 max-w-[220px]">Generate your first track using the form on the left. Your creations will appear here.</p>
                   </div>
                 ) : (
                   <ul className="space-y-2">
@@ -499,18 +592,22 @@ export function AiMusicGeneratorWorkspace() {
                             playingId === item.id ? "border-violet-500 bg-violet-500/10" : "border-slate-700 bg-slate-900/80 hover:border-violet-500/50 hover:bg-slate-800/80"
                           )}
                         >
-                          <div className="h-12 w-12 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500">
+                          <div className="h-12 w-12 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="truncate text-sm font-medium text-slate-100">{item.title}</p>
                             <p className="truncate text-xs text-slate-400 mt-0.5">{item.prompt}</p>
                             <div className="mt-1 flex items-center gap-2">
-                              <span className="text-xs text-slate-500">{item.duration}</span>
+                              <span className="text-xs text-slate-400">{item.duration}</span>
                               {item.status === "generating" && (
                                 <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-400">Generating…</span>
                               )}
+                              {item.status === "failed" && (
+                                <span className="rounded bg-red-500/20 px-1.5 py-0.5 text-[10px] text-red-300">Failed</span>
+                              )}
                             </div>
+                            {item.error && <p className="mt-1 line-clamp-2 text-xs text-red-300">{item.error}</p>}
                           </div>
                           <span className="shrink-0 text-slate-400" aria-hidden>
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -528,7 +625,7 @@ export function AiMusicGeneratorWorkspace() {
                 {MUSIC_EXPLORE_EXAMPLES.map((item, i) => (
                   <li key={i}>
                     <div className="w-full flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-900/80 px-4 py-3">
-                      <div className="h-12 w-12 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500">
+                      <div className="h-12 w-12 shrink-0 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                       </div>
                       <div className="min-w-0 flex-1">
@@ -544,18 +641,18 @@ export function AiMusicGeneratorWorkspace() {
                             <span key={tag} className="rounded bg-slate-800/80 px-1.5 py-0.5 text-[10px] text-slate-400">{tag}</span>
                           ))}
                         </div>
-                        <span className="text-xs text-slate-500">{item.duration}</span>
+                        <span className="text-xs text-slate-400">{item.duration}</span>
                       </div>
                     </div>
                   </li>
                 ))}
               </ul>
-              <a
-                href="/"
+              <Link
+                href="/auth?next=/ai-country-music-generator"
                 className="mt-4 block w-full rounded-lg border border-slate-600 bg-slate-800/60 py-2.5 text-center text-sm font-medium text-slate-200 hover:bg-slate-700/60 transition"
               >
                 Sign in to save your creations
-              </a>
+              </Link>
             </div>
           )}
         </div>
@@ -568,8 +665,34 @@ export function AiMusicGeneratorWorkspace() {
         )}
       >
         <div className="flex w-full max-w-2xl flex-1 items-center justify-center gap-4 px-4">
-          <button type="button" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-700 text-slate-100 hover:bg-violet-600" aria-label="Play / Pause">
-            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+          <audio
+            ref={audioRef}
+            preload="none"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onEnded={() => {
+              setIsPlaying(false);
+              setPlayerProgress(0);
+            }}
+            onTimeUpdate={(event) => {
+              const audio = event.currentTarget;
+              setPlayerProgress(audio.duration ? (audio.currentTime / audio.duration) * 100 : 0);
+            }}
+            className="hidden"
+          />
+          <button
+            type="button"
+            disabled={!playingItem?.audioUrl}
+            onClick={() => {
+              const audio = audioRef.current;
+              if (!audio || !playingItem?.audioUrl) return;
+              if (audio.paused) void audio.play();
+              else audio.pause();
+            }}
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-700 text-slate-100 hover:bg-violet-600 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label={isPlaying ? "Pause" : "Play"}
+          >
+            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d={isPlaying ? "M6 4h4v16H6V4zm8 0h4v16h-4V4z" : "M8 5v14l11-7z"} /></svg>
           </button>
           <div className="min-w-0 flex-1 max-w-md">
             <p className="truncate text-sm font-medium text-slate-100">{playingItem?.title ?? "No track selected"}</p>
@@ -578,12 +701,7 @@ export function AiMusicGeneratorWorkspace() {
               <div className="h-full rounded-full bg-violet-500" style={{ width: `${playerProgress}%` }} />
             </div>
           </div>
-          <span className="w-10 shrink-0 text-right text-xs text-slate-500">{playingItem?.duration ?? "0:00"}</span>
-          <button type="button" className="shrink-0 rounded p-1.5 text-slate-400 hover:text-slate-200" aria-label="Volume">
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-            </svg>
-          </button>
+          <span className="w-10 shrink-0 text-right text-xs text-slate-400">{playingItem?.duration ?? "0:00"}</span>
         </div>
       </footer>
     </>

@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The AI Music Generator
 
-## Getting Started
+Next.js application deployed to Cloudflare Workers with OpenNext. The app now
+includes persistent accounts, sessions, generation history, credits, R2 media
+storage, Stripe checkout, AI lyrics, and a server-side music provider adapter.
 
-First, run the development server:
+## Architecture
+
+- Next.js UI and API routes run in `the-ai-music-generator`.
+- `the-ai-music-generator-db` is an internal Worker backed by a Durable Object
+  with SQLite storage for users, sessions, jobs, rate limits, and purchases.
+- Generated audio is stored privately in the
+  `the-ai-music-generator-media` R2 bucket.
+- Lyrics use the Cloudflare Workers AI binding.
+- Music generation uses a generic authenticated HTTPS provider.
+- Stripe Checkout and webhooks manage subscriptions and credit purchases.
+
+## Requirements
+
+- Node.js 22 or newer
+- npm 11 or newer
+- A Cloudflare account
+
+## Local setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci
+cp .dev.vars.example .dev.vars
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fill in the provider and Stripe values in `.dev.vars`. Run the internal database
+Worker and application preview in separate terminals:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx wrangler dev --config backend/wrangler.jsonc --port 8790 --persist-to .wrangler/state
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx opennextjs-cloudflare build
+npx opennextjs-cloudflare preview --port 8787
+```
 
-## Learn More
+The app is available at `http://localhost:8787`. The health endpoint at
+`/api/health` reports which integrations are configured.
 
-To learn more about Next.js, take a look at the following resources:
+## Validation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+npx tsc --noEmit
+npm audit --omit=dev
+npx opennextjs-cloudflare build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+Create the R2 bucket once:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npx wrangler r2 bucket create the-ai-music-generator-media
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy the internal database Worker first:
+
+```bash
+npm run deploy:db
+```
+
+Configure the production values documented in [.dev.vars.example](.dev.vars.example)
+with `wrangler secret put`, then deploy the application:
+
+```bash
+npm run deploy:workers
+```
+
+The current Workers.dev URL is printed by Wrangler. Production is served by the
+Worker on `theaimusicgenerator.com`, `www.theaimusicgenerator.com`, and
+`app.theaimusicgenerator.com`. The Cloudflare Zone must be active in the same
+account as the Worker before the routes can publish publicly.
+
+The previous static Pages deployment is retired from production: its custom
+domains and Git automatic-deployment connection are removed.
+
+## Music provider contract
+
+See [docs/music-provider-contract.md](docs/music-provider-contract.md).
+
+Never commit `.dev.vars`, API keys, Stripe secrets, user databases, or generated
+media.

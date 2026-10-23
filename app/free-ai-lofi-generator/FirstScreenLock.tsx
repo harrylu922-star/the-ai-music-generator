@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useCookieFlag } from "../../lib/use-cookie-flag";
 
 /**
  * Placeholder: replace with real auth (cookie/session) when available.
@@ -8,15 +9,7 @@ import { useState, useEffect, useCallback } from "react";
  * first screen height = 100vh + 1 line. Full content stays in DOM for SEO.
  */
 function useIsLoggedIn(): boolean {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    try {
-      setLoggedIn(document.cookie.includes("lofi_logged_in=true"));
-    } catch {
-      setLoggedIn(false);
-    }
-  }, []);
-  return isLoggedIn;
+  return useCookieFlag("lofi_logged_in");
 }
 
 export function FirstScreenLock({ children }: { children: React.ReactNode }) {

@@ -4,11 +4,11 @@ import Link from "@/components/Link";
 import { useState } from "react";
 import { LANDING_PAGES } from "./LandingNav";
 import { useSiteConfig } from "./SiteConfigProvider";
+import { useSession } from "./SessionProvider";
 
 function HeaderLogo({ alt }: { alt: string }) {
   const [src, setSrc] = useState("/images/tamg-icon2-72.webp");
   return (
-    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       alt={alt}
@@ -34,6 +34,7 @@ export type SiteHeaderProps = {
 export function SiteHeader({ hideLandingLinks, mobileNavKind = "default", currentPath = "" }: SiteHeaderProps = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const config = useSiteConfig();
+  const { user } = useSession();
 
   return (
     <header className="border-b border-slate-800/80 bg-slate-950/90 backdrop-blur shrink-0">
@@ -77,8 +78,15 @@ export function SiteHeader({ hideLandingLinks, mobileNavKind = "default", curren
               )}
             </svg>
           </button>
-          <button className="rounded-lg border border-slate-600 bg-slate-800/60 px-2 sm:px-2.5 py-1.5 text-xs sm:text-sm text-slate-200 hover:border-violet-500/50 hover:text-violet-200 shrink-0" aria-label="Language">EN ▾</button>
-          <Link href="/coming-soon" className="rounded-full border border-slate-600 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium hover:border-violet-400/70 hover:text-violet-200 shrink-0 whitespace-nowrap inline-block">Sign in</Link>
+          <button
+            type="button"
+            disabled
+            className="rounded-lg border border-slate-600 bg-slate-800/60 px-2 sm:px-2.5 py-1.5 text-xs sm:text-sm text-slate-300 shrink-0 disabled:cursor-not-allowed"
+            aria-label="English; language switching is coming soon"
+          >
+            <span aria-hidden="true">EN ▾</span>
+          </button>
+          <Link href={user ? "/account" : "/auth"} className="rounded-full border border-slate-600 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium hover:border-violet-400/70 hover:text-violet-200 shrink-0 whitespace-nowrap inline-block">{user ? "Account" : "Sign in"}</Link>
         </div>
       </div>
       {/* 移动端展开的导航面板：工具页时展示与左侧栏一致的 Tools 列表 */}
@@ -87,7 +95,7 @@ export function SiteHeader({ hideLandingLinks, mobileNavKind = "default", curren
           <nav className="flex flex-col gap-1 text-sm text-slate-300">
             {mobileNavKind === "tools" ? (
               <>
-                <p className="mb-2 px-2 text-[10px] font-medium uppercase tracking-wider text-slate-500">Tools</p>
+                <p className="mb-2 px-2 text-[10px] font-medium uppercase tracking-wider text-slate-400">Tools</p>
                 {LANDING_PAGES.map(({ href, label, available }) => {
                   const isActive = currentPath === href;
                   return (
@@ -101,7 +109,7 @@ export function SiteHeader({ hideLandingLinks, mobileNavKind = "default", curren
                           {label}
                         </Link>
                       ) : (
-                        <span className="block rounded-lg px-3 py-2 text-slate-500 cursor-not-allowed">
+                        <span className="block rounded-lg px-3 py-2 text-slate-400 cursor-not-allowed">
                           {label} (Soon)
                         </span>
                       )}

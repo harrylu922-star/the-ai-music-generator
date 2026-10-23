@@ -26,7 +26,7 @@ export default function ComingSoonPage() {
             Stay Tuned
           </h1>
           <p className="text-slate-400 text-lg leading-relaxed mb-10">
-            We're working hard to bring you this feature. Stay tuned—something great is on the way.
+            We&apos;re working hard to bring you this feature. Stay tuned—something great is on the way.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link

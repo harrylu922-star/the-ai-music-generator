@@ -1,6 +1,6 @@
 # MVP 上线前再次审计
 
-按「仅展示站点 / 静态演示版」的 MVP 标准审计，基于当前代码与构建结果。
+按可注册、可生成、可付费的产品 MVP 标准审计，基于当前代码与构建结果。
 
 ---
 
@@ -17,7 +17,7 @@
 | **SEO** | sitemap.xml、robots.txt | ✅ 不含 logo-preview、不含 coming-soon |
 | **SEO** | 各页 title/description、H1、语义化、内链 | ✅ |
 | **AEO** | 首页 / AI Lyrics / Rap / YouTube 等 FAQ JSON-LD | ✅ |
-| **构建** | `npm run build` | ✅ 通过，21 个静态页 |
+| **构建** | `npm run build` | ✅ 通过，46 个页面/API 路由 |
 
 ---
 
@@ -25,9 +25,8 @@
 
 | 项 | 说明 | 建议 |
 |----|------|------|
-| **Header「Sign in」** | 当前为 `<button>`，无跳转 | 若希望点击有反馈：改为 `<Link href="/coming-soon">Sign in</Link>`，与全站“未开放功能→Coming Soon”一致 |
-| **Header「EN ▾」** | 语言切换占位，无跳转 | 单语言 MVP 可保留；若希望可点击，可指向 `/coming-soon` 或保持 button |
-| **.env.example** | 仅含 `NEXT_PUBLIC_SITE_URL` | 上线前可补充占位：`# LYRICS_API_URL=`, `# MUSIC_API_KEY=` 等，便于后续接 API 时对照（可选） |
+| **Header「EN ▾」** | 已明确禁用并修复可访问名称 | 单语言 MVP 合理 |
+| **环境变量模板** | `.env.example` 与 `.dev.vars.example` 已提供 | 本地 `.dev.vars` 已被 Git 忽略 |
 
 ---
 
@@ -42,20 +41,18 @@
 
 ---
 
-## 四、与「可注册、可生成、可付费」的差距（非本次 MVP）
+## 四、「可注册、可生成、可付费」状态
 
-若后续要做真实产品闭环，仍需：
-
-- 认证、数据库、BFF（音乐/歌词 API）、积分与支付、音频存储等  
-- 详见 `docs/backend-todo.md`、`docs/integration-checklist.md`、`docs/MVP-launch-readiness.md`。
+认证、Durable Object SQLite、BFF、歌词、音乐任务、积分、Stripe 与 R2 媒体链路均已实现。上线前仍需填写外部供应商与支付密钥，并绑定生产域名。
 
 ---
 
 ## 五、结论
 
-按**当前 MVP 标准（仅展示/静态演示）**：
+按**当前产品 MVP 标准**：
 
-- **无阻塞问题**：构建通过、无死链、404 与 Coming Soon 已就绪、SEO/og:image 已配置。
-- **可选优化**：Header「Sign in」改为指向 `/coming-soon` 以统一体验；其余为锦上添花。
+- **无代码级阻塞问题**：构建、Lint、类型检查和生产依赖审计均通过；无死链，404、Coming Soon、SEO 与 og:image 已就绪。
+- **发布前外部配置**：配置音乐供应商、Stripe 密钥/价格/Webhook，并绑定生产域名；公开仓库历史中的旧用户数据仍需单独清理。
+- **性能说明**：本地模拟首页 LCP 约 3.0 秒，略高于 2.5 秒目标；原始观测约 57ms，部署后需用 PageSpeed 复测。
 
 **可上线。**

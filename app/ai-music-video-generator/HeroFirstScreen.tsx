@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Link from "@/components/Link";
 import { useGlobalPlayer, type GlobalTrack } from "../../contexts/GlobalPlayerContext";
 import { LANDING_PAGES } from "../../components/LandingNav";
@@ -59,6 +60,7 @@ function getCaptionsStyleName(id: string): string {
 }
 
 export function HeroFirstScreen() {
+  const router = useRouter();
   const [locked, setLocked] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [photoStyleModalOpen, setPhotoStyleModalOpen] = useState(false);
@@ -97,7 +99,7 @@ export function HeroFirstScreen() {
   const handleGenerate = () => {
     if (!canGenerate) return;
     // TODO: 接 API 时在此调用，例如: generateMusicVideo(state);
-    window.location.href = "/ai-music-generator";
+    router.push("/ai-music-generator");
   };
 
   useEffect(() => {
@@ -397,6 +399,7 @@ export function HeroFirstScreen() {
       </button>
 
       <PhotoStyleModal
+        key={`photo-${photoStyleModalOpen ? state.photoStyle : "closed"}`}
         open={photoStyleModalOpen}
         selectedId={state.photoStyle}
         onClose={() => setPhotoStyleModalOpen(false)}
@@ -406,6 +409,7 @@ export function HeroFirstScreen() {
         }}
       />
       <CaptionsStyleModal
+        key={`captions-${captionsStyleModalOpen ? state.captionsStyle : "closed"}`}
         open={captionsStyleModalOpen}
         selectedId={state.captionsStyle}
         sampleText={state.sampleText || "Sample Text"}
