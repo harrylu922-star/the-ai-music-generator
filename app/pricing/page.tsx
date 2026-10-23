@@ -3,6 +3,7 @@ import Link from "@/components/Link";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { PricingPlansSection } from "./PricingPlansSection";
+import { CheckoutButton } from "./CheckoutButton";
 import { getServerSiteConfig, getSubPageMeta } from "../../lib/site-config";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,8 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const CREDIT_PACKS = [
-  { name: "One-time Purchase", price: "$50", credits: "1,600 Credits (1,067 songs)", cta: "One-time Purchase", href: "/coming-soon" },
-  { name: "One-time Purchase", price: "$100", credits: "4,000 Credits (2,667 songs)", cta: "One-time Purchase", href: "/coming-soon", popular: true },
+  { name: "One-time Purchase", price: "$50", credits: "1,600 Credits (1,067 songs)", cta: "One-time Purchase", productId: "credits_1600" },
+  { name: "One-time Purchase", price: "$100", credits: "4,000 Credits (2,667 songs)", cta: "One-time Purchase", productId: "credits_4000", popular: true },
 ];
 
 const FAQ = [
@@ -92,13 +93,13 @@ export default function PricingPage() {
                 <h3 className="text-base font-semibold text-slate-100">{pack.name}</h3>
                 <p className="mt-2 text-2xl font-bold text-slate-50">{pack.price}</p>
                 <p className="mt-1 text-sm text-slate-200">{pack.credits}</p>
-                <p className="mt-1 text-xs text-slate-500">Never expires</p>
-                <Link
-                  href={pack.href}
+                <p className="mt-1 text-xs text-slate-400">Never expires</p>
+                <CheckoutButton
+                  productId={pack.productId}
                   className="mt-4 block w-full rounded-full border border-slate-600 py-2.5 text-center text-sm font-semibold text-slate-200 hover:border-violet-500/50 hover:text-violet-200 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 focus-visible:bg-slate-800 active:bg-slate-700 active:scale-[0.98]"
                 >
                   {pack.cta}
-                </Link>
+                </CheckoutButton>
               </article>
             ))}
           </div>

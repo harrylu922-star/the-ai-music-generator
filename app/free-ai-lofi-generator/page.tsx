@@ -321,7 +321,6 @@ export default async function FreeAiLofiGeneratorPage() {
           <div className="mx-auto max-w-6xl px-4 py-14">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-800/50">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/home/hero-card-ai-music-generator-640.webp"
                   srcSet="/images/home/hero-card-ai-music-generator-640.webp 640w, /images/home/hero-card-ai-music-generator.webp 960w"
@@ -381,7 +380,7 @@ export default async function FreeAiLofiGeneratorPage() {
                     This tool is an <strong>AI lofi music generator</strong> that generates original, <strong>royalty-free lofi beats</strong> from a short text prompt. It is free to try, with no login required for the first few tracks. If you use lofi music for study sessions, background streams, or YouTube videos, the generated tracks are cleared for <strong>commercial use</strong> once you check the license terms for your plan.
                   </p>
                   <p>
-                    A common concern is whether <strong>AI-generated music can be monetized on YouTube</strong>. The short answer is yes, as long as you follow YouTube's AI content disclosure requirements. We provide guidance on how to label AI music correctly: <Link href="/resources/youtube-ai-music-labeling-2026" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">YouTube AI labeling 2026</Link>.
+                    A common concern is whether <strong>AI-generated music can be monetized on YouTube</strong>. The short answer is yes, as long as you follow YouTube&apos;s AI content disclosure requirements. We provide guidance on how to label AI music correctly: <Link href="/resources/youtube-ai-music-labeling-2026" className="text-violet-200 underline underline-offset-2 hover:text-violet-100">YouTube AI labeling 2026</Link>.
                   </p>
                 </div>
               </div>

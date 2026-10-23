@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCookieFlag, setCookieFlag } from "../lib/use-cookie-flag";
 
 const DEFAULT_COOKIE = "app_mode";
 
@@ -14,28 +14,11 @@ export function DualLayerWrapper({
   children: React.ReactNode;
   cookieKey?: string;
 }) {
-  const [appMode, setAppMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const raw = document.cookie.match(new RegExp(`(^| )${cookieKey}=([^;]+)`));
-    setAppMode(raw ? raw[2] === "1" : false);
-  }, [cookieKey]);
+  const appMode = useCookieFlag(cookieKey);
 
   const toggleMode = () => {
-    const next = !appMode;
-    setAppMode(next);
-    document.cookie = `${cookieKey}=${next ? "1" : "0"}; path=/; max-age=31536000`;
+    setCookieFlag(cookieKey, !appMode);
   };
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-slate-950">
-        {children}
-      </div>
-    );
-  }
 
   return (
     <div

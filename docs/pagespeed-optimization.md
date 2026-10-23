@@ -64,8 +64,9 @@
 
 ### 已做改动
 
-1. **构建时校验**  
-   - `scripts/optimize-images.js` 在生成 home 图后，校验三张 `hero-card-*.webp` 单文件均 ≤100 KiB，否则 **build 失败**，作为安全网避免误部署大图。
+1. **显式优化与校验**
+   - 运行 `npm run optimize:images` 时，脚本在生成 home 图后校验三张 `hero-card-*.webp` 单文件均 ≤100 KiB。
+   - `npm run build` 只校验资源，不再自动重写已跟踪图片，避免构建过程污染工作区。
 
 2. **响应式 hero 图**  
    - 脚本为三张 hero 卡额外生成 **640w** 版本（`*-640.webp`），首页 `HomeFeatureImage` 使用 **srcset**（640w + 960w），移动端按视口选小图，减少 LCP 与总下载量。
@@ -74,7 +75,7 @@
 
 ## 四、构建与部署说明
 
-- **API 路由与静态导出**：`app/api/agreements/route.ts` 在 `output: "export"` 下需声明 `export const dynamic = "force-static"`，否则 `next build` 会报错。部署到 **Cloudflare Pages（纯静态）** 时，`/api/*` 不会运行，若需要该接口，需用 **Workers** 或其它后端单独提供。
+- **API 与静态导出**：Cloudflare Pages 产物不运行 API 路由。项目已移除未使用的 `/api/agreements`；后续接入真实生成能力时，应改用 Workers/OpenNext 或独立后端。
 - **构建命令**：`npm run build` 使用 Turbopack；若需用 Webpack 验证 polyfill 替换，可使用 `next build --webpack`（若项目支持）。
 
 ---
@@ -105,9 +106,21 @@
 3. **图片（可选）**  
    - 若「Improve image delivery」仍有余量：对非 hero 的 home 图（如 explore-*、how-*）做 640w 或略降质量；或为支持的浏览器提供 AVIF（静态导出下需预生成多格式）。
 
+## 六、2026-10-22 本地移动端复测
+
+| 页面 | Performance | Accessibility | LCP | CLS | TBT |
+|------|-------------|---------------|-----|-----|-----|
+| `/` | 95 | 100 | 3.0s（原始观测 57ms） | 0 | 0ms |
+| `/pricing` | 99 | 100 | 2.2s（原始观测 48ms） | 0 | 0ms |
+| `/ai-music-generator` | 98 | 100 | 2.5s（原始观测 74ms） | 0 | 0ms |
+
+首页模拟 LCP 仍比 2.5 秒目标高约 0.5 秒。当前测试由本地 HTTP/1.1
+静态服务器和 Lighthouse Lantern 模型完成；部署到 Cloudflare 后应使用
+PageSpeed Insights 与 Search Console 的真实用户数据复核。
+
 ---
 
-## 六、建议复测
+## 七、建议复测
 
 部署后建议：
 

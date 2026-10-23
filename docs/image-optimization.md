@@ -10,7 +10,7 @@
 - **处理**：
   - 脚本 `scripts/optimize-images.js` 将 `tamg-icon2.png`、`tamg-icon.png`、`tamg-logo.png` 生成为 **72×72** 的 `*-72.webp` 与 `*-72.png`（72px 满足 2x 视网膜）。
   - **SiteHeader** 使用 `/images/tamg-icon2-72.webp`，失败时回退到 `/images/tamg-icon2-72.png`，不再加载原图。
-- **使用**：构建前会自动执行（`prebuild` 含 `optimize-images`）；本地可手动运行 `npm run optimize:images`。
+- **使用**：资源优化通过 `npm run optimize:images` 显式执行；构建只校验必需资源，不会自动改写已跟踪图片。
 
 ---
 

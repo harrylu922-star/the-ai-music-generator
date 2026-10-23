@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "@/components/Link";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,7 @@ const LYRICS_TO_MUSIC_EXAMPLES = [
 type OpenPanel = "structure" | "style" | null;
 
 export function LyricsToMusicGenerator({ pageTitle }: { pageTitle: string }) {
+  const router = useRouter();
   const [lyrics, setLyrics] = useState("");
   const [isAnimating, setIsAnimating] = useState(false);
   const [openPanel, setOpenPanel] = useState<OpenPanel>(null);
@@ -70,7 +72,7 @@ export function LyricsToMusicGenerator({ pageTitle }: { pageTitle: string }) {
     setIsAnimating(true);
     setTimeout(() => {
       setIsAnimating(false);
-      window.location.href = `/ai-music-generator?mode=own-lyrics&lyrics=${encodeURIComponent(lyrics.trim().slice(0, 500))}`;
+      router.push(`/ai-music-generator?mode=own-lyrics&lyrics=${encodeURIComponent(lyrics.trim().slice(0, 500))}`);
     }, 1200);
   };
 

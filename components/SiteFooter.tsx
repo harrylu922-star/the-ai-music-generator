@@ -37,6 +37,7 @@ export function SiteFooter() {
           <div>
             <p className="text-sm font-semibold text-slate-100 mb-3" role="presentation">About Us</p>
             <ul className="space-y-2 text-sm text-slate-400">
+              <li><Link href="/account" className="underline underline-offset-2 hover:text-violet-200">Account</Link></li>
               <li><Link href="/coming-soon" className="underline underline-offset-2 hover:text-violet-200">Affiliate Marketing</Link></li>
               <li><Link href="/coming-soon" className="underline underline-offset-2 hover:text-violet-200">Contact Us</Link></li>
             </ul>

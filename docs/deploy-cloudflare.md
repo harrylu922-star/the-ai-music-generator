@@ -1,108 +1,134 @@
-# 部署到 Cloudflare
+# Deploy to Cloudflare Workers
 
-本项目支持两种方式部署到 Cloudflare：
+The production application runs on Cloudflare Workers through OpenNext. API
+routes, authentication, generation jobs, R2 media, and Stripe webhooks are not
+supported by the previous static Cloudflare Pages deployment.
 
-- **推荐：Cloudflare Pages（静态导出）** — 使用 `output: "export"` 构建到 `out/`，无 WASM 依赖，部署稳定。
-- **Workers + OpenNext** — 完整 Next.js 运行时，当前在 Windows 上可能遇到 resvg.wasm 路径错误，可在 WSL/Linux 或等待上游修复后使用。
+## 1. Prerequisites
 
----
-
-## 一、前置条件
-
-- 已安装 Node.js 18+
-- 拥有 [Cloudflare 账号](https://dash.cloudflare.com/sign-up)
-- 代码已推送到 GitHub（可选，用于 CI/CD）
-
----
-
-## 二、方式一：Cloudflare Pages（静态，推荐）
-
-避免 Workers 的 resvg.wasm 问题，直接部署静态站点。
-
-### 1. 安装依赖并登录
+- Node.js 22+
+- A Cloudflare account
+- A music generation provider matching
+  [music-provider-contract.md](music-provider-contract.md)
+- Stripe prices and webhook access
 
 ```bash
-npm install
+npm ci
 npx wrangler login
 ```
 
-### 2. 构建并部署到 Pages
+The active `theaimusicgenerator.com` Zone and both Workers must belong to the
+same Cloudflare account. Production custom domains are
+`theaimusicgenerator.com`, `www.theaimusicgenerator.com`, and
+`app.theaimusicgenerator.com`.
+
+## 2. Storage
+
+Create the private generated-media bucket once:
 
 ```bash
-npm run deploy
+npx wrangler r2 bucket create the-ai-music-generator-media
 ```
 
-会先执行 `next build`（输出到 `out/`），再执行 `wrangler pages deploy out`，将 `out/` 部署到 Cloudflare Pages。
+## 3. Secrets
 
-### 3. 首次部署：创建 Pages 项目
+Set production values for the main Worker:
 
-若尚未在 Cloudflare 创建 Pages 项目，首次运行 `npm run deploy` 时按提示输入项目名（如 `the-ai-music-generator`），或先到 [Dashboard](https://dash.cloudflare.com/) → **Workers & Pages** → **Create** → **Pages** → **Direct Upload**，再使用上方命令部署。
+```bash
+npx wrangler secret put NEXT_PUBLIC_SITE_URL
+npx wrangler secret put MUSIC_PROVIDER
+npx wrangler secret put MUSIC_MODEL
+npx wrangler secret put MUSIC_GENERATE_URL
+npx wrangler secret put MUSIC_STATUS_URL
+npx wrangler secret put MUSIC_API_KEY
+npx wrangler secret put STRIPE_SECRET_KEY
+npx wrangler secret put STRIPE_WEBHOOK_SECRET
+npx wrangler secret put STRIPE_PRICE_BASIC_MONTHLY
+npx wrangler secret put STRIPE_PRICE_ADVANCED_MONTHLY
+npx wrangler secret put STRIPE_PRICE_BASIC_ANNUAL
+npx wrangler secret put STRIPE_PRICE_ADVANCED_ANNUAL
+npx wrangler secret put STRIPE_PRICE_CREDITS_1600
+npx wrangler secret put STRIPE_PRICE_CREDITS_4000
+```
 
-### 4. 查看结果
+Use `NEXT_PUBLIC_SITE_URL=https://theaimusicgenerator.com`, including the
+scheme. Set `MUSIC_PROVIDER=cqtai` and `MUSIC_MODEL=v50`.
 
-- 部署成功后终端会输出预览 URL，形如 `https://<branch>.<project>.pages.dev`。
-- 在 **Workers & Pages** → 你的 Pages 项目 中可查看生产地址与绑定自定义域名。
+## 4. Deploy
 
----
+Deploy the internal SQLite-backed Durable Object Worker first:
 
-## 三、方式二：Workers + OpenNext（备选）
+```bash
+npm run deploy:db
+```
 
-若需完整 Next.js 服务端能力（SSR、API 等），可在 **WSL 或 Linux 环境** 使用（Windows 上可能遇到 resvg.wasm 路径错误）：
+Then build and deploy the application Worker:
 
 ```bash
 npm run deploy:workers
 ```
 
-需已执行 `npx wrangler login`。部署后地址一般为 `https://the-ai-music-generator.<子域>.workers.dev`。
+`wrangler.jsonc` owns the custom-domain route. Do not use `npm run start` for
+this deployment; it starts a Node production server and does not deploy the
+Workers API routes.
 
-本地预览（与 Workers 一致的环境）：
+The application Worker binds:
 
-```bash
-npm run preview
+- `APP_DATABASE` to the `AppDatabase` Durable Object in
+  `the-ai-music-generator-db`
+- `MEDIA_BUCKET` to `the-ai-music-generator-media`
+- `AI` to Cloudflare Workers AI
+
+## 5. Stripe webhook
+
+Create a webhook endpoint:
+
+```text
+https://your-production-origin.example/api/billing/webhook
 ```
 
----
+Subscribe to:
 
-## 四、通过 GitHub 自动部署（Pages 静态）
+- `checkout.session.completed`
+- `invoice.paid`
+- `customer.subscription.deleted`
 
-1. 打开 [Cloudflare Dashboard](https://dash.cloudflare.com/) → **Workers & Pages**。
-2. 点击 **Create** → **Pages** → **Connect to Git**。
-3. 选择 **GitHub**，授权后选择仓库 **harrylu922-star/the-ai-music-generator**。
-4. **Build 配置**：
-   - **Framework preset**: Next.js (Static HTML Export) 或 None
-   - **Build command**: `npm run build`
-   - **Build output directory**: `out`
-5. **Environment variables**（可选）：`NEXT_PUBLIC_SITE_URL` = 你的生产域名。
-6. 保存并部署。之后每次推送到所选分支（如 `main`）会自动构建并部署。
+Copy the signing secret into `STRIPE_WEBHOOK_SECRET`.
 
----
+After moving a Zone from another Cloudflare account:
 
-## 五、自定义域名
+1. Reproduce the active DNS records in the destination Zone, including the
+   apex and `www` Pages CNAMEs.
+2. Update the registrar nameservers to the destination Zone's assigned pair.
+3. Run **Check nameservers** in Cloudflare and wait for the Zone to become
+   active.
+4. Deploy the Worker again after activation so Cloudflare rebuilds the custom
+   domain and certificate.
+5. Recheck both the main site and the application health endpoint.
 
-1. 在 **Workers & Pages** 中打开本项目。
-2. 进入 **Settings** → **Domains & Routes**（或 **Custom domains**）。
-3. 添加你的域名并按提示在 DNS 中添加 CNAME 或 A/AAAA 记录。
+## 6. Verify
 
-绑定后可在环境变量中把 `NEXT_PUBLIC_SITE_URL` 设为该域名，以便 sitemap、og:image 等使用正确根地址。
+```bash
+curl https://app.theaimusicgenerator.com/api/health
+```
 
----
+Expected integrations report `true` only when their secrets are configured.
+Create a test account and verify sign-in, credit display, lyrics generation,
+one failed music request with a credit refund, Stripe Checkout in test mode, and
+the webhook delivery log.
 
-## 六、已添加的工程文件说明
+## Local preview
 
-| 文件 | 说明 |
-|------|------|
-| `wrangler.jsonc` | Cloudflare Worker 配置（入口、兼容性、静态资源、自引用等） |
-| `open-next.config.ts` | OpenNext 适配 Cloudflare 的配置 |
-| `.dev.vars` | 本地预览时的环境变量（如 `NEXTJS_ENV=development`） |
-| `public/_headers` | 静态资源缓存头（`/_next/static/*` 长期缓存） |
-| `.gitignore` | 已加入 `.open-next`，避免提交构建产物 |
+Run the database Worker and application preview in separate terminals:
 
----
+```bash
+npx wrangler dev --config backend/wrangler.jsonc --port 8790 --persist-to .wrangler/state
+```
 
-## 七、常见问题
+```bash
+npx opennextjs-cloudflare build
+npx opennextjs-cloudflare preview --port 8787
+```
 
-- **部署报错找不到 wrangler**：先执行 `npm install`，再执行 `npm run deploy`。
-- **需要环境变量**：在 Cloudflare Dashboard 该项目 **Settings** → **Variables** 中配置；本地预览可在 `.dev.vars` 中配置（勿提交敏感信息）。
-- **图片优化**：若需使用 Cloudflare Images，可在 `wrangler.jsonc` 中增加 `images` binding，详见 [OpenNext 文档](https://opennext.js.org/cloudflare/howtos/image)。
-
-更多说明见 [OpenNext Cloudflare](https://opennext.js.org/cloudflare) 与 [Cloudflare Workers 文档](https://developers.cloudflare.com/workers/)。
+Copy `.dev.vars.example` to `.dev.vars` before preview. The file is ignored by
+Git.

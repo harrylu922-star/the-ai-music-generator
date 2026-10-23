@@ -65,18 +65,18 @@
 
 ## 四、仍缺或建议 MVP 上线前补充的内容
 
-### 4.1 功能与产品闭环（无后端则只能“静态/演示”上线）
+### 4.1 功能与产品闭环
 
 | 项 | 优先级 | 说明 |
 |----|--------|------|
-| 真实登录/注册 | P0（若要做付费） | 当前无 Auth；见 `docs/backend-todo.md` 认证与用户 |
-| AI 音乐生成 API | P0 | 当前为前端 mock；需 BFF + 第三方或自建模型、任务状态、音频存储与 URL |
-| AI 歌词生成 API | P0 | 当前为前端 mock；需 BFF + LLM 或歌词接口 |
-| 积分与计费 | P0（若要做付费） | 积分账户、扣减、订阅/一次性购买、Webhook；定价 CTA 目前为 `#` |
-| 用户与生成记录存储 | P1 | 用户表、音乐/歌词生成记录、云端存储时长策略；无 DB/Prisma |
-| 文件存储 | P1 | 生成音频上传 OSS/S3，返回可播放/下载 URL |
+| 真实登录/注册 | ✅ 已实现 | PBKDF2 密码、HTTP-only session cookie、登录/登出与账户页 |
+| AI 音乐生成 API | ✅ 代码已实现 | BFF、轮询、R2 存储与播放器已完成；需配置供应商 URL/密钥 |
+| AI 歌词生成 API | ✅ 已实现 | Cloudflare Workers AI + 真实 BFF 调用 |
+| 积分与计费 | ✅ 代码已实现 | 积分预留、失败退款、Stripe Checkout、Webhook 与订阅记录；需配置价格 |
+| 用户与生成记录存储 | ✅ 已实现 | Durable Object SQLite 保存用户、会话、任务、限流与购买 |
+| 文件存储 | ✅ 已实现 | 私有 R2 存储，认证、支持 Range 的媒体路由 |
 
-**结论**：若以「仅展示产品形态、收集等待列表」为目的，可先不接后端；若要以「可注册、可生成、可付费」为 MVP，则需按 `docs/backend-todo.md` 与 `docs/integration-checklist.md` 实现 Auth → DB → AI API → 积分 → 支付 → 存储。
+**结论**：产品闭环代码已实现；正式收款与音乐生成仍需要外部供应商密钥和价格配置。
 
 ---
 
@@ -85,10 +85,10 @@
 | 项 | 优先级 | 说明 |
 |----|--------|------|
 | 全局 404 页 | ✅ 已完成 | `app/not-found.tsx` 品牌化 404，带回到首页与主要工具 |
-| 定价页 CTA | ✅ 已处理 | 订阅/一次性购买指向 `/coming-soon`；接支付时再改为 Stripe 等 |
+| 定价页 CTA | ✅ 已处理 | 订阅/一次性购买调用 `/api/billing/checkout` 并跳转 Stripe |
 | Footer「Contact Us」「Affiliate Marketing」 | ✅ 已完成 | 已指向 `/coming-soon` |
-| 音乐播放条 | P1（接真实 API 时） | 需 `<audio>` + audioUrl、播放/暂停、进度与时长；见 `docs/integration-checklist.md` |
-| 错误/空状态 | P1 | 生成失败、超时、无历史时的提示与 UI 区分 |
+| 音乐播放条 | ✅ 已完成 | 绑定真实 `audioUrl`，支持播放/暂停、进度与错误状态 |
+| 错误/空状态 | ✅ 已完成 | 生成失败、配额不足、提供商未配置和无历史均有独立反馈 |
 
 ---
 
@@ -96,10 +96,10 @@
 
 | 项 | 优先级 | 说明 |
 |----|--------|------|
-| 后端 API 路由 | P0（接真实能力时） | 无 `app/api/*`；需至少 `POST /api/music/generate`（及 status）、`POST /api/lyrics/generate`，见 `docs/integration-checklist.md` |
-| 数据库与 ORM | P0（接用户/计费时） | 无 Prisma/DB；需用户表、生成记录、可选订阅/订单表，见 `docs/backend-todo.md` |
-| 环境变量与密钥 | P0（上线前） | AI API Key、DB、Stripe、OSS 等仅放 `.env`，不提交仓库；`.env.example` 已存在，可补充 LYRICS_API_URL、MUSIC_API_URL 等占位 |
-| 限流与鉴权中间件 | P1 | 对 `/api/*` 做 IP 或用户限流、登录校验 |
+| 后端 API 路由 | ✅ 已实现 | 认证、歌词、音乐提交/轮询、媒体、账户、Stripe 与健康检查 |
+| 数据库与 ORM | ✅ 已实现 | Durable Object SQLite；内部 Worker 不暴露公网路由 |
+| 环境变量与密钥 | ✅ 模板已补齐 | `.env.example` 与 `.dev.vars.example` 包含供应商和 Stripe 变量 |
+| 限流与鉴权中间件 | ✅ 已实现 | Session 鉴权、输入校验、IP 限流、积分退款与幂等购买事件 |
 
 ---
 
@@ -111,7 +111,7 @@
 | 重要子页 og/twitter 覆盖 | 低 | 首页、定价、AI Music/Lyrics 可单独设置 og title/description/image |
 | AI Music Generator 页 FAQ + JSON-LD | 低 | 若加 FAQ 区块，建议同步 FAQPage schema，与 AI Lyrics 一致 |
 | canonical | 低 | 单域名、无参数可暂不设；多域名或重复内容时再加 |
-| Core Web Vitals | 上线后 | 用 Search Console / PageSpeed 观察 LCP、CLS、INP |
+| Core Web Vitals | 已本地复测 | 首页/定价/AI Music 的 TBT 与 CLS 均达标；首页模拟 LCP 约 3.0 秒，上线后继续观察真实数据 |
 
 ---
 
@@ -129,23 +129,23 @@
 
 **若目标为「仅展示站点的静态/演示版」：**
 
-- [x] 所有现有页面与路由可访问  
-- [x] SEO/GEO/AEO 已做项保持（sitemap、robots、metadata、JSON-LD）  
-- [x] `app/not-found.tsx` 品牌化 404  
-- [x] 根 layout 默认 `og:image`  
-- [x] 无去处 CTA（定价、Footer Affiliate/Contact）指向 `/coming-soon` 品牌页  
+- [x] 所有现有页面与路由可访问
+- [x] SEO/GEO/AEO 已做项保持（sitemap、robots、metadata、JSON-LD）
+- [x] `app/not-found.tsx` 品牌化 404
+- [x] 根 layout 默认 `og:image`
+- [x] 无去处 CTA（定价、Footer Affiliate/Contact）指向 `/coming-soon` 品牌页
 
 **若目标为「可注册、可生成、可付费」的 MVP：**
 
-- [ ] 认证（注册/登录/登出/会话）  
-- [ ] 数据库（用户 + 音乐/歌词记录，可选订阅/订单）  
-- [ ] BFF：`POST /api/music/generate`（及 status）、`POST /api/lyrics/generate`  
-- [ ] 前端：音乐/歌词 Workspace 调用 BFF，替换 mock；音乐侧需 audioUrl + 播放条  
-- [ ] 积分与扣费逻辑 + 支付（如 Stripe）  
-- [ ] 生成音频存储与 URL  
-- [ ] 环境变量与安全（限流、鉴权、输入校验）  
-- [ ] 定价页 CTA 指向真实支付  
-- [ ] 建议：not-found、og:image、错误/空状态 UI  
+- [x] 认证（注册/登录/登出/会话）
+- [x] 数据库（用户 + 音乐/歌词记录、订阅/购买事件）
+- [x] BFF：`POST /api/music/generate`（及 status）、`POST /api/lyrics/generate`
+- [x] 前端：音乐/歌词 Workspace 调用 BFF，替换 mock；音乐侧绑定 audioUrl + 播放条
+- [x] 积分与扣费逻辑 + Stripe
+- [x] 生成音频存储与认证 URL
+- [x] 环境变量与安全（限流、鉴权、输入校验）
+- [x] 定价页 CTA 指向真实支付
+- [ ] 建议：not-found、og:image、错误/空状态 UI
 
 ---
 
@@ -166,9 +166,8 @@
 
 ## 七、结论
 
-- **已完成**：全站路由与主要页面、首页与多页配图、统一 Header/Footer、sitemap/robots、多页 metadata 与 JSON-LD（首页/AI Lyrics/Rap/YouTube/资源）、Rap 落地页与内链、音乐/歌词 mock 反馈、定价与 Legal 静态内容。  
-- **MVP 上线还差什么**：取决于目标。  
-  - **仅展示**：补 404 页与可选 og:image 即可。  
-  - **可用的产品闭环**：需按本节与 `backend-todo`、`integration-checklist` 补齐 Auth、DB、BFF、AI API、积分、支付、存储及对应 UI（播放条、错误状态、定价 CTA）。
+- **已完成**：全站页面、认证、会话、Durable Object SQLite 数据、积分、生成任务、R2 媒体、Stripe 代码链路、真实歌词调用、音乐 Provider 适配器与账户 UI。
+- **已完成外部配置**：音乐供应商 URL/密钥、Stripe Test 价格/密钥/Webhook、活跃 Zone 与 `app.theaimusicgenerator.com` 生产路由。
+- **仍受外部账户状态阻塞**：Stripe Live onboarding、银行信息验证和第一笔 Live 支付需账户持有人完成。
 
 以上为截止当前的新增与修改梳理及 MVP 上线仍需补充的内容。

@@ -1,0 +1,23 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "the-ai-music-generator-db",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-10-20",
+  "workers_dev": false,
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "APP_DATABASE",
+        "class_name": "AppDatabase"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "AppDatabase"
+      ]
+    }
+  ]
+}

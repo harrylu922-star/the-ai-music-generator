@@ -1,0 +1,15 @@
+interface CloudflareEnv {
+  MUSIC_PROVIDER?: "cqtai" | "generic";
+  MUSIC_MODEL?: string;
+  MUSIC_GENERATE_URL?: string;
+  MUSIC_STATUS_URL?: string;
+  MUSIC_API_KEY?: string;
+  STRIPE_SECRET_KEY?: string;
+  STRIPE_WEBHOOK_SECRET?: string;
+  STRIPE_PRICE_BASIC_MONTHLY?: string;
+  STRIPE_PRICE_ADVANCED_MONTHLY?: string;
+  STRIPE_PRICE_BASIC_ANNUAL?: string;
+  STRIPE_PRICE_ADVANCED_ANNUAL?: string;
+  STRIPE_PRICE_CREDITS_1600?: string;
+  STRIPE_PRICE_CREDITS_4000?: string;
+}

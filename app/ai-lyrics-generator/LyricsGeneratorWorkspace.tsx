@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import Link from "@/components/Link";
 import { useLoginPreview } from "../../lib/use-login-preview";
+import { apiJson, type ClientGenerationJob } from "../../lib/client/generation";
 
 type LyricHistoryItem = {
   id: string;
@@ -9,11 +11,12 @@ type LyricHistoryItem = {
   description: string;
   tags: string[];
   lyrics: string;
-  status: "completed" | "generating";
+  status: "completed" | "generating" | "failed";
+  error?: string;
   createdAt: number;
 };
 
-type StatusFilter = "all" | "completed" | "generating";
+type StatusFilter = "all" | "completed" | "generating" | "failed";
 type SortOrder = "newest" | "oldest";
 
 const VOCAL_OPTIONS = ["Male Vocal", "Female Vocal", "Male And Female Vocal"] as const;
@@ -108,6 +111,7 @@ export function LyricsGeneratorWorkspace() {
   const isLoggedIn = useLoginPreview();
   const [detailItem, setDetailItem] = useState<LyricHistoryItem | null>(null);
   const [history, setHistory] = useState<LyricHistoryItem[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
@@ -150,34 +154,89 @@ export function LyricsGeneratorWorkspace() {
     setVocalDropdownOpen(false);
   }, []);
 
-  const handleGenerate = useCallback(() => {
+  const handleGenerate = useCallback(async () => {
+    if (isGenerating) return;
     const form = document.querySelector("form[data-lyrics-form]") as HTMLFormElement | null;
     const title = (form?.querySelector("[name='title']") as HTMLInputElement)?.value?.trim() || "Untitled";
-    const structure = (form?.querySelector("[name='structure']") as HTMLSelectElement)?.value || "";
-    const style = (form?.querySelector("[name='style']") as HTMLSelectElement)?.value || "";
-    const language = (form?.querySelector("[name='language']") as HTMLSelectElement)?.value || "";
+    const structure = (form?.querySelector("[name='structure']") as unknown as HTMLSelectElement | null)?.value || "";
+    const style = (form?.querySelector("[name='style']") as unknown as HTMLSelectElement | null)?.value || "";
+    const language = (form?.querySelector("[name='language']") as unknown as HTMLSelectElement | null)?.value || "";
     const tags = [structure, style, language, vocalChoice].filter(Boolean);
-    const id = Date.now().toString();
+    const temporaryId = `pending-${Date.now()}`;
     const newItem: LyricHistoryItem = {
-      id,
+      id: temporaryId,
       title,
       description: prompt.trim() || "—",
       tags,
-      lyrics: "(Your generated lyrics will appear here.)",
+      lyrics: "",
       status: "generating",
       createdAt: Date.now(),
     };
     setHistory((prev) => [newItem, ...prev]);
-    setTimeout(() => {
+    setIsGenerating(true);
+    let activeId = temporaryId;
+    try {
+      const data = await apiJson<{ lyrics: string; job: ClientGenerationJob }>(
+        "/api/lyrics/generate",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            title,
+            prompt,
+            structure,
+            style,
+            language,
+            vocal: vocalChoice,
+          }),
+        }
+      );
+      activeId = data.job.id;
       setHistory((prev) =>
         prev.map((item) =>
-          item.id === id
-            ? { ...item, status: "completed" as const, lyrics: item.lyrics || "(Lyrics generated.)" }
+          item.id === temporaryId
+            ? {
+                ...item,
+                id: data.job.id,
+                status: "completed" as const,
+                lyrics: data.lyrics,
+              }
             : item
         )
       );
-    }, 1500);
-  }, [prompt, vocalChoice]);
+    } catch (error) {
+      setHistory((prev) =>
+        prev.map((item) =>
+          item.id === activeId
+            ? {
+                ...item,
+                status: "failed" as const,
+                error: error instanceof Error ? error.message : "Lyrics generation failed.",
+              }
+            : item
+        )
+      );
+    } finally {
+      setIsGenerating(false);
+    }
+  }, [isGenerating, prompt, vocalChoice]);
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    void apiJson<{ jobs: ClientGenerationJob[] }>("/api/jobs?type=lyrics", { cache: "no-store" })
+      .then(({ jobs }) => {
+        setHistory(jobs.map((job) => ({
+          id: job.id,
+          title: job.title,
+          description: String(job.request.prompt ?? "—"),
+          tags: [job.request.structure, job.request.style, job.request.language, job.request.vocal].map(String).filter(Boolean),
+          lyrics: String(job.result?.lyrics ?? ""),
+          status: job.status === "completed" ? "completed" : job.status === "failed" ? "failed" : "generating",
+          error: job.error ?? undefined,
+          createdAt: job.createdAt,
+        })));
+      })
+      .catch(() => undefined);
+  }, [isLoggedIn]);
 
   return (
     <div className="flex flex-1 min-w-0 min-h-0 flex-col lg:flex-row">
@@ -297,8 +356,8 @@ export function LyricsGeneratorWorkspace() {
             </div>
           </div>
           <div className="shrink-0 p-4 pt-3 bg-slate-900/50 rounded-t-2xl">
-            <button type="submit" className="w-full rounded-full bg-violet-500 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.4)] hover:bg-violet-400 transition">
-              Generate for Free Now
+            <button type="submit" disabled={isGenerating} className="w-full rounded-full bg-violet-600 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.4)] hover:bg-violet-500 transition disabled:cursor-wait disabled:opacity-60">
+              {isGenerating ? "Writing lyrics…" : "Generate for Free Now"}
             </button>
           </div>
         </form>
@@ -333,7 +392,7 @@ export function LyricsGeneratorWorkspace() {
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-[10px] font-medium uppercase tracking-wider text-slate-500">Status</span>
-                {(["all", "completed", "generating"] as const).map((status) => (
+                {(["all", "completed", "generating", "failed"] as const).map((status) => (
                   <button
                     key={status}
                     type="button"
@@ -342,7 +401,7 @@ export function LyricsGeneratorWorkspace() {
                       statusFilter === status ? "bg-violet-500/20 text-violet-300" : "bg-slate-800/80 text-slate-400 hover:text-slate-200"
                     }`}
                   >
-                    {status === "all" ? "All" : status === "completed" ? "Completed" : "Generating"}
+                      {status === "all" ? "All" : status === "completed" ? "Completed" : status === "failed" ? "Failed" : "Generating"}
                   </button>
                 ))}
                 <span className="text-[10px] font-medium uppercase tracking-wider text-slate-500 ml-1">Sort</span>
@@ -393,6 +452,10 @@ export function LyricsGeneratorWorkspace() {
                           {item.status === "generating" && (
                             <span className="mt-1 inline-block rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-400">Generating…</span>
                           )}
+                          {item.status === "failed" && (
+                            <span className="mt-1 inline-block rounded bg-red-500/20 px-1.5 py-0.5 text-[10px] text-red-300">Failed</span>
+                          )}
+                          {item.error && <p className="mt-1 line-clamp-2 text-xs text-red-300">{item.error}</p>}
                         </div>
                         <span className="shrink-0 text-slate-500" aria-hidden>
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -462,17 +525,17 @@ export function LyricsGeneratorWorkspace() {
                   </article>
                 ))}
               </div>
-              <a href="/ai-music-generator" className="inline-block mt-3 text-xs font-medium text-violet-300 hover:text-violet-200">
+              <Link href="/ai-music-generator" className="inline-block mt-3 text-xs font-medium text-violet-300 hover:text-violet-200">
                 Create your song in AI Music Generator →
-              </a>
+              </Link>
             </div>
             <div className="shrink-0 pt-3">
-              <a
-                href="/"
+              <Link
+                href="/auth?next=/ai-lyrics-generator"
                 className="block w-full rounded-lg border border-slate-600 bg-slate-800/60 py-2.5 text-center text-sm font-medium text-slate-200 hover:bg-slate-700/60 transition"
               >
                 Sign in to save your creations
-              </a>
+              </Link>
             </div>
           </div>
         )}

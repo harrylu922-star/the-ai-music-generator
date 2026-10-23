@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import { GlobalPlayerLayout } from "../components/GlobalPlayerLayout";
 import { SiteConfigProvider } from "../components/SiteConfigProvider";
+import { SessionProvider } from "../components/SessionProvider";
 import { getServerSiteConfig } from "../lib/site-config";
 
 // 注意：Cloudflare Pages 当前使用静态导出 (output: "export")，无法使用 force-dynamic。
@@ -14,11 +15,8 @@ import { getServerSiteConfig } from "../lib/site-config";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "optional",
+  preload: false,
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -70,10 +68,12 @@ export default async function RootLayout({
         <link rel="alternate" type="text/plain" href="/llm.txt" title="LLM context" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} antialiased`}
       >
         <SiteConfigProvider config={config}>
-          <GlobalPlayerLayout>{children}</GlobalPlayerLayout>
+          <SessionProvider>
+            <GlobalPlayerLayout>{children}</GlobalPlayerLayout>
+          </SessionProvider>
         </SiteConfigProvider>
       </body>
     </html>

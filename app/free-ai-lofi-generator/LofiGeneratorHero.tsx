@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "@/components/Link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { apiJson, pollMusicJob, type ClientGenerationJob } from "../../lib/client/generation";
 
 const STYLES = [
   { value: "chill", label: "Chill & Relax" },
@@ -23,24 +24,46 @@ export function LofiGeneratorHero() {
   const [prompt, setPrompt] = useState("");
   const [style, setStyle] = useState("chill");
   const [duration, setDuration] = useState("3");
-  const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
-  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "failed">("idle");
+  const [error, setError] = useState("");
+  const [audioUrl, setAudioUrl] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setStatus("loading");
-    setProgress(0);
-    const interval = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 100) {
-          clearInterval(interval);
-          setStatus("done");
-          return 100;
-        }
-        return p + Math.random() * 12 + 4;
+    setError("");
+    setAudioUrl("");
+    try {
+      const selectedStyle = STYLES.find((item) => item.value === style)?.label ?? style;
+      const data = await apiJson<{ job: ClientGenerationJob }>("/api/music/generate", {
+        method: "POST",
+        body: JSON.stringify({
+          title: "Lofi Study Track",
+          prompt: `${selectedStyle} lofi music. ${prompt}`.trim(),
+          genre: "Lo-fi",
+          mood: style,
+          durationSeconds: Number(duration) * 60,
+        }),
       });
-    }, 400);
+      const finalJob = await pollMusicJob(data.job, () => undefined);
+      if (finalJob.status !== "completed" || !finalJob.result?.audioUrl) {
+        throw new Error(finalJob.error ?? "The generated track did not include audio.");
+      }
+      setAudioUrl(finalJob.result.audioUrl);
+      setStatus("done");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Could not generate this lofi track.");
+      setStatus("failed");
+    }
   };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !audioUrl) return;
+    audio.src = audioUrl;
+    audio.play().catch(() => setIsPlaying(false));
+  }, [audioUrl]);
 
   return (
     <section className="border-b border-slate-800/80 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900/95 flex flex-col justify-center">
@@ -94,10 +117,7 @@ export function LofiGeneratorHero() {
             {status === "loading" && (
               <div className="space-y-2 text-left">
                 <div className="h-2 rounded-full bg-slate-700 overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-violet-500/80 transition-all duration-300"
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                  />
+                  <div className="h-full w-1/2 animate-pulse rounded-full bg-violet-500/80" />
                 </div>
                 <p className="text-xs text-slate-400">Creating your lofi beat…</p>
               </div>
@@ -106,10 +126,24 @@ export function LofiGeneratorHero() {
             {status === "done" && (
               <div className="rounded-2xl border border-slate-600/80 bg-slate-800/50 p-4 text-left">
                 <p className="text-sm font-medium text-slate-200 mb-3">Your lofi track is ready</p>
+                <audio
+                  ref={audioRef}
+                  src={audioUrl}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onEnded={() => setIsPlaying(false)}
+                  preload="metadata"
+                  className="hidden"
+                />
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
-                    onClick={() => setIsPlaying(!isPlaying)}
+                    onClick={() => {
+                      const audio = audioRef.current;
+                      if (!audio) return;
+                      if (audio.paused) void audio.play();
+                      else audio.pause();
+                    }}
                     className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-600 text-white hover:bg-violet-500"
                     aria-label={isPlaying ? "Pause" : "Play"}
                   >
@@ -129,8 +163,14 @@ export function LofiGeneratorHero() {
                     ))}
                   </div>
                 </div>
-                <p className="mt-2 text-xs text-slate-500">Demo — open the full generator to export</p>
+                <audio controls src={audioUrl} className="mt-3 h-9 w-full" />
               </div>
+            )}
+
+            {status === "failed" && (
+              <p role="alert" className="rounded-2xl border border-red-500/30 bg-red-500/10 p-3 text-left text-sm text-red-300">
+                {error}
+              </p>
             )}
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
